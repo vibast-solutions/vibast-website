@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -44,7 +44,7 @@ const stats = [
 const services = [
   {
     title: "Custom Blockchain Development",
-    description: "Build your own blockchain from scratch or with Cosmos SDK. Application-specific chains, custom consensus, IBC integration, and validator infrastructure.",
+    description: "Purpose-built blockchains tailored to your requirements. UTXO or account-based, custom consensus, any architecture. We build the chain that fits your use case.",
     icon: Blocks,
   },
   {
@@ -77,7 +77,7 @@ const services = [
 const capabilities = [
   {
     title: "Blockchain expertise",
-    items: ["Cosmos SDK & custom chains", "IBC protocol integration", "Smart contract development"],
+    items: ["Custom chains, any architecture", "Cosmos SDK & IBC integration", "Smart contract development"],
   },
   {
     title: "Engineering depth",
@@ -104,10 +104,37 @@ const timeline = [
   },
 ];
 
+const heroSlides = [
+  {
+    tag: "Blockchain Development",
+    headline: "Custom blockchains. Any architecture.",
+    description: "From Cosmos SDK appchains to UTXO-based networks and beyond. We design and build the blockchain that fits your specific use case.",
+  },
+  {
+    tag: "Web Development",
+    headline: "Modern web applications. Designed to scale.",
+    description: "Full-stack web development with React, Next.js, and Node.js. APIs, databases, and cloud infrastructure built for performance.",
+  },
+  {
+    tag: "Reliable Infrastructure",
+    headline: "Systems that work. And keep working.",
+    description: "High-availability backends, data migrations, and production-grade infrastructure. Built with security and maintainability in mind.",
+  },
+];
+
 export default function Home() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Auto-rotate hero slides
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -193,32 +220,66 @@ export default function Home() {
         </Container>
       </Box>
 
-      {/* Hero - Dark Navy Full Width Centered */}
+      {/* Hero - Dark Navy Full Width Centered with Sliding Content */}
       <Box bg="#102a43" py={{ base: 20, md: 28 }}>
         <Container maxW="4xl" mx="auto" px={{ base: 4, md: 6 }} textAlign="center">
           <Stack gap={6} align="center">
-            <Text
-              color="#c9a227"
-              fontSize="sm"
-              fontWeight="semibold"
-              letterSpacing="0.1em"
-              textTransform="uppercase"
-            >
-              Blockchain Development & Software Engineering
-            </Text>
-            <Heading
-              as="h1"
-              size={{ base: "2xl", md: "4xl" }}
-              lineHeight="1.1"
-              color="white"
-              fontWeight="bold"
-            >
-              Custom blockchains. Reliable infrastructure. Built to last.
-            </Heading>
-            <Text fontSize={{ base: "lg", md: "xl" }} color="#9fb3c8" maxW="2xl">
-              VIBAST Labs specializes in custom blockchain development, Cosmos SDK appchains, and
-              production-grade backend systems. From complex migrations to mainnet launches.
-            </Text>
+            {/* Sliding content */}
+            <Box minH={{ base: "220px", md: "200px" }} w="full">
+              <Stack gap={6} align="center">
+                <Text
+                  key={`tag-${currentSlide}`}
+                  color="#c9a227"
+                  fontSize="sm"
+                  fontWeight="semibold"
+                  letterSpacing="0.1em"
+                  textTransform="uppercase"
+                  opacity={1}
+                  animation="fadeIn 0.5s ease-in-out"
+                >
+                  {heroSlides[currentSlide].tag}
+                </Text>
+                <Heading
+                  key={`headline-${currentSlide}`}
+                  as="h1"
+                  size={{ base: "2xl", md: "4xl" }}
+                  lineHeight="1.1"
+                  color="white"
+                  fontWeight="bold"
+                  animation="fadeIn 0.5s ease-in-out"
+                >
+                  {heroSlides[currentSlide].headline}
+                </Heading>
+                <Text
+                  key={`desc-${currentSlide}`}
+                  fontSize={{ base: "lg", md: "xl" }}
+                  color="#9fb3c8"
+                  maxW="2xl"
+                  animation="fadeIn 0.5s ease-in-out"
+                >
+                  {heroSlides[currentSlide].description}
+                </Text>
+              </Stack>
+            </Box>
+
+            {/* Slide indicators */}
+            <HStack gap={2} pt={2}>
+              {heroSlides.map((_, index) => (
+                <Box
+                  key={index}
+                  as="button"
+                  w={currentSlide === index ? "24px" : "8px"}
+                  h="8px"
+                  borderRadius="full"
+                  bg={currentSlide === index ? "#c9a227" : "#334e68"}
+                  transition="all 0.3s ease"
+                  onClick={() => setCurrentSlide(index)}
+                  cursor="pointer"
+                  _hover={{ bg: currentSlide === index ? "#c9a227" : "#486581" }}
+                />
+              ))}
+            </HStack>
+
             <HStack gap={4} pt={4} flexWrap="wrap" justify="center">
               <Link href="#cta">
                 <Button
