@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -10,9 +11,11 @@ import {
   GridItem,
   Heading,
   HStack,
+  Input,
   SimpleGrid,
   Stack,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
 import {
   Rocket,
@@ -23,7 +26,9 @@ import {
   Wrench,
   Check,
   ArrowRight,
-  Target,
+  Send,
+  CheckCircle,
+  AlertCircle,
 } from "lucide-react";
 
 const navLinks = [
@@ -102,6 +107,36 @@ const timeline = [
 ];
 
 export default function Home() {
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormStatus("loading");
+    setErrorMessage("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to send message");
+      }
+
+      setFormStatus("success");
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      setFormStatus("error");
+      setErrorMessage(error instanceof Error ? error.message : "Failed to send message");
+    }
+  };
+
   return (
     <Box bg="#fafbfc" color="#111827" minH="100vh">
       {/* Navigation */}
@@ -483,54 +518,187 @@ export default function Home() {
         </Container>
       </Box>
 
-      {/* CTA - Dark Section with High Contrast */}
+      {/* CTA - Contact Form Section */}
       <Box id="cta" bg="#102a43" py={{ base: 20, md: 24 }}>
-        <Container maxW="4xl" mx="auto" px={{ base: 4, md: 6 }} textAlign="center">
-          <Stack gap={8} align="center">
-            <Box
-              w="16"
-              h="16"
-              bg="#243b53"
-              borderRadius="full"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Target size={32} color="#c9a227" strokeWidth={1.5} />
-            </Box>
-            <Heading size={{ base: "xl", md: "2xl" }} lineHeight="1.2" color="white" fontWeight="bold">
-              Let&apos;s build something that lasts
-            </Heading>
-            <Text color="#9fb3c8" fontSize="lg" maxW="xl">
-              Custom blockchain, backend infrastructure, or complex migration—tell us what you need.
-              We&apos;ll give you an honest assessment and a clear path forward.
-            </Text>
-            <HStack gap={4} pt={4} flexWrap="wrap" justify="center">
-              <Button
-                size="lg"
-                bg="#c9a227"
-                color="white"
+        <Container maxW="6xl" mx="auto" px={{ base: 4, md: 6 }}>
+          <SimpleGrid columns={{ base: 1, lg: 2 }} gap={{ base: 12, lg: 16 }} alignItems="start">
+            {/* Left side - Text */}
+            <Stack gap={6}>
+              <Text
+                color="#c9a227"
+                fontSize="sm"
                 fontWeight="semibold"
-                px={8}
-                _hover={{ bg: "#a68219" }}
+                letterSpacing="0.08em"
+                textTransform="uppercase"
               >
-                Start a conversation
-              </Button>
-              <a href="mailto:stefan@vibast.ro" style={{ textDecoration: "none" }}>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  borderColor="#627d98"
-                  color="white"
-                  fontWeight="medium"
-                  px={8}
-                  _hover={{ bg: "#243b53" }}
-                >
-                  stefan@vibast.ro
-                </Button>
-              </a>
-            </HStack>
-          </Stack>
+                Get in touch
+              </Text>
+              <Heading size={{ base: "xl", md: "2xl" }} lineHeight="1.2" color="white" fontWeight="bold">
+                Let&apos;s build something that lasts
+              </Heading>
+              <Text color="#9fb3c8" fontSize="lg" lineHeight="tall">
+                Custom blockchain, backend infrastructure, or complex migration—tell us what you need.
+                We&apos;ll give you an honest assessment and a clear path forward.
+              </Text>
+              <Stack gap={4} pt={2}>
+                <HStack gap={3}>
+                  <Box color="#c9a227">
+                    <Check size={20} strokeWidth={2.5} />
+                  </Box>
+                  <Text color="#bcccdc">Free initial consultation</Text>
+                </HStack>
+                <HStack gap={3}>
+                  <Box color="#c9a227">
+                    <Check size={20} strokeWidth={2.5} />
+                  </Box>
+                  <Text color="#bcccdc">Response within 24 hours</Text>
+                </HStack>
+                <HStack gap={3}>
+                  <Box color="#c9a227">
+                    <Check size={20} strokeWidth={2.5} />
+                  </Box>
+                  <Text color="#bcccdc">No obligation estimate</Text>
+                </HStack>
+              </Stack>
+              <Box pt={4}>
+                <Text color="#627d98" fontSize="sm">
+                  Or email directly:{" "}
+                  <a href="mailto:stefan@vibast.ro" style={{ color: "#9fb3c8", textDecoration: "underline" }}>
+                    stefan@vibast.ro
+                  </a>
+                </Text>
+              </Box>
+            </Stack>
+
+            {/* Right side - Form */}
+            <Box
+              bg="#0d2137"
+              borderRadius="xl"
+              p={{ base: 6, md: 8 }}
+              borderWidth="1px"
+              borderColor="#1f2937"
+            >
+              {formStatus === "success" ? (
+                <Stack gap={6} align="center" py={8} textAlign="center">
+                  <Box
+                    w="16"
+                    h="16"
+                    bg="#243b53"
+                    borderRadius="full"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <CheckCircle size={32} color="#22c55e" />
+                  </Box>
+                  <Heading size="lg" color="white" fontWeight="semibold">
+                    Message sent
+                  </Heading>
+                  <Text color="#9fb3c8">
+                    Thanks for reaching out. We&apos;ll get back to you within 24 hours.
+                  </Text>
+                  <Text
+                    as="button"
+                    color="#627d98"
+                    fontSize="sm"
+                    cursor="pointer"
+                    _hover={{ color: "#9fb3c8", textDecoration: "underline" }}
+                    onClick={() => setFormStatus("idle")}
+                  >
+                    Send another message
+                  </Text>
+                </Stack>
+              ) : (
+                <form onSubmit={handleSubmit}>
+                  <Stack gap={5}>
+                    <Stack gap={2}>
+                      <Text color="#9fb3c8" fontSize="sm" fontWeight="medium">
+                        Name
+                      </Text>
+                      <Input
+                        type="text"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        placeholder="Your name"
+                        bg="#102a43"
+                        borderColor="#334e68"
+                        color="white"
+                        _placeholder={{ color: "#627d98" }}
+                        _hover={{ borderColor: "#486581" }}
+                        _focus={{ borderColor: "#c9a227", boxShadow: "0 0 0 1px #c9a227" }}
+                        required
+                      />
+                    </Stack>
+                    <Stack gap={2}>
+                      <Text color="#9fb3c8" fontSize="sm" fontWeight="medium">
+                        Email
+                      </Text>
+                      <Input
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        placeholder="you@company.com"
+                        bg="#102a43"
+                        borderColor="#334e68"
+                        color="white"
+                        _placeholder={{ color: "#627d98" }}
+                        _hover={{ borderColor: "#486581" }}
+                        _focus={{ borderColor: "#c9a227", boxShadow: "0 0 0 1px #c9a227" }}
+                        required
+                      />
+                    </Stack>
+                    <Stack gap={2}>
+                      <Text color="#9fb3c8" fontSize="sm" fontWeight="medium">
+                        Message
+                      </Text>
+                      <Textarea
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        placeholder="Tell us about your project..."
+                        bg="#102a43"
+                        borderColor="#334e68"
+                        color="white"
+                        _placeholder={{ color: "#627d98" }}
+                        _hover={{ borderColor: "#486581" }}
+                        _focus={{ borderColor: "#c9a227", boxShadow: "0 0 0 1px #c9a227" }}
+                        rows={5}
+                        required
+                      />
+                    </Stack>
+
+                    {formStatus === "error" && (
+                      <HStack bg="#7f1d1d" p={3} borderRadius="md" gap={3}>
+                        <AlertCircle size={18} color="#fca5a5" />
+                        <Text color="#fca5a5" fontSize="sm">
+                          {errorMessage}
+                        </Text>
+                      </HStack>
+                    )}
+
+                    <Button
+                      type="submit"
+                      size="lg"
+                      bg="#c9a227"
+                      color="white"
+                      fontWeight="semibold"
+                      _hover={{ bg: "#a68219" }}
+                      _disabled={{ opacity: 0.7, cursor: "not-allowed" }}
+                      disabled={formStatus === "loading"}
+                    >
+                      {formStatus === "loading" ? (
+                        "Sending..."
+                      ) : (
+                        <>
+                          Send message
+                          <Send size={18} style={{ marginLeft: "8px" }} />
+                        </>
+                      )}
+                    </Button>
+                  </Stack>
+                </form>
+              )}
+            </Box>
+          </SimpleGrid>
         </Container>
       </Box>
 

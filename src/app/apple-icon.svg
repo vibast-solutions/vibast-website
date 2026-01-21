@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" fill="none">
+  <!-- Background -->
+  <rect width="180" height="180" fill="#102a43"/>
+  <!-- Stylized V mark (centered) -->
+  <path d="M40 50L90 140L140 50" stroke="#ffffff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Gold accent dot -->
+  <circle cx="90" cy="140" r="10" fill="#c9a227"/>
+</svg>
