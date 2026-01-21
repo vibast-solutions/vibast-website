@@ -610,7 +610,7 @@ export default function Home() {
                   <Box color="#c9a227">
                     <Check size={20} strokeWidth={2.5} />
                   </Box>
-                  <Text color="#bcccdc">Response within 24 hours</Text>
+                  <Text color="#bcccdc">Fast response</Text>
                 </HStack>
                 <HStack gap={3}>
                   <Box color="#c9a227">
