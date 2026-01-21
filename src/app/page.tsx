@@ -33,8 +33,6 @@ import {
 
 const navLinks = [
   { label: "Services", href: "#services" },
-  { label: "How We Work", href: "#how-we-work" },
-  { label: "Results", href: "#results" },
 ];
 
 const stats = [
