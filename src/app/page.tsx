@@ -40,49 +40,49 @@ const stats = [
 
 const services = [
   {
-    title: "Product Delivery",
-    description: "Idea to launch, end-to-end. We turn concepts into shipped products with clear scope and predictable execution.",
-    icon: Rocket,
-  },
-  {
-    title: "Software Development",
-    description: "Reliable web, backend, and mobile systems built for maintainability, security, and long-term evolution.",
-    icon: Code,
-  },
-  {
-    title: "Blockchain & Web3",
-    description: "Production blockchain features and integrations—transaction flows, indexing, wallet experiences, and scalable architecture.",
+    title: "Custom Blockchain Development",
+    description: "Build your own blockchain from scratch or with Cosmos SDK. Application-specific chains, custom consensus, IBC integration, and validator infrastructure.",
     icon: Blocks,
   },
   {
+    title: "Cosmos SDK & Appchains",
+    description: "Production-ready Cosmos SDK appchains with custom modules, IBC connectivity, and seamless integration with the interchain ecosystem.",
+    icon: Rocket,
+  },
+  {
     title: "Smart Contracts",
-    description: "Correct, tested, deployment-ready contracts with disciplined security practices and upgrade considerations.",
+    description: "Secure, audited smart contracts for EVM chains and CosmWasm. From DeFi protocols to NFT platforms with disciplined security practices.",
     icon: ShieldCheck,
   },
   {
-    title: "Reviews & Due Diligence",
-    description: "Validate vendors, code quality, and security posture with independent assessments and actionable recommendations.",
+    title: "Backend & Infrastructure",
+    description: "Reliable APIs, databases, and cloud infrastructure. Data migrations, system integrations, and backend services built for scale and maintainability.",
+    icon: Code,
+  },
+  {
+    title: "Security & Auditing",
+    description: "Smart contract audits, code reviews, and security assessments. Independent analysis with actionable recommendations for blockchain and traditional systems.",
     icon: Search,
   },
   {
-    title: "Support & Improvement",
-    description: "Maintenance, performance tuning, and reliability upgrades—keeping your systems stable and efficient post-launch.",
+    title: "Ongoing Support",
+    description: "Maintenance, upgrades, monitoring, and incident response. Keep your systems—blockchain or otherwise—secure and performant post-launch.",
     icon: Wrench,
   },
 ];
 
 const capabilities = [
   {
+    title: "Blockchain expertise",
+    items: ["Cosmos SDK & custom chains", "IBC protocol integration", "Smart contract development"],
+  },
+  {
     title: "Engineering depth",
-    items: ["Full-stack web and mobile", "API design and integrations", "Infrastructure and DevOps"],
+    items: ["Backend systems & APIs", "Data migrations & ETL", "Cloud infrastructure"],
   },
   {
-    title: "Security focus",
-    items: ["Architecture reviews", "Secure design patterns", "Smart contract auditing"],
-  },
-  {
-    title: "Delivery discipline",
-    items: ["Clear scope and milestones", "Transparent communication", "Production-grade quality"],
+    title: "Production ready",
+    items: ["High-availability systems", "Security-first approach", "Long-term support"],
   },
 ];
 
@@ -116,18 +116,18 @@ export default function Home() {
       >
         <Container maxW="6xl" mx="auto" px={{ base: 4, md: 6 }}>
           <Flex align="center" justify="space-between" h="16">
-            <HStack gap={3}>
-              <Box w={{ base: "32", md: "40" }} h="10" position="relative">
+            <Link href="/">
+              <Box w={{ base: "140px", md: "160px" }} h="10" position="relative">
                 <Image
-                  src="/vibast-logo-large.png"
-                  alt="VIBAST SOLUTIONS logo"
+                  src="/vibast-labs-logo.svg"
+                  alt="VIBAST Labs"
                   fill
                   sizes="160px"
-                  style={{ objectFit: "contain" }}
+                  style={{ objectFit: "contain", objectPosition: "left" }}
                   priority
                 />
               </Box>
-            </HStack>
+            </Link>
             <HStack gap={1} display={{ base: "none", md: "flex" }}>
               {navLinks.map((item) => (
                 <Link key={item.href} href={item.href}>
@@ -171,7 +171,7 @@ export default function Home() {
               letterSpacing="0.1em"
               textTransform="uppercase"
             >
-              Custom Software Development & Consulting
+              Blockchain Development & Software Engineering
             </Text>
             <Heading
               as="h1"
@@ -180,11 +180,11 @@ export default function Home() {
               color="white"
               fontWeight="bold"
             >
-              We bring ideas to life and deliver systems you can rely on.
+              Custom blockchains. Reliable infrastructure. Built to last.
             </Heading>
             <Text fontSize={{ base: "lg", md: "xl" }} color="#9fb3c8" maxW="2xl">
-              VIBAST SOLUTIONS builds production-grade software with quality, security, and
-              operational clarity. From concept to launch and beyond—we own the outcome.
+              VIBAST Labs specializes in custom blockchain development, Cosmos SDK appchains, and
+              production-grade backend systems. From complex migrations to mainnet launches.
             </Text>
             <HStack gap={4} pt={4} flexWrap="wrap" justify="center">
               <Link href="#cta">
@@ -251,14 +251,14 @@ export default function Home() {
                 letterSpacing="0.08em"
                 textTransform="uppercase"
               >
-                What we do
+                What We Build
               </Text>
               <Heading size="xl" color="#111827" fontWeight="bold">
-                End-to-end software services
+                Blockchain expertise. Full-stack capability.
               </Heading>
               <Text color="#4b5563" fontSize="lg">
-                From initial concept through production and ongoing support—we deliver reliable
-                systems built to last.
+                Deep specialization in custom blockchains and Cosmos SDK, backed by solid
+                engineering across the entire stack.
               </Text>
             </Stack>
 
@@ -430,13 +430,14 @@ export default function Home() {
                 letterSpacing="0.08em"
                 textTransform="uppercase"
               >
-                Capabilities
+                Why VIBAST Labs
               </Text>
               <Heading size="xl" color="#111827" fontWeight="bold">
-                Built on strong fundamentals
+                Specialists who ship
               </Heading>
               <Text color="#4b5563" fontSize="lg">
-                Technical depth combined with delivery discipline—so what we ship actually works.
+                Deep blockchain expertise combined with battle-tested engineering practices.
+                We build systems that work—and keep working.
               </Text>
             </Stack>
 
@@ -498,11 +499,11 @@ export default function Home() {
               <Target size={32} color="#c9a227" strokeWidth={1.5} />
             </Box>
             <Heading size={{ base: "xl", md: "2xl" }} lineHeight="1.2" color="white" fontWeight="bold">
-              Ready to build something reliable?
+              Let&apos;s build something that lasts
             </Heading>
             <Text color="#9fb3c8" fontSize="lg" maxW="xl">
-              Tell us about your project. We&apos;ll respond within one business day with an honest
-              assessment and a clear path forward.
+              Custom blockchain, backend infrastructure, or complex migration—tell us what you need.
+              We&apos;ll give you an honest assessment and a clear path forward.
             </Text>
             <HStack gap={4} pt={4} flexWrap="wrap" justify="center">
               <Button
@@ -515,7 +516,7 @@ export default function Home() {
               >
                 Start a conversation
               </Button>
-              <a href="mailto:hello@vibast.com" style={{ textDecoration: "none" }}>
+              <a href="mailto:stefan@vibast.ro" style={{ textDecoration: "none" }}>
                 <Button
                   size="lg"
                   variant="outline"
@@ -525,7 +526,7 @@ export default function Home() {
                   px={8}
                   _hover={{ bg: "#243b53" }}
                 >
-                  hello@vibast.com
+                  stefan@vibast.ro
                 </Button>
               </a>
             </HStack>
@@ -534,29 +535,79 @@ export default function Home() {
       </Box>
 
       {/* Footer */}
-      <Box bg="#0d2137" py={8} borderTopWidth="1px" borderColor="#1f2937">
+      <Box bg="#0d2137" py={10} borderTopWidth="1px" borderColor="#1f2937">
         <Container maxW="6xl" mx="auto" px={{ base: 4, md: 6 }}>
-          <Flex
-            direction={{ base: "column", md: "row" }}
-            justify="space-between"
-            align="center"
-            gap={4}
-          >
-            <HStack gap={3}>
-              <Box w="32" h="8" position="relative">
-                <Image
-                  src="/vibast-logo-large.png"
-                  alt="VIBAST SOLUTIONS logo"
-                  fill
-                  sizes="128px"
-                  style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }}
-                />
-              </Box>
-            </HStack>
-            <Text color="#627d98" fontSize="sm">
-              VIBAST SOLUTIONS. Custom software, built to last.
-            </Text>
-          </Flex>
+          <Stack gap={8}>
+            <Flex
+              direction={{ base: "column", md: "row" }}
+              justify="space-between"
+              align="center"
+              gap={4}
+            >
+              <Link href="/">
+                <Box w="140px" h="8" position="relative">
+                  <Image
+                    src="/vibast-labs-logo-white.svg"
+                    alt="VIBAST Labs"
+                    fill
+                    sizes="140px"
+                    style={{ objectFit: "contain", objectPosition: "left" }}
+                  />
+                </Box>
+              </Link>
+              <Text color="#627d98" fontSize="sm">
+                Blockchain & software engineering. Built to last.
+              </Text>
+            </Flex>
+
+            {/* Company Details */}
+            <Box borderTopWidth="1px" borderColor="#1f2937" pt={6}>
+              <SimpleGrid columns={{ base: 1, md: 2 }} gap={{ base: 4, md: 8 }}>
+                <Stack gap={1}>
+                  <Text color="#9fb3c8" fontSize="sm" fontWeight="semibold">
+                    VIBAST SOLUTIONS SRL
+                  </Text>
+                  <Text color="#627d98" fontSize="xs">
+                    B. P. Hasdeu 23, Campina, Prahova, Romania
+                  </Text>
+                </Stack>
+                <SimpleGrid columns={{ base: 2, sm: 4 }} gap={{ base: 3, md: 4 }}>
+                  <Stack gap={0}>
+                    <Text color="#627d98" fontSize="xs">
+                      VAT No.
+                    </Text>
+                    <Text color="#9fb3c8" fontSize="xs">
+                      RO51459106
+                    </Text>
+                  </Stack>
+                  <Stack gap={0}>
+                    <Text color="#627d98" fontSize="xs">
+                      Reg. No.
+                    </Text>
+                    <Text color="#9fb3c8" fontSize="xs">
+                      J2025012011008
+                    </Text>
+                  </Stack>
+                  <Stack gap={0}>
+                    <Text color="#627d98" fontSize="xs">
+                      EUID
+                    </Text>
+                    <Text color="#9fb3c8" fontSize="xs">
+                      ROONRC.J2025012011008
+                    </Text>
+                  </Stack>
+                  <Stack gap={0}>
+                    <Text color="#627d98" fontSize="xs">
+                      CUI
+                    </Text>
+                    <Text color="#9fb3c8" fontSize="xs">
+                      51317810
+                    </Text>
+                  </Stack>
+                </SimpleGrid>
+              </SimpleGrid>
+            </Box>
+          </Stack>
         </Container>
       </Box>
     </Box>
