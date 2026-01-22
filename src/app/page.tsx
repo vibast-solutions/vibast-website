@@ -654,7 +654,7 @@ export default function Home() {
                     Message sent
                   </Heading>
                   <Text color="#9fb3c8">
-                    Thanks for reaching out. We&apos;ll get back to you within 24 hours.
+                    Thanks for reaching out. We&apos;ll get back to you as soon as possible.
                   </Text>
                   <Text
                     as="button"

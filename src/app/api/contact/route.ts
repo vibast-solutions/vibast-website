@@ -68,12 +68,12 @@ export async function POST(request: Request) {
       to: email,
       from: fromEmail, // Must be verified sender in SendGrid
       subject: "We received your message - VIBAST Labs",
-      text: `Hi ${name},\n\nThank you for reaching out to VIBAST Labs. We've received your message and will get back to you within 24 hours.\n\nHere's a copy of your message:\n\n${message}\n\nBest regards,\nVIBAST Labs\nhttps://vibast.ro`,
+      text: `Hi ${name},\n\nThank you for reaching out to VIBAST Labs. We've received your message and will get back to you as soon as possible.\n\nHere's a copy of your message:\n\n${message}\n\nBest regards,\nVIBAST Labs\nhttps://vibast.ro`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #102a43;">Thanks for reaching out</h2>
           <p>Hi ${name},</p>
-          <p>We've received your message and will get back to you within 24 hours.</p>
+          <p>We've received your message and will get back to you as soon as possible.</p>
           <p>Here's a copy of your message:</p>
           <blockquote style="background: #f3f4f6; padding: 16px; border-left: 4px solid #c9a227; margin: 16px 0;">
             ${message.replace(/\n/g, "<br>")}

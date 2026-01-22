@@ -3,12 +3,14 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: "VIBAST Labs | Custom Blockchain Development & Software Engineering",
+  title: "VIBAST Labs | Custom Blockchain & Web Development Services",
   description:
-    "VIBAST Labs builds custom blockchains, Cosmos SDK appchains, and reliable backend infrastructure. Blockchain specialists with full-stack engineering capability.",
+    "Build custom blockchains with any architecture—Cosmos SDK, UTXO-based, or account-based. Full-stack web development and reliable backend infrastructure. Get in touch today.",
   keywords: [
     "custom blockchain development",
+    "blockchain development company",
     "Cosmos SDK development",
+    "UTXO blockchain",
     "appchain development",
     "blockchain consulting",
     "smart contract development",
@@ -17,15 +19,21 @@ export const metadata: Metadata = {
     "custom blockchain solutions",
     "Cosmos ecosystem",
     "IBC integration",
+    "web development services",
+    "React development",
+    "Next.js development",
     "backend development",
-    "data migration services",
     "API development",
+    "data migration services",
     "software engineering",
     "software consulting",
+    "blockchain architecture",
   ],
   authors: [{ name: "VIBAST Labs" }],
   creator: "VIBAST Labs",
   publisher: "VIBAST Labs",
+  applicationName: "VIBAST Labs",
+  category: "Technology",
   metadataBase: new URL("https://vibast.ro"),
   alternates: {
     canonical: "/",
@@ -35,24 +43,25 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://vibast.ro",
     siteName: "VIBAST Labs",
-    title: "VIBAST Labs | Custom Blockchain Development & Software Engineering",
+    title: "Custom Blockchain Development | Any Architecture | VIBAST Labs",
     description:
-      "Custom blockchains, Cosmos SDK appchains, and reliable backend systems. Blockchain specialists with full-stack engineering capability.",
+      "Build custom blockchains with any architecture. Cosmos SDK, UTXO-based, account-based—we design and build the chain that fits your use case.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/opengraph-image.png",
         width: 1200,
         height: 630,
-        alt: "VIBAST Labs - Blockchain & Software Engineering",
+        alt: "VIBAST Labs - Custom Blockchain & Web Development",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "VIBAST Labs | Custom Blockchain Development & Software Engineering",
+    title: "Custom Blockchain Development | Any Architecture | VIBAST Labs",
     description:
-      "Custom blockchains, Cosmos SDK appchains, and reliable backend systems. Blockchain specialists with full-stack capability.",
-    images: ["/og-image.png"],
+      "Build custom blockchains with any architecture. Full-stack web development and reliable backend infrastructure.",
+    images: ["/opengraph-image.png"],
+    creator: "@vibastlabs",
   },
   robots: {
     index: true,
@@ -73,43 +82,91 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": "ProfessionalService",
+  "@id": "https://vibast.ro/#organization",
   name: "VIBAST Labs",
   legalName: "VIBAST SOLUTIONS SRL",
   url: "https://vibast.ro",
-  logo: "https://vibast.ro/vibast-labs-logo.svg",
+  logo: {
+    "@type": "ImageObject",
+    url: "https://vibast.ro/vibast-labs-logo.svg",
+    width: "512",
+    height: "512",
+  },
+  image: "https://vibast.ro/opengraph-image.png",
   description:
-    "Custom blockchain development, Cosmos SDK appchains, and reliable backend infrastructure. Blockchain specialists with full-stack engineering capability.",
+    "Custom blockchain development with any architecture—Cosmos SDK, UTXO-based, or account-based. Full-stack web development and reliable backend infrastructure.",
   address: {
     "@type": "PostalAddress",
     streetAddress: "B. P. Hasdeu 23",
     addressLocality: "Campina",
     addressRegion: "Prahova",
+    postalCode: "105600",
     addressCountry: "RO",
   },
   email: "stefan@vibast.ro",
   vatID: "RO51459106",
+  priceRange: "$$",
   sameAs: [],
+  areaServed: {
+    "@type": "GeoCircle",
+    geoMidpoint: {
+      "@type": "GeoCoordinates",
+      latitude: 45.0,
+      longitude: 25.0,
+    },
+    geoRadius: "10000 km",
+  },
   knowsAbout: [
-    "Blockchain Development",
+    "Custom Blockchain Development",
     "Cosmos SDK",
-    "Custom Blockchain",
+    "UTXO Blockchain",
+    "Account-based Blockchain",
     "Appchain Development",
     "Smart Contract Development",
+    "IBC Integration",
+    "React Development",
+    "Next.js Development",
+    "Node.js Development",
     "Backend Development",
     "API Development",
     "Data Migration",
     "Cloud Infrastructure",
     "Software Engineering",
   ],
-  serviceType: [
-    "Custom Blockchain Development",
-    "Cosmos SDK Development",
-    "Smart Contract Development",
-    "Backend Development",
-    "Data Migration",
-    "Software Consulting",
-  ],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Blockchain & Web Development Services",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Custom Blockchain Development",
+          description:
+            "Purpose-built blockchains with any architecture. UTXO or account-based, custom consensus, Cosmos SDK, and more.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Web Application Development",
+          description:
+            "Full-stack web development with React, Next.js, and Node.js. Modern, scalable applications built for performance.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Backend Infrastructure",
+          description:
+            "High-availability backends, data migrations, and production-grade infrastructure built with security in mind.",
+        },
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
