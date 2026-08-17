@@ -108,14 +108,14 @@ export async function POST(request: Request) {
       );
     }
 
-    // Notification to us only. No auto-reply to the visitor (abuse vector, and SES sandbox
-    // only delivers to verified addresses). Reply-To lets us answer directly.
     const safeName = escapeHtml(String(name));
     const safeEmail = escapeHtml(String(email));
     const safeMessage = escapeHtml(String(message)).replace(/\n/g, "<br>");
+    const ses = getSesClient(region);
 
+    // 1) Notification to us (must succeed). Reply-To lets us answer directly.
     console.log("Attempting to send notification email...");
-    const result = await getSesClient(region).send(
+    const result = await ses.send(
       new SendEmailCommand({
         FromEmailAddress: `VIBAST Labs Contact <${fromEmail}>`,
         Destination: { ToAddresses: [contactEmail] },
@@ -143,6 +143,51 @@ export async function POST(request: Request) {
       })
     );
     console.log("Notification email accepted by SES, message id:", result.MessageId);
+
+    // 2) Confirmation copy to the visitor (best-effort: a bad visitor address must not fail
+    //    the request once we have the notification). Requires SES production access.
+    try {
+      const confirmation = await ses.send(
+        new SendEmailCommand({
+          FromEmailAddress: `VIBAST Labs <${fromEmail}>`,
+          Destination: { ToAddresses: [email] },
+          ReplyToAddresses: [contactEmail],
+          Content: {
+            Simple: {
+              Subject: { Data: "We received your message - VIBAST Labs", Charset: "UTF-8" },
+              Body: {
+                Text: {
+                  Data: `Hi ${name},\n\nThank you for reaching out to VIBAST Labs. We've received your message and will get back to you as soon as possible.\n\nHere's a copy of your message:\n\n${message}\n\nBest regards,\nVIBAST Labs\nhttps://vibast.ro`,
+                  Charset: "UTF-8",
+                },
+                Html: {
+                  Data: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #102a43;">Thanks for reaching out</h2>
+          <p>Hi ${safeName},</p>
+          <p>We've received your message and will get back to you as soon as possible.</p>
+          <p>Here's a copy of your message:</p>
+          <blockquote style="background: #f3f4f6; padding: 16px; border-left: 4px solid #c9a227; margin: 16px 0;">
+            ${safeMessage}
+          </blockquote>
+          <p>Best regards,<br><strong>VIBAST Labs</strong></p>
+          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+          <p style="color: #627d98; font-size: 14px;">
+            <a href="https://vibast.ro" style="color: #c9a227;">vibast.ro</a>
+          </p>
+        </div>`,
+                  Charset: "UTF-8",
+                },
+              },
+            },
+          },
+        })
+      );
+      console.log("Confirmation email accepted by SES, message id:", confirmation.MessageId);
+    } catch (confirmError: unknown) {
+      const e = confirmError as { name?: string; message?: string };
+      console.warn("Confirmation email failed (ignored):", e?.name, e?.message);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
