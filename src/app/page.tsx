@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import Link from "next/link";
 import {
   Box,
@@ -126,7 +127,11 @@ export default function Home() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState("");
+  const turnstileRef = useRef<TurnstileInstance | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
   // Auto-rotate hero slides
   useEffect(() => {
@@ -138,6 +143,11 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!turnstileToken) {
+      setFormStatus("error");
+      setErrorMessage("Please complete the captcha");
+      return;
+    }
     setFormStatus("loading");
     setErrorMessage("");
 
@@ -145,7 +155,7 @@ export default function Home() {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, turnstileToken, website: honeypot }),
       });
 
       const data = await response.json();
@@ -159,6 +169,10 @@ export default function Home() {
     } catch (error) {
       setFormStatus("error");
       setErrorMessage(error instanceof Error ? error.message : "Failed to send message");
+    } finally {
+      // Turnstile tokens are single-use: get a fresh one for the next attempt.
+      setTurnstileToken(null);
+      turnstileRef.current?.reset();
     }
   };
 
@@ -725,6 +739,43 @@ export default function Home() {
                       />
                     </Stack>
 
+                    {/* Honeypot: hidden from humans, bots tend to fill it */}
+                    <Box
+                      position="absolute"
+                      left="-10000px"
+                      top="auto"
+                      width="1px"
+                      height="1px"
+                      overflow="hidden"
+                      aria-hidden="true"
+                    >
+                      <label htmlFor="website">Website</label>
+                      <input
+                        id="website"
+                        name="website"
+                        type="text"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        value={honeypot}
+                        onChange={(e) => setHoneypot(e.target.value)}
+                      />
+                    </Box>
+
+                    {turnstileSiteKey ? (
+                      <Turnstile
+                        ref={turnstileRef}
+                        siteKey={turnstileSiteKey}
+                        options={{ theme: "dark" }}
+                        onSuccess={(token) => setTurnstileToken(token)}
+                        onExpire={() => setTurnstileToken(null)}
+                        onError={() => setTurnstileToken(null)}
+                      />
+                    ) : (
+                      <Text color="#fca5a5" fontSize="sm">
+                        Captcha is not configured; the form is temporarily unavailable.
+                      </Text>
+                    )}
+
                     {formStatus === "error" && (
                       <HStack bg="#7f1d1d" p={3} borderRadius="md" gap={3}>
                         <AlertCircle size={18} color="#fca5a5" />
@@ -742,7 +793,7 @@ export default function Home() {
                       fontWeight="semibold"
                       _hover={{ bg: "#a68219" }}
                       _disabled={{ opacity: 0.7, cursor: "not-allowed" }}
-                      disabled={formStatus === "loading"}
+                      disabled={formStatus === "loading" || !turnstileToken}
                     >
                       {formStatus === "loading" ? (
                         "Sending..."
