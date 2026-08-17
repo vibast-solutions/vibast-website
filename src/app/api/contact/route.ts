@@ -5,8 +5,14 @@ export async function POST(request: Request) {
   console.log("Contact form API called");
 
   try {
-    const { name, email, message } = await request.json();
+    const { name, email, message, turnstileToken, website } = await request.json();
     console.log("Received contact form submission from:", email);
+
+    // Honeypot: real users never fill this hidden field. Pretend success so bots don't adapt.
+    if (website) {
+      console.warn("Honeypot triggered, dropping submission");
+      return NextResponse.json({ success: true });
+    }
 
     // Validate required fields
     if (!name || !email || !message) {
@@ -21,6 +27,51 @@ export async function POST(request: Request) {
     if (!emailRegex.test(email)) {
       return NextResponse.json(
         { error: "Invalid email address" },
+        { status: 400 }
+      );
+    }
+
+    // Verify Cloudflare Turnstile captcha
+    const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+    if (!turnstileSecret) {
+      console.error("TURNSTILE_SECRET_KEY is not configured");
+      return NextResponse.json(
+        { error: "Captcha service not configured" },
+        { status: 500 }
+      );
+    }
+
+    if (!turnstileToken || typeof turnstileToken !== "string") {
+      return NextResponse.json(
+        { error: "Please complete the captcha" },
+        { status: 400 }
+      );
+    }
+
+    const remoteIp =
+      request.headers.get("cf-connecting-ip") ??
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      undefined;
+
+    const verifyBody = new URLSearchParams({
+      secret: turnstileSecret,
+      response: turnstileToken,
+    });
+    if (remoteIp) verifyBody.set("remoteip", remoteIp);
+
+    const verifyRes = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      { method: "POST", body: verifyBody }
+    );
+    const verifyData = (await verifyRes.json()) as {
+      success: boolean;
+      "error-codes"?: string[];
+    };
+
+    if (!verifyData.success) {
+      console.warn("Turnstile verification failed:", verifyData["error-codes"]);
+      return NextResponse.json(
+        { error: "Captcha verification failed, please try again" },
         { status: 400 }
       );
     }
