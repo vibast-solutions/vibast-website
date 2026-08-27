@@ -37,7 +37,7 @@ const navLinks = [
 ];
 
 const stats = [
-  { label: "Projects delivered", value: "122", detail: "End-to-end product launches" },
+  { label: "Projects delivered", value: "160+", detail: "End-to-end product launches" },
   { label: "Client retention", value: "98%", detail: "Long-term partnerships" },
   { label: "Time to first release", value: "2-4 weeks", detail: "From kickoff to production" },
 ];
