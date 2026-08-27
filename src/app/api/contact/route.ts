@@ -4,8 +4,28 @@ import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
 // Interim implementation: sends the contact notification straight through AWS SES.
 // Will be replaced by the shared notifications service (ms-go-notifications) later.
 let sesClient: SESv2Client | null = null;
+
+// Env values sometimes arrive with surrounding quotes or CR/LF (PM2 ecosystem files, Windows edits).
+// Any such character ends up in the SigV4 Authorization header and Node rejects the request with
+// "Invalid character in header content [\"authorization\"]". Sanitize defensively.
+function cleanEnv(name: string): string | undefined {
+  const raw = process.env[name];
+  if (raw === undefined) return undefined;
+  const v = raw.trim().replace(/^["']|["']$/g, "").trim();
+  return v.length ? v : undefined;
+}
+
 function getSesClient(region: string): SESv2Client {
-  if (!sesClient) sesClient = new SESv2Client({ region });
+  if (!sesClient) {
+    const accessKeyId = cleanEnv("AWS_ACCESS_KEY_ID");
+    const secretAccessKey = cleanEnv("AWS_SECRET_ACCESS_KEY");
+    sesClient = new SESv2Client({
+      region,
+      // Pass explicit (sanitized) credentials when provided; otherwise fall back to the SDK's
+      // default provider chain (instance role, shared config, …).
+      ...(accessKeyId && secretAccessKey ? { credentials: { accessKeyId, secretAccessKey } } : {}),
+    });
+  }
   return sesClient;
 }
 
@@ -97,9 +117,9 @@ export async function POST(request: Request) {
     }
 
     // Check for required env vars
-    const region = process.env.AWS_REGION;
-    const fromEmail = process.env.SES_FROM_EMAIL;
-    const contactEmail = process.env.CONTACT_EMAIL;
+    const region = cleanEnv("AWS_REGION");
+    const fromEmail = cleanEnv("SES_FROM_EMAIL");
+    const contactEmail = cleanEnv("CONTACT_EMAIL");
     if (!region || !fromEmail || !contactEmail) {
       console.error("AWS_REGION / SES_FROM_EMAIL / CONTACT_EMAIL not configured");
       return NextResponse.json(
@@ -195,6 +215,14 @@ export async function POST(request: Request) {
     if (error && typeof error === "object" && "name" in error) {
       const awsError = error as { name?: string; message?: string; $metadata?: unknown };
       console.error("SES error:", awsError.name, awsError.message, JSON.stringify(awsError.$metadata));
+      if (String(awsError.message).includes("Invalid character in header content")) {
+        const id = process.env.AWS_ACCESS_KEY_ID ?? "";
+        console.error(
+          "Hint: AWS_ACCESS_KEY_ID or AWS_REGION contains an invalid character (quotes/CR/space).",
+          `AWS_ACCESS_KEY_ID length=${id.length} starts=${JSON.stringify(id.slice(0, 4))} ends=${JSON.stringify(id.slice(-2))}`,
+          `AWS_REGION=${JSON.stringify(process.env.AWS_REGION)}`
+        );
+      }
     }
 
     return NextResponse.json(

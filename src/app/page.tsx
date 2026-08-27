@@ -849,7 +849,7 @@ export default function Home() {
                     B. P. Hasdeu 23, Campina, Prahova, Romania
                   </Text>
                 </Stack>
-                <SimpleGrid columns={{ base: 2, sm: 4 }} gap={{ base: 3, md: 4 }}>
+                <SimpleGrid columns={{ base: 2, sm: 5 }} gap={{ base: 3, md: 4 }}>
                   <Stack gap={0}>
                     <Text color="#627d98" fontSize="xs">
                       VAT No.
@@ -880,6 +880,14 @@ export default function Home() {
                     </Text>
                     <Text color="#9fb3c8" fontSize="xs">
                       51317810
+                    </Text>
+                  </Stack>
+                  <Stack gap={0}>
+                    <Text color="#627d98" fontSize="xs">
+                      D-U-N-S
+                    </Text>
+                    <Text color="#9fb3c8" fontSize="xs">
+                      52-396-3698
                     </Text>
                   </Stack>
                 </SimpleGrid>
