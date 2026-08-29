@@ -34,6 +34,7 @@ import {
 
 const navLinks = [
   { label: "Services", href: "#services" },
+  { label: "Docs", href: "/docs" },
 ];
 
 const stats = [
