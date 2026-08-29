@@ -30,11 +30,13 @@ import {
   Send,
   CheckCircle,
   AlertCircle,
+  Mail,
+  BookOpen,
+  type LucideIcon,
 } from "lucide-react";
 
 const navLinks = [
   { label: "Services", href: "#services" },
-  { label: "Docs", href: "/docs" },
 ];
 
 const stats = [
@@ -43,7 +45,15 @@ const stats = [
   { label: "Time to first release", value: "2-4 weeks", detail: "From kickoff to production" },
 ];
 
-const services = [
+type Service = {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  featured?: boolean;
+  docsHref?: string;
+};
+
+const services: Service[] = [
   {
     title: "Custom Blockchain Development",
     description: "Purpose-built blockchains tailored to your requirements. UTXO or account-based, custom consensus, any architecture. We build the chain that fits your use case.",
@@ -73,6 +83,13 @@ const services = [
     title: "Ongoing Support",
     description: "Maintenance, upgrades, monitoring, and incident response. Keep your systems—blockchain or otherwise—secure and performant post-launch.",
     icon: Wrench,
+  },
+  {
+    title: "MailBox — Professional Email",
+    description: "Business email on your own domain: webmail, IMAP/POP3/SMTP, spam filtering, forwarders and domain pointers. Yearly plans, set up and handed over by us. Full end-user documentation is available online.",
+    icon: Mail,
+    featured: true,
+    docsHref: "/docs/mailbox",
   },
 ];
 
@@ -374,6 +391,83 @@ export default function Home() {
             <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={6}>
               {services.map((service) => {
                 const IconComponent = service.icon;
+
+                // Featured offering (e.g. MailBox) — full-width highlighted card
+                // with a documentation call-to-action.
+                if (service.featured) {
+                  return (
+                    <Box
+                      key={service.title}
+                      gridColumn={{ base: "auto", md: "1 / -1" }}
+                      bg="#102a43"
+                      borderWidth="1px"
+                      borderColor="#334e68"
+                      borderRadius="lg"
+                      p={{ base: 7, md: 8 }}
+                    >
+                      <Flex
+                        direction={{ base: "column", md: "row" }}
+                        align={{ base: "start", md: "center" }}
+                        justify="space-between"
+                        gap={6}
+                      >
+                        <Stack gap={4} maxW={{ md: "2xl" }}>
+                          <HStack gap={3}>
+                            <Box
+                              w="11"
+                              h="11"
+                              bg="#243b53"
+                              borderRadius="lg"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              flexShrink={0}
+                            >
+                              <IconComponent size={22} color="#c9a227" strokeWidth={1.5} />
+                            </Box>
+                            <Heading size="md" color="white" fontWeight="semibold">
+                              {service.title}
+                            </Heading>
+                          </HStack>
+                          <Text color="#9fb3c8" fontSize="sm" lineHeight="tall">
+                            {service.description}
+                          </Text>
+                        </Stack>
+                        <Stack gap={3} w={{ base: "full", md: "auto" }} flexShrink={0}>
+                          {service.docsHref && (
+                            <Link href={service.docsHref}>
+                              <Button
+                                w={{ base: "full", md: "auto" }}
+                                bg="#c9a227"
+                                color="white"
+                                fontWeight="semibold"
+                                px={6}
+                                _hover={{ bg: "#a68219" }}
+                              >
+                                <BookOpen size={18} style={{ marginRight: "8px" }} />
+                                View documentation
+                              </Button>
+                            </Link>
+                          )}
+                          <Link href="#cta">
+                            <Button
+                              w={{ base: "full", md: "auto" }}
+                              variant="outline"
+                              borderColor="#627d98"
+                              color="white"
+                              fontWeight="medium"
+                              px={6}
+                              _hover={{ bg: "#243b53" }}
+                            >
+                              Get in touch
+                            </Button>
+                          </Link>
+                        </Stack>
+                      </Flex>
+                    </Box>
+                  );
+                }
+
                 return (
                   <Box
                     key={service.title}
