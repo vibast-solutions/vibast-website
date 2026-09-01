@@ -40,9 +40,9 @@ export function getDocPage(locale: Locale, slug: string): DocPage | undefined {
   return docsPages[locale].find((p) => p.slug === slug);
 }
 
-/** Locale-aware base path: Romanian is prefix-free, English lives under /en. */
+/** Locale-aware base path: English is prefix-free, Romanian lives under /ro. */
 export function docsBasePath(locale: Locale): string {
-  return locale === "en" ? "/en/docs" : "/docs";
+  return locale === "ro" ? "/ro/docs" : "/docs";
 }
 
 export function docPageHref(locale: Locale, slug: string): string {
