@@ -5,9 +5,9 @@
 
 export type Locale = "ro" | "en";
 
-export const LOCALES: Locale[] = ["ro", "en"];
+export const LOCALES: Locale[] = ["en", "ro"];
 
-export const DEFAULT_LOCALE: Locale = "ro";
+export const DEFAULT_LOCALE: Locale = "en";
 
 /**
  * A content block. Sections are built from ordered lists of these. The `tiers`
