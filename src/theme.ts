@@ -1,4 +1,5 @@
 import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react";
+import { brand } from "@/brand";
 
 const config = defineConfig({
   globalCss: {
@@ -6,7 +7,7 @@ const config = defineConfig({
       colorScheme: "light",
     },
     body: {
-      background: "#fafbfc",
+      background: brand.paper,
       color: "neutral.900",
       minHeight: "100vh",
       overflowX: "hidden",
@@ -16,35 +17,41 @@ const config = defineConfig({
   theme: {
     tokens: {
       colors: {
-        // Deep Navy primary brand palette
+        // Ink scale (VIBAST Labs brand). 900 = Ink, 50 = Fog.
         brand: {
-          50: { value: "#f0f4f8" },
-          100: { value: "#d9e2ec" },
-          200: { value: "#bcccdc" },
-          300: { value: "#9fb3c8" },
-          400: { value: "#829ab1" },
-          500: { value: "#627d98" },
-          600: { value: "#486581" },
-          700: { value: "#334e68" },
-          800: { value: "#243b53" },
-          900: { value: "#102a43" },
+          50: { value: brand.fog },
+          100: { value: "#D3E3E0" },
+          200: { value: "#C5D6D3" },
+          300: { value: brand.softOnDark },
+          400: { value: brand.mutedOnDark },
+          500: { value: brand.muted },
+          600: { value: "#3F5B63" },
+          700: { value: brand.inkLine },
+          800: { value: brand.inkRaised },
+          900: { value: brand.ink },
+          950: { value: brand.inkDeep },
         },
-        // Warm gold accent
+        // Teal accent scale. 500 = Teal, 300 = Lagoon, 400/200 = on-dark bars.
         accent: {
-          50: { value: "#fef9e7" },
-          100: { value: "#fcefc7" },
-          200: { value: "#f9e4a1" },
-          300: { value: "#f5d67a" },
-          400: { value: "#e8c547" },
-          500: { value: "#c9a227" },
-          600: { value: "#a68219" },
-          700: { value: "#846515" },
-          800: { value: "#614a11" },
-          900: { value: "#3f300b" },
+          50: { value: "#EAF4F4" },
+          100: { value: "#D0E7E6" },
+          200: { value: brand.onDark.lagoon },
+          300: { value: brand.lagoon },
+          400: { value: brand.onDark.teal },
+          500: { value: brand.teal },
+          600: { value: brand.tealText },
+          700: { value: "#20585D" },
+          800: { value: "#18444A" },
+          900: { value: "#113236" },
         },
+        ink: { value: brand.ink },
+        teal: { value: brand.teal },
+        lagoon: { value: brand.lagoon },
+        fog: { value: brand.fog },
+        paper: { value: brand.paper },
         // Warm neutral grays
         neutral: {
-          50: { value: "#fafbfc" },
+          50: { value: brand.paper },
           100: { value: "#f3f4f6" },
           200: { value: "#e5e7eb" },
           300: { value: "#d1d5db" },
@@ -57,7 +64,7 @@ const config = defineConfig({
         },
       },
       fonts: {
-        heading: { value: "var(--font-sans), system-ui, -apple-system, sans-serif" },
+        heading: { value: "var(--font-manrope), system-ui, -apple-system, sans-serif" },
         body: { value: "var(--font-sans), system-ui, -apple-system, sans-serif" },
       },
       radii: {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import Image from "next/image";
+import { VibastLabsLogo } from "@/components/brand/VibastLabsLogo";
 import NextLink from "next/link";
 import { Box, Flex, Stack, Text, HStack, IconButton } from "@chakra-ui/react";
 import { Menu, X, ArrowLeft } from "lucide-react";
@@ -75,7 +75,7 @@ export function DocsShell({ locale, page }: DocsShellProps) {
   );
 
   return (
-    <Box bg="#fafbfc" color="#111827" minH="100vh">
+    <Box bg="paper" color="#111827" minH="100vh">
       {/* Mobile top bar */}
       <Flex
         display={{ base: "flex", lg: "none" }}
@@ -91,20 +91,14 @@ export function DocsShell({ locale, page }: DocsShellProps) {
         h="14"
       >
         <NextLink href="/">
-          <Box w="130px" h="8" position="relative">
-            <Image
-              src="/vibast-labs-logo.svg"
-              alt="VIBAST Labs"
-              fill
-              sizes="130px"
-              style={{ objectFit: "contain", objectPosition: "left" }}
-            />
+          <Box w="130px">
+            <VibastLabsLogo width="100%" />
           </Box>
         </NextLink>
         <IconButton
           aria-label={ui.openMenu}
           variant="ghost"
-          color="#334e68"
+          color="brand.700"
           onClick={() => setMenuOpen(true)}
         >
           <Menu size={22} />
@@ -135,7 +129,7 @@ export function DocsShell({ locale, page }: DocsShellProps) {
               <IconButton
                 aria-label={ui.closeMenu}
                 variant="ghost"
-                color="#334e68"
+                color="brand.700"
                 onClick={() => setMenuOpen(false)}
               >
                 <X size={22} />
@@ -193,24 +187,13 @@ function SidebarInner({
     <Stack gap={6}>
       {/* Logo — links back to the marketing site */}
       <NextLink href="/">
-        <Box
-          w="150px"
-          h="9"
-          position="relative"
-          display={{ base: "none", lg: "block" }}
-        >
-          <Image
-            src="/vibast-labs-logo.svg"
-            alt="VIBAST Labs"
-            fill
-            sizes="150px"
-            style={{ objectFit: "contain", objectPosition: "left" }}
-          />
+        <Box w="150px" display={{ base: "none", lg: "block" }}>
+          <VibastLabsLogo width="100%" />
         </Box>
       </NextLink>
 
       <NextLink href="/">
-        <HStack gap={1.5} color="#627d98" _hover={{ color: "#334e68" }}>
+        <HStack gap={1.5} color="brand.500" _hover={{ color: "brand.700" }}>
           <ArrowLeft size={14} />
           <Text fontSize="sm" fontWeight="medium">
             {ui.backToSite}
@@ -235,7 +218,7 @@ function SidebarInner({
         {/* One entry per tool. MailBox is a single page; its sections nest under it. */}
         <Stack gap={1}>
           <NextLink href={docPageHref(locale, page.slug)}>
-            <Text fontWeight="semibold" color="#102a43" fontSize="sm" py={1}>
+            <Text fontWeight="semibold" color="brand.900" fontSize="sm" py={1}>
               {page.navLabel}
             </Text>
           </NextLink>
@@ -254,11 +237,11 @@ function SidebarInner({
                     px={2}
                     ml="-1px"
                     borderLeftWidth="2px"
-                    borderColor={active ? "#c9a227" : "transparent"}
-                    color={active ? "#102a43" : "#6b7280"}
+                    borderColor={active ? "accent.500" : "transparent"}
+                    color={active ? "brand.900" : "#6b7280"}
                     fontWeight={active ? "semibold" : "normal"}
                     fontSize="sm"
-                    _hover={{ color: "#334e68", bg: "#f9fafb" }}
+                    _hover={{ color: "brand.700", bg: "#f9fafb" }}
                     transition="color 0.15s"
                   >
                     {section.title}
@@ -305,7 +288,7 @@ function LanguageSwitch({
                 py={1}
                 fontSize="sm"
                 fontWeight="semibold"
-                bg={active ? "#102a43" : "white"}
+                bg={active ? "brand.900" : "white"}
                 color={active ? "white" : "#6b7280"}
                 _hover={active ? {} : { bg: "#f3f4f6" }}
               >

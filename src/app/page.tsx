@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
+import { brand } from "@/brand";
+import { VibastLabsLogo } from "@/components/brand/VibastLabsLogo";
 import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import Link from "next/link";
 import {
@@ -195,7 +196,7 @@ export default function Home() {
   };
 
   return (
-    <Box bg="#fafbfc" color="#111827" minH="100vh">
+    <Box bg="paper" color="#111827" minH="100vh">
       {/* Navigation */}
       <Box
         as="nav"
@@ -209,15 +210,8 @@ export default function Home() {
         <Container maxW="6xl" mx="auto" px={{ base: 4, md: 6 }}>
           <Flex align="center" justify="space-between" h="16">
             <Link href="/">
-              <Box w={{ base: "140px", md: "160px" }} h="10" position="relative">
-                <Image
-                  src="/vibast-labs-logo.svg"
-                  alt="VIBAST Labs"
-                  fill
-                  sizes="160px"
-                  style={{ objectFit: "contain", objectPosition: "left" }}
-                  priority
-                />
+              <Box w={{ base: "140px", md: "160px" }}>
+                <VibastLabsLogo width="100%" />
               </Box>
             </Link>
             <HStack gap={1} display={{ base: "none", md: "flex" }}>
@@ -237,12 +231,12 @@ export default function Home() {
               <Link href="#cta">
                 <Button
                   size="sm"
-                  bg="#c9a227"
+                  bg="accent.500"
                   color="white"
                   fontWeight="semibold"
                   ml={3}
                   px={5}
-                  _hover={{ bg: "#a68219" }}
+                  _hover={{ bg: "accent.600" }}
                 >
                   Get in touch
                 </Button>
@@ -253,7 +247,7 @@ export default function Home() {
       </Box>
 
       {/* Hero - Dark Navy Full Width Centered with Sliding Content */}
-      <Box bg="#102a43" py={{ base: 20, md: 28 }}>
+      <Box bg="brand.900" py={{ base: 20, md: 28 }}>
         <Container maxW="4xl" mx="auto" px={{ base: 4, md: 6 }} textAlign="center">
           <Stack gap={6} align="center">
             {/* Sliding content */}
@@ -261,7 +255,7 @@ export default function Home() {
               <Stack gap={6} align="center">
                 <Text
                   key={`tag-${currentSlide}`}
-                  color="#c9a227"
+                  color="accent.400"
                   fontSize="sm"
                   fontWeight="semibold"
                   letterSpacing="0.1em"
@@ -285,7 +279,7 @@ export default function Home() {
                 <Text
                   key={`desc-${currentSlide}`}
                   fontSize={{ base: "lg", md: "xl" }}
-                  color="#9fb3c8"
+                  color="brand.300"
                   maxW="2xl"
                   animation="fadeIn 0.5s ease-in-out"
                 >
@@ -303,11 +297,11 @@ export default function Home() {
                   w={currentSlide === index ? "24px" : "8px"}
                   h="8px"
                   borderRadius="full"
-                  bg={currentSlide === index ? "#c9a227" : "#334e68"}
+                  bg={currentSlide === index ? "accent.400" : "brand.700"}
                   transition="all 0.3s ease"
                   onClick={() => setCurrentSlide(index)}
                   cursor="pointer"
-                  _hover={{ bg: currentSlide === index ? "#c9a227" : "#486581" }}
+                  _hover={{ bg: currentSlide === index ? "accent.400" : "brand.600" }}
                 />
               ))}
             </HStack>
@@ -316,11 +310,11 @@ export default function Home() {
               <Link href="#cta">
                 <Button
                   size="lg"
-                  bg="#c9a227"
+                  bg="accent.500"
                   color="white"
                   fontWeight="semibold"
                   px={8}
-                  _hover={{ bg: "#a68219" }}
+                  _hover={{ bg: "accent.600" }}
                 >
                   Start a project
                   <ArrowRight size={18} style={{ marginLeft: "8px" }} />
@@ -330,11 +324,11 @@ export default function Home() {
                 <Button
                   size="lg"
                   variant="outline"
-                  borderColor="#627d98"
+                  borderColor="brand.400"
                   color="white"
                   fontWeight="medium"
                   px={8}
-                  _hover={{ bg: "#243b53" }}
+                  _hover={{ bg: "brand.800" }}
                 >
                   View services
                 </Button>
@@ -353,7 +347,7 @@ export default function Home() {
                 <Text color="#9ca3af" fontSize="sm" fontWeight="medium" mb={2}>
                   {stat.label}
                 </Text>
-                <Heading size="3xl" color="#c9a227" fontWeight="bold">
+                <Heading size="3xl" color="accent.400" fontWeight="bold">
                   {stat.value}
                 </Heading>
                 <Text color="#d1d5db" mt={2}>
@@ -371,7 +365,7 @@ export default function Home() {
           <Stack gap={12}>
             <Stack gap={4} align="center" textAlign="center" maxW="2xl" mx="auto">
               <Text
-                color="#627d98"
+                color="brand.400"
                 fontSize="sm"
                 fontWeight="semibold"
                 letterSpacing="0.08em"
@@ -382,7 +376,7 @@ export default function Home() {
               <Heading size="xl" color="#111827" fontWeight="bold">
                 Blockchain expertise. Full-stack capability.
               </Heading>
-              <Text color="#4b5563" fontSize="lg">
+              <Text color="brand.600" fontSize="lg">
                 Deep specialization in custom blockchains and Cosmos SDK, backed by solid
                 engineering across the entire stack.
               </Text>
@@ -399,9 +393,9 @@ export default function Home() {
                     <Box
                       key={service.title}
                       gridColumn={{ base: "auto", md: "1 / -1" }}
-                      bg="#102a43"
+                      bg="brand.900"
                       borderWidth="1px"
-                      borderColor="#334e68"
+                      borderColor="brand.700"
                       borderRadius="lg"
                       p={{ base: 7, md: 8 }}
                     >
@@ -416,20 +410,20 @@ export default function Home() {
                             <Box
                               w="11"
                               h="11"
-                              bg="#243b53"
+                              bg="brand.800"
                               borderRadius="lg"
                               display="flex"
                               alignItems="center"
                               justifyContent="center"
                               flexShrink={0}
                             >
-                              <IconComponent size={22} color="#c9a227" strokeWidth={1.5} />
+                              <IconComponent size={22} color={brand.onDark.teal} strokeWidth={1.5} />
                             </Box>
                             <Heading size="md" color="white" fontWeight="semibold">
                               {service.title}
                             </Heading>
                           </HStack>
-                          <Text color="#9fb3c8" fontSize="sm" lineHeight="tall">
+                          <Text color="brand.300" fontSize="sm" lineHeight="tall">
                             {service.description}
                           </Text>
                         </Stack>
@@ -438,11 +432,11 @@ export default function Home() {
                             <Link href={service.docsHref}>
                               <Button
                                 w={{ base: "full", md: "auto" }}
-                                bg="#c9a227"
+                                bg="accent.500"
                                 color="white"
                                 fontWeight="semibold"
                                 px={6}
-                                _hover={{ bg: "#a68219" }}
+                                _hover={{ bg: "accent.600" }}
                               >
                                 <BookOpen size={18} style={{ marginRight: "8px" }} />
                                 View documentation
@@ -453,11 +447,11 @@ export default function Home() {
                             <Button
                               w={{ base: "full", md: "auto" }}
                               variant="outline"
-                              borderColor="#627d98"
+                              borderColor="brand.400"
                               color="white"
                               fontWeight="medium"
                               px={6}
-                              _hover={{ bg: "#243b53" }}
+                              _hover={{ bg: "brand.800" }}
                             >
                               Get in touch
                             </Button>
@@ -476,25 +470,25 @@ export default function Home() {
                     borderColor="#e5e7eb"
                     borderRadius="lg"
                     p={7}
-                    _hover={{ borderColor: "#c9a227", shadow: "sm" }}
+                    _hover={{ borderColor: "accent.500", shadow: "sm" }}
                     transition="all 0.2s"
                   >
                     <Stack gap={4}>
                       <Box
                         w="11"
                         h="11"
-                        bg="#f0f4f8"
+                        bg="brand.50"
                         borderRadius="lg"
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
                       >
-                        <IconComponent size={22} color="#334e68" strokeWidth={1.5} />
+                        <IconComponent size={22} color={brand.inkLine} strokeWidth={1.5} />
                       </Box>
                       <Heading size="md" color="#111827" fontWeight="semibold">
                         {service.title}
                       </Heading>
-                      <Text color="#4b5563" fontSize="sm" lineHeight="tall">
+                      <Text color="brand.600" fontSize="sm" lineHeight="tall">
                         {service.description}
                       </Text>
                     </Stack>
@@ -507,12 +501,12 @@ export default function Home() {
       </Box>
 
       {/* How We Work - Outcome-Based */}
-      <Box id="how-we-work" bg="#102a43" py={{ base: 20, md: 24 }}>
+      <Box id="how-we-work" bg="brand.900" py={{ base: 20, md: 24 }}>
         <Container maxW="6xl" mx="auto" px={{ base: 4, md: 6 }}>
           <SimpleGrid columns={{ base: 1, lg: 2 }} gap={{ base: 12, lg: 16 }} alignItems="center">
             <Stack gap={6}>
               <Text
-                color="#c9a227"
+                color="accent.400"
                 fontSize="sm"
                 fontWeight="semibold"
                 letterSpacing="0.08em"
@@ -523,7 +517,7 @@ export default function Home() {
               <Heading size="xl" color="white" fontWeight="bold" lineHeight="1.2">
                 Delivery, end-to-end
               </Heading>
-              <Text color="#9fb3c8" fontSize="lg" lineHeight="tall">
+              <Text color="brand.300" fontSize="lg" lineHeight="tall">
                 We own the outcome from scoping to launch. When additional specialization is
                 required, we coordinate the right expertise to meet the same quality and
                 reliability standard.
@@ -533,7 +527,7 @@ export default function Home() {
                   <Box
                     w="6"
                     h="6"
-                    bg="#243b53"
+                    bg="brand.800"
                     borderRadius="full"
                     display="flex"
                     alignItems="center"
@@ -541,15 +535,15 @@ export default function Home() {
                     flexShrink={0}
                     mt="2px"
                   >
-                    <Check size={14} color="#c9a227" strokeWidth={3} />
+                    <Check size={14} color={brand.onDark.teal} strokeWidth={3} />
                   </Box>
-                  <Text color="#bcccdc">Single point of accountability for your project</Text>
+                  <Text color="brand.200">Single point of accountability for your project</Text>
                 </HStack>
                 <HStack gap={3} align="start">
                   <Box
                     w="6"
                     h="6"
-                    bg="#243b53"
+                    bg="brand.800"
                     borderRadius="full"
                     display="flex"
                     alignItems="center"
@@ -557,15 +551,15 @@ export default function Home() {
                     flexShrink={0}
                     mt="2px"
                   >
-                    <Check size={14} color="#c9a227" strokeWidth={3} />
+                    <Check size={14} color={brand.onDark.teal} strokeWidth={3} />
                   </Box>
-                  <Text color="#bcccdc">Transparent progress with weekly updates</Text>
+                  <Text color="brand.200">Transparent progress with weekly updates</Text>
                 </HStack>
                 <HStack gap={3} align="start">
                   <Box
                     w="6"
                     h="6"
-                    bg="#243b53"
+                    bg="brand.800"
                     borderRadius="full"
                     display="flex"
                     alignItems="center"
@@ -573,9 +567,9 @@ export default function Home() {
                     flexShrink={0}
                     mt="2px"
                   >
-                    <Check size={14} color="#c9a227" strokeWidth={3} />
+                    <Check size={14} color={brand.onDark.teal} strokeWidth={3} />
                   </Box>
-                  <Text color="#bcccdc">Clean handoff with documentation you can build on</Text>
+                  <Text color="brand.200">Clean handoff with documentation you can build on</Text>
                 </HStack>
               </Stack>
             </Stack>
@@ -589,20 +583,20 @@ export default function Home() {
                     <Box
                       w="12"
                       h="12"
-                      bg="#243b53"
+                      bg="brand.800"
                       borderRadius="full"
                       display="flex"
                       alignItems="center"
                       justifyContent="center"
                       borderWidth="2px"
-                      borderColor="#334e68"
+                      borderColor="brand.700"
                     >
-                      <Text color="#c9a227" fontSize="lg" fontWeight="bold">
+                      <Text color="accent.200" fontSize="lg" fontWeight="bold">
                         {index + 1}
                       </Text>
                     </Box>
                     {index < timeline.length - 1 && (
-                      <Box w="2px" bg="#334e68" flex={1} minH="8" />
+                      <Box w="2px" bg="brand.700" flex={1} minH="8" />
                     )}
                   </Flex>
                   {/* Content */}
@@ -610,7 +604,7 @@ export default function Home() {
                     <Heading size="md" color="white" fontWeight="semibold">
                       {item.title}
                     </Heading>
-                    <Text color="#9fb3c8" lineHeight="tall">
+                    <Text color="brand.300" lineHeight="tall">
                       {item.body}
                     </Text>
                   </Stack>
@@ -627,7 +621,7 @@ export default function Home() {
           <Stack gap={12}>
             <Stack gap={4} align="center" textAlign="center" maxW="2xl" mx="auto">
               <Text
-                color="#627d98"
+                color="brand.500"
                 fontSize="sm"
                 fontWeight="semibold"
                 letterSpacing="0.08em"
@@ -638,7 +632,7 @@ export default function Home() {
               <Heading size="xl" color="#111827" fontWeight="bold">
                 Specialists who ship
               </Heading>
-              <Text color="#4b5563" fontSize="lg">
+              <Text color="brand.600" fontSize="lg">
                 Deep blockchain expertise combined with battle-tested engineering practices.
                 We build systems that work—and keep working.
               </Text>
@@ -664,7 +658,7 @@ export default function Home() {
                           <Box
                             w="5"
                             h="5"
-                            bg="#fef9e7"
+                            bg="accent.50"
                             borderRadius="full"
                             display="flex"
                             alignItems="center"
@@ -672,9 +666,9 @@ export default function Home() {
                             flexShrink={0}
                             mt="1px"
                           >
-                            <Check size={12} color="#c9a227" strokeWidth={3} />
+                            <Check size={12} color={brand.tealText} strokeWidth={3} />
                           </Box>
-                          <Text color="#4b5563">{item}</Text>
+                          <Text color="brand.600">{item}</Text>
                         </HStack>
                       ))}
                     </Stack>
@@ -687,13 +681,13 @@ export default function Home() {
       </Box>
 
       {/* CTA - Contact Form Section */}
-      <Box id="cta" bg="#102a43" py={{ base: 20, md: 24 }}>
+      <Box id="cta" bg="brand.900" py={{ base: 20, md: 24 }}>
         <Container maxW="6xl" mx="auto" px={{ base: 4, md: 6 }}>
           <SimpleGrid columns={{ base: 1, lg: 2 }} gap={{ base: 12, lg: 16 }} alignItems="start">
             {/* Left side - Text */}
             <Stack gap={6}>
               <Text
-                color="#c9a227"
+                color="accent.400"
                 fontSize="sm"
                 fontWeight="semibold"
                 letterSpacing="0.08em"
@@ -704,34 +698,34 @@ export default function Home() {
               <Heading size={{ base: "xl", md: "2xl" }} lineHeight="1.2" color="white" fontWeight="bold">
                 Let&apos;s build something that lasts
               </Heading>
-              <Text color="#9fb3c8" fontSize="lg" lineHeight="tall">
+              <Text color="brand.300" fontSize="lg" lineHeight="tall">
                 Custom blockchain, backend infrastructure, or complex migration—tell us what you need.
                 We&apos;ll give you an honest assessment and a clear path forward.
               </Text>
               <Stack gap={4} pt={2}>
                 <HStack gap={3}>
-                  <Box color="#c9a227">
+                  <Box color="accent.400">
                     <Check size={20} strokeWidth={2.5} />
                   </Box>
-                  <Text color="#bcccdc">Free initial consultation</Text>
+                  <Text color="brand.200">Free initial consultation</Text>
                 </HStack>
                 <HStack gap={3}>
-                  <Box color="#c9a227">
+                  <Box color="accent.400">
                     <Check size={20} strokeWidth={2.5} />
                   </Box>
-                  <Text color="#bcccdc">Fast response</Text>
+                  <Text color="brand.200">Fast response</Text>
                 </HStack>
                 <HStack gap={3}>
-                  <Box color="#c9a227">
+                  <Box color="accent.400">
                     <Check size={20} strokeWidth={2.5} />
                   </Box>
-                  <Text color="#bcccdc">No obligation estimate</Text>
+                  <Text color="brand.200">No obligation estimate</Text>
                 </HStack>
               </Stack>
               <Box pt={4}>
-                <Text color="#627d98" fontSize="sm">
+                <Text color="brand.400" fontSize="sm">
                   Or email directly:{" "}
-                  <a href="mailto:stefan@vibast.ro" style={{ color: "#9fb3c8", textDecoration: "underline" }}>
+                  <a href="mailto:stefan@vibast.ro" style={{ color: brand.softOnDark, textDecoration: "underline" }}>
                     stefan@vibast.ro
                   </a>
                 </Text>
@@ -740,7 +734,7 @@ export default function Home() {
 
             {/* Right side - Form */}
             <Box
-              bg="#0d2137"
+              bg="brand.950"
               borderRadius="xl"
               p={{ base: 6, md: 8 }}
               borderWidth="1px"
@@ -751,7 +745,7 @@ export default function Home() {
                   <Box
                     w="16"
                     h="16"
-                    bg="#243b53"
+                    bg="brand.800"
                     borderRadius="full"
                     display="flex"
                     alignItems="center"
@@ -762,15 +756,15 @@ export default function Home() {
                   <Heading size="lg" color="white" fontWeight="semibold">
                     Message sent
                   </Heading>
-                  <Text color="#9fb3c8">
+                  <Text color="brand.300">
                     Thanks for reaching out. We&apos;ll get back to you as soon as possible.
                   </Text>
                   <Text
                     as="button"
-                    color="#627d98"
+                    color="brand.400"
                     fontSize="sm"
                     cursor="pointer"
-                    _hover={{ color: "#9fb3c8", textDecoration: "underline" }}
+                    _hover={{ color: "brand.300", textDecoration: "underline" }}
                     onClick={() => setFormStatus("idle")}
                   >
                     Send another message
@@ -780,7 +774,7 @@ export default function Home() {
                 <form onSubmit={handleSubmit}>
                   <Stack gap={5}>
                     <Stack gap={2}>
-                      <Text color="#9fb3c8" fontSize="sm" fontWeight="medium">
+                      <Text color="brand.300" fontSize="sm" fontWeight="medium">
                         Name
                       </Text>
                       <Input
@@ -788,17 +782,17 @@ export default function Home() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="Your name"
-                        bg="#102a43"
-                        borderColor="#334e68"
+                        bg="brand.900"
+                        borderColor="brand.700"
                         color="white"
-                        _placeholder={{ color: "#627d98" }}
-                        _hover={{ borderColor: "#486581" }}
-                        _focus={{ borderColor: "#c9a227", boxShadow: "0 0 0 1px #c9a227" }}
+                        _placeholder={{ color: "brand.400" }}
+                        _hover={{ borderColor: "brand.600" }}
+                        _focus={{ borderColor: "accent.400", boxShadow: `0 0 0 1px ${brand.onDark.teal}` }}
                         required
                       />
                     </Stack>
                     <Stack gap={2}>
-                      <Text color="#9fb3c8" fontSize="sm" fontWeight="medium">
+                      <Text color="brand.300" fontSize="sm" fontWeight="medium">
                         Email
                       </Text>
                       <Input
@@ -806,29 +800,29 @@ export default function Home() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="you@company.com"
-                        bg="#102a43"
-                        borderColor="#334e68"
+                        bg="brand.900"
+                        borderColor="brand.700"
                         color="white"
-                        _placeholder={{ color: "#627d98" }}
-                        _hover={{ borderColor: "#486581" }}
-                        _focus={{ borderColor: "#c9a227", boxShadow: "0 0 0 1px #c9a227" }}
+                        _placeholder={{ color: "brand.400" }}
+                        _hover={{ borderColor: "brand.600" }}
+                        _focus={{ borderColor: "accent.400", boxShadow: `0 0 0 1px ${brand.onDark.teal}` }}
                         required
                       />
                     </Stack>
                     <Stack gap={2}>
-                      <Text color="#9fb3c8" fontSize="sm" fontWeight="medium">
+                      <Text color="brand.300" fontSize="sm" fontWeight="medium">
                         Message
                       </Text>
                       <Textarea
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         placeholder="Tell us about your project..."
-                        bg="#102a43"
-                        borderColor="#334e68"
+                        bg="brand.900"
+                        borderColor="brand.700"
                         color="white"
-                        _placeholder={{ color: "#627d98" }}
-                        _hover={{ borderColor: "#486581" }}
-                        _focus={{ borderColor: "#c9a227", boxShadow: "0 0 0 1px #c9a227" }}
+                        _placeholder={{ color: "brand.400" }}
+                        _hover={{ borderColor: "brand.600" }}
+                        _focus={{ borderColor: "accent.400", boxShadow: `0 0 0 1px ${brand.onDark.teal}` }}
                         rows={5}
                         required
                       />
@@ -883,10 +877,10 @@ export default function Home() {
                     <Button
                       type="submit"
                       size="lg"
-                      bg="#c9a227"
+                      bg="accent.500"
                       color="white"
                       fontWeight="semibold"
-                      _hover={{ bg: "#a68219" }}
+                      _hover={{ bg: "accent.600" }}
                       _disabled={{ opacity: 0.7, cursor: "not-allowed" }}
                       disabled={formStatus === "loading" || !turnstileToken}
                     >
@@ -908,7 +902,7 @@ export default function Home() {
       </Box>
 
       {/* Footer */}
-      <Box bg="#0d2137" py={10} borderTopWidth="1px" borderColor="#1f2937">
+      <Box bg="brand.950" py={10} borderTopWidth="1px" borderColor="#1f2937">
         <Container maxW="6xl" mx="auto" px={{ base: 4, md: 6 }}>
           <Stack gap={8}>
             <Flex
@@ -918,17 +912,11 @@ export default function Home() {
               gap={4}
             >
               <Link href="/">
-                <Box w="140px" h="8" position="relative">
-                  <Image
-                    src="/vibast-labs-logo-white.svg"
-                    alt="VIBAST Labs"
-                    fill
-                    sizes="140px"
-                    style={{ objectFit: "contain", objectPosition: "left" }}
-                  />
+                <Box w="140px">
+                  <VibastLabsLogo variant="dark" width="100%" />
                 </Box>
               </Link>
-              <Text color="#627d98" fontSize="sm">
+              <Text color="brand.400" fontSize="sm">
                 Blockchain & software engineering. Built to last.
               </Text>
             </Flex>
@@ -937,51 +925,51 @@ export default function Home() {
             <Box borderTopWidth="1px" borderColor="#1f2937" pt={6}>
               <SimpleGrid columns={{ base: 1, md: 2 }} gap={{ base: 4, md: 8 }}>
                 <Stack gap={1}>
-                  <Text color="#9fb3c8" fontSize="sm" fontWeight="semibold">
+                  <Text color="brand.300" fontSize="sm" fontWeight="semibold">
                     VIBAST SOLUTIONS SRL
                   </Text>
-                  <Text color="#627d98" fontSize="xs">
+                  <Text color="brand.400" fontSize="xs">
                     B. P. Hasdeu 23, Campina, Prahova, Romania
                   </Text>
                 </Stack>
                 <SimpleGrid columns={{ base: 2, sm: 5 }} gap={{ base: 3, md: 4 }}>
                   <Stack gap={0}>
-                    <Text color="#627d98" fontSize="xs">
+                    <Text color="brand.400" fontSize="xs">
                       VAT No.
                     </Text>
-                    <Text color="#9fb3c8" fontSize="xs">
+                    <Text color="brand.300" fontSize="xs">
                       RO51459106
                     </Text>
                   </Stack>
                   <Stack gap={0}>
-                    <Text color="#627d98" fontSize="xs">
+                    <Text color="brand.400" fontSize="xs">
                       Reg. No.
                     </Text>
-                    <Text color="#9fb3c8" fontSize="xs">
+                    <Text color="brand.300" fontSize="xs">
                       J2025012011008
                     </Text>
                   </Stack>
                   <Stack gap={0}>
-                    <Text color="#627d98" fontSize="xs">
+                    <Text color="brand.400" fontSize="xs">
                       EUID
                     </Text>
-                    <Text color="#9fb3c8" fontSize="xs">
+                    <Text color="brand.300" fontSize="xs">
                       ROONRC.J2025012011008
                     </Text>
                   </Stack>
                   <Stack gap={0}>
-                    <Text color="#627d98" fontSize="xs">
+                    <Text color="brand.400" fontSize="xs">
                       CUI
                     </Text>
-                    <Text color="#9fb3c8" fontSize="xs">
+                    <Text color="brand.300" fontSize="xs">
                       51317810
                     </Text>
                   </Stack>
                   <Stack gap={0}>
-                    <Text color="#627d98" fontSize="xs">
+                    <Text color="brand.400" fontSize="xs">
                       D-U-N-S
                     </Text>
-                    <Text color="#9fb3c8" fontSize="xs">
+                    <Text color="brand.300" fontSize="xs">
                       52-396-3698
                     </Text>
                   </Stack>

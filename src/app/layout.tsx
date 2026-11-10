@@ -1,6 +1,20 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { Manrope } from "next/font/google";
+import { brand } from "@/brand";
 import "./globals.css";
 import { Providers } from "./providers";
+
+// Brand font for the logo wordmark and headings; body text stays Inter.
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+export const viewport: Viewport = {
+  themeColor: brand.ink,
+};
 
 export const metadata: Metadata = {
   title: "VIBAST Labs | Custom Blockchain & Web Development Services",
@@ -46,21 +60,14 @@ export const metadata: Metadata = {
     title: "Custom Blockchain Development | Any Architecture | VIBAST Labs",
     description:
       "Build custom blockchains with any architecture. Cosmos SDK, UTXO-based, account-based—we design and build the chain that fits your use case.",
-    images: [
-      {
-        url: "/opengraph-image.png",
-        width: 1200,
-        height: 630,
-        alt: "VIBAST Labs - Custom Blockchain & Web Development",
-      },
-    ],
+    // og:image comes from the generated src/app/opengraph-image.tsx route.
   },
   twitter: {
     card: "summary_large_image",
     title: "Custom Blockchain Development | Any Architecture | VIBAST Labs",
     description:
       "Build custom blockchains with any architecture. Full-stack web development and reliable backend infrastructure.",
-    images: ["/opengraph-image.png"],
+    // twitter:image comes from the generated src/app/twitter-image.tsx route.
     creator: "@vibastlabs",
   },
   robots: {
@@ -89,11 +96,11 @@ const jsonLd = {
   url: "https://vibast.ro",
   logo: {
     "@type": "ImageObject",
-    url: "https://vibast.ro/vibast-labs-logo.svg",
+    url: "https://vibast.ro/vibast-labs-mark-512.png",
     width: "512",
     height: "512",
   },
-  image: "https://vibast.ro/opengraph-image.png",
+  image: "https://vibast.ro/opengraph-image",
   description:
     "Custom blockchain development with any architecture—Cosmos SDK, UTXO-based, or account-based. Full-stack web development and reliable backend infrastructure.",
   address: {
@@ -175,7 +182,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={manrope.variable}>
       <body>
         <script
           type="application/ld+json"

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
+import { brand } from "@/brand";
 
 // Interim implementation: sends the contact notification straight through AWS SES.
 // Will be replaced by the shared notifications service (ms-go-notifications) later.
@@ -183,17 +184,17 @@ export async function POST(request: Request) {
                 Html: {
                   Data: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #102a43;">Thanks for reaching out</h2>
+          <h2 style="color: ${brand.ink};">Thanks for reaching out</h2>
           <p>Hi ${safeName},</p>
           <p>We've received your message and will get back to you as soon as possible.</p>
           <p>Here's a copy of your message:</p>
-          <blockquote style="background: #f3f4f6; padding: 16px; border-left: 4px solid #c9a227; margin: 16px 0;">
+          <blockquote style="background: #f3f4f6; padding: 16px; border-left: 4px solid ${brand.teal}; margin: 16px 0;">
             ${safeMessage}
           </blockquote>
           <p>Best regards,<br><strong>VIBAST Labs</strong></p>
           <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
-          <p style="color: #627d98; font-size: 14px;">
-            <a href="https://vibast.ro" style="color: #c9a227;">vibast.ro</a>
+          <p style="color: ${brand.muted}; font-size: 14px;">
+            <a href="https://vibast.ro" style="color: ${brand.teal};">vibast.ro</a>
           </p>
         </div>`,
                   Charset: "UTF-8",
