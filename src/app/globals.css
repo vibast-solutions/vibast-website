@@ -28,3 +28,8 @@ body {
     transform: translateY(0);
   }
 }
+
+/* In-page anchors land below the sticky site header (64px phone, 72px desktop). */
+section[id] {
+  scroll-margin-top: 72px;
+}

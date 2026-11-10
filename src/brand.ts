@@ -26,4 +26,10 @@ export const brand = {
   softOnDark: "#A9BDBE", // body text on Ink (≥6.7:1)
   muted: "#56696F", // secondary text on light surfaces (≥4.8:1 on Fog, Paper, white)
   tealText: "#276C72", // teal text on light surfaces other than white (≥5.5:1 on Paper)
+  body: "#3F5B63", // lead/body text on light surfaces (6.8:1 on Paper, 7.3:1 on white)
+  line: "#DCE5E3", // hairlines and card borders on light surfaces (decorative)
+  inputBorder: "#B9CBC8", // form field borders on white
+  outlineOnDark: "#4A626B", // outline-button border on Ink (decorative)
+  textOnDark: "#D5E2E1", // emphasised text on Ink (12.1:1)
+  linkOnDark: "#C9D8D7", // footer links and values on Ink (11:1)
 } as const;
