@@ -1,984 +1,458 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import type { ReactNode } from "react";
+import NextLink from "next/link";
+import { Box, Button, Flex, Grid, Heading, Link, SimpleGrid, Stack, Text } from "@chakra-ui/react";
+import { ArrowRight, BookOpen } from "lucide-react";
 import { brand } from "@/brand";
-import { VibastLabsLogo } from "@/components/brand/VibastLabsLogo";
-import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
-import Link from "next/link";
+import { ContactForm } from "@/components/site/ContactForm";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { CheckItem, Eyebrow, PageContainer } from "@/components/site/primitives";
 import {
-  Box,
-  Button,
-  Container,
-  Flex,
-  GridItem,
-  Heading,
-  HStack,
-  Input,
-  SimpleGrid,
-  Stack,
-  Text,
-  Textarea,
-} from "@chakra-ui/react";
-import {
-  Rocket,
-  Code,
-  Blocks,
-  ShieldCheck,
-  Search,
-  Wrench,
-  Check,
-  ArrowRight,
-  Send,
-  CheckCircle,
-  AlertCircle,
-  Mail,
-  BookOpen,
-  type LucideIcon,
-} from "lucide-react";
+  CONTACT_EMAIL,
+  SECTION_IDS,
+  capabilities,
+  contact,
+  hero,
+  howWeWork,
+  mailbox,
+  practices,
+  services,
+  stats,
+} from "@/content/home";
 
-const navLinks = [
-  { label: "Services", href: "#services" },
-];
+const contactHref = `#${SECTION_IDS.contact}`;
+const sectionPy = { base: 16, md: 28 };
+const h2Size = { base: "30px", md: "42px" };
 
-const stats = [
-  { label: "Projects delivered", value: "160+", detail: "End-to-end product launches" },
-  { label: "Client retention", value: "98%", detail: "Long-term partnerships" },
-  { label: "Time to first release", value: "2-4 weeks", detail: "From kickoff to production" },
-];
+/** Two-column section intro: eyebrow + heading on the left, lead text on the right. */
+function SectionIntro({ eyebrow, title, lead }: { eyebrow: string; title: string; lead: string }) {
+  return (
+    <Grid
+      templateColumns={{ base: "minmax(0,1fr)", lg: "minmax(0,5fr) minmax(0,7fr)" }}
+      gap={{ base: 4, lg: 20 }}
+      alignItems="end"
+    >
+      <Stack gap={4}>
+        <Eyebrow>{eyebrow}</Eyebrow>
+        <Heading as="h2" fontSize={h2Size} lineHeight="1.12" fontWeight="bold" letterSpacing="-0.02em" color="ink">
+          {title}
+        </Heading>
+      </Stack>
+      <Text fontSize={{ base: "17px", md: "19px" }} lineHeight="1.6" color="inkSoft">
+        {lead}
+      </Text>
+    </Grid>
+  );
+}
 
-type Service = {
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  featured?: boolean;
-  docsHref?: string;
-};
+function PrimaryButton({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <Button
+      asChild
+      h="52px"
+      px={6}
+      bg="accent.500"
+      color="white"
+      fontWeight="semibold"
+      fontSize="md"
+      _hover={{ bg: "accent.600" }}
+    >
+      <NextLink href={href}>{children}</NextLink>
+    </Button>
+  );
+}
 
-const services: Service[] = [
-  {
-    title: "Custom Blockchain Development",
-    description: "Purpose-built blockchains tailored to your requirements. UTXO or account-based, custom consensus, any architecture. We build the chain that fits your use case.",
-    icon: Blocks,
-  },
-  {
-    title: "Cosmos SDK & Appchains",
-    description: "Production-ready Cosmos SDK appchains with custom modules, IBC connectivity, and seamless integration with the interchain ecosystem.",
-    icon: Rocket,
-  },
-  {
-    title: "Smart Contracts",
-    description: "Secure, audited smart contracts for EVM chains and CosmWasm. From DeFi protocols to NFT platforms with disciplined security practices.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Backend & Infrastructure",
-    description: "Reliable APIs, databases, and cloud infrastructure. Data migrations, system integrations, and backend services built for scale and maintainability.",
-    icon: Code,
-  },
-  {
-    title: "Security & Auditing",
-    description: "Smart contract audits, code reviews, and security assessments. Independent analysis with actionable recommendations for blockchain and traditional systems.",
-    icon: Search,
-  },
-  {
-    title: "Ongoing Support",
-    description: "Maintenance, upgrades, monitoring, and incident response. Keep your systems—blockchain or otherwise—secure and performant post-launch.",
-    icon: Wrench,
-  },
-  {
-    title: "MailBox — Professional Email",
-    description: "Business email on your own domain: webmail, IMAP/POP3/SMTP, spam filtering, forwarders and domain pointers. Yearly plans, set up and handed over by us. Full end-user documentation is available online.",
-    icon: Mail,
-    featured: true,
-    docsHref: "/docs/mailbox",
-  },
-];
-
-const capabilities = [
-  {
-    title: "Blockchain expertise",
-    items: ["Custom chains, any architecture", "Cosmos SDK & IBC integration", "Smart contract development"],
-  },
-  {
-    title: "Engineering depth",
-    items: ["Backend systems & APIs", "Data migrations & ETL", "Cloud infrastructure"],
-  },
-  {
-    title: "Production ready",
-    items: ["High-availability systems", "Security-first approach", "Long-term support"],
-  },
-];
-
-const timeline = [
-  {
-    title: "Scope",
-    body: "We define outcomes, success metrics, and constraints before writing code—so there are no surprises.",
-  },
-  {
-    title: "Build",
-    body: "Iterative development with regular check-ins. You see progress weekly, not at the end.",
-  },
-  {
-    title: "Ship",
-    body: "Launch with monitoring, documentation, and a clean handoff. We stay available for what comes next.",
-  },
-];
-
-const heroSlides = [
-  {
-    tag: "Blockchain Development",
-    headline: "Custom blockchains. Any architecture.",
-    description: "From Cosmos SDK appchains to UTXO-based networks and beyond. We design and build the blockchain that fits your specific use case.",
-  },
-  {
-    tag: "Web Development",
-    headline: "Modern web applications. Designed to scale.",
-    description: "Full-stack web development with React, Next.js, and Node.js. APIs, databases, and cloud infrastructure built for performance.",
-  },
-  {
-    tag: "Reliable Infrastructure",
-    headline: "Systems that work. And keep working.",
-    description: "High-availability backends, data migrations, and production-grade infrastructure. Built with security and maintainability in mind.",
-  },
-];
+/** Hero illustration: the logo's three bars, labelled with the practice areas. */
+function LayersPanel() {
+  const bars = [
+    { label: "Web applications", w: "100%", bg: "lagoon", color: "ink" },
+    { label: "Backend & infrastructure", w: "76%", bg: "teal", color: "white" },
+    { label: "Blockchain", w: "50%", bg: "ink", color: brand.onDark.paper },
+  ];
+  return (
+    <Stack
+      bg="white"
+      borderWidth="1px"
+      borderColor="line"
+      borderRadius={{ base: "16px", md: "20px" }}
+      px={{ base: 5, md: 9 }}
+      py={{ base: 6, md: 11 }}
+      gap={{ base: 2.5, md: 3.5 }}
+      align="center"
+    >
+      {bars.map((bar) => (
+        <Flex
+          key={bar.label}
+          w={bar.w}
+          minW="fit-content"
+          h={{ base: "48px", md: "68px" }}
+          px={5}
+          borderRadius="full"
+          bg={bar.bg}
+          color={bar.color}
+          align="center"
+          justify="center"
+          fontFamily="heading"
+          fontWeight="bold"
+          fontSize={{ base: "15px", md: "17px" }}
+          whiteSpace="nowrap"
+        >
+          {bar.label}
+        </Flex>
+      ))}
+      <Flex
+        display={{ base: "none", md: "flex" }}
+        w="full"
+        justify="space-between"
+        borderTopWidth="1px"
+        borderColor="fog"
+        mt={5}
+        pt={4}
+        fontSize="sm"
+        color="brand.500"
+      >
+        <Text>{howWeWork.title}</Text>
+        <Text>{howWeWork.steps.map((s) => s.title).join(" · ")}</Text>
+      </Flex>
+    </Stack>
+  );
+}
 
 export default function Home() {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
-  const [honeypot, setHoneypot] = useState("");
-  const turnstileRef = useRef<TurnstileInstance | null>(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-
-  // Auto-rotate hero slides
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!turnstileToken) {
-      setFormStatus("error");
-      setErrorMessage("Please complete the captcha");
-      return;
-    }
-    setFormStatus("loading");
-    setErrorMessage("");
-
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, turnstileToken, website: honeypot }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to send message");
-      }
-
-      setFormStatus("success");
-      setFormData({ name: "", email: "", message: "" });
-    } catch (error) {
-      setFormStatus("error");
-      setErrorMessage(error instanceof Error ? error.message : "Failed to send message");
-    } finally {
-      // Turnstile tokens are single-use: get a fresh one for the next attempt.
-      setTurnstileToken(null);
-      turnstileRef.current?.reset();
-    }
-  };
-
   return (
-    <Box bg="paper" color="#111827" minH="100vh">
-      {/* Navigation */}
-      <Box
-        as="nav"
-        position="sticky"
-        top={0}
-        zIndex={100}
-        bg="white"
-        borderBottomWidth="1px"
-        borderColor="#e5e7eb"
-      >
-        <Container maxW="6xl" mx="auto" px={{ base: 4, md: 6 }}>
-          <Flex align="center" justify="space-between" h="16">
-            <Link href="/">
-              <Box w={{ base: "140px", md: "160px" }}>
-                <VibastLabsLogo width="100%" />
-              </Box>
-            </Link>
-            <HStack gap={1} display={{ base: "none", md: "flex" }}>
-              {navLinks.map((item) => (
-                <Link key={item.href} href={item.href}>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    color="#374151"
-                    fontWeight="medium"
-                    _hover={{ bg: "#f3f4f6" }}
-                  >
-                    {item.label}
-                  </Button>
-                </Link>
-              ))}
-              <Link href="#cta">
-                <Button
-                  size="sm"
-                  bg="accent.500"
-                  color="white"
-                  fontWeight="semibold"
-                  ml={3}
-                  px={5}
-                  _hover={{ bg: "accent.600" }}
-                >
-                  Get in touch
-                </Button>
-              </Link>
-            </HStack>
-          </Flex>
-        </Container>
-      </Box>
+    <Box bg="paper" color="ink" minH="100vh">
+      <SiteHeader />
 
-      {/* Hero - Dark Navy Full Width Centered with Sliding Content */}
-      <Box bg="brand.900" py={{ base: 20, md: 28 }}>
-        <Container maxW="4xl" mx="auto" px={{ base: 4, md: 6 }} textAlign="center">
-          <Stack gap={6} align="center">
-            {/* Sliding content */}
-            <Box minH={{ base: "220px", md: "200px" }} w="full">
-              <Stack gap={6} align="center">
-                <Text
-                  key={`tag-${currentSlide}`}
-                  color="accent.400"
-                  fontSize="sm"
-                  fontWeight="semibold"
-                  letterSpacing="0.1em"
-                  textTransform="uppercase"
-                  opacity={1}
-                  animation="fadeIn 0.5s ease-in-out"
-                >
-                  {heroSlides[currentSlide].tag}
-                </Text>
+      <main>
+        {/* Hero */}
+        <Box as="section" pt={{ base: 14, md: "104px" }} pb={{ base: 16, md: 28 }}>
+          <PageContainer>
+            <Grid
+              templateColumns={{ base: "minmax(0,1fr)", lg: "minmax(0,7fr) minmax(0,5fr)" }}
+              gap={{ base: 10, lg: 16 }}
+              alignItems="center"
+            >
+              <Stack gap={{ base: 5, md: 7 }}>
+                <Eyebrow>{hero.eyebrow}</Eyebrow>
                 <Heading
-                  key={`headline-${currentSlide}`}
                   as="h1"
-                  size={{ base: "2xl", md: "4xl" }}
-                  lineHeight="1.1"
-                  color="white"
+                  fontSize={{ base: "40px", md: "56px", xl: "64px" }}
+                  lineHeight="1.04"
                   fontWeight="bold"
-                  animation="fadeIn 0.5s ease-in-out"
+                  letterSpacing="-0.02em"
+                  color="ink"
                 >
-                  {heroSlides[currentSlide].headline}
+                  {hero.headline[0]}
+                  <br />
+                  {hero.headline[1]}
                 </Heading>
-                <Text
-                  key={`desc-${currentSlide}`}
-                  fontSize={{ base: "lg", md: "xl" }}
-                  color="brand.300"
-                  maxW="2xl"
-                  animation="fadeIn 0.5s ease-in-out"
-                >
-                  {heroSlides[currentSlide].description}
+                <Text fontSize={{ base: "17px", md: "19px" }} lineHeight="1.6" color="inkSoft" maxW="560px">
+                  {hero.description}
+                </Text>
+                <Flex gap={3} wrap="wrap" direction={{ base: "column", sm: "row" }} pt={2}>
+                  <PrimaryButton href={contactHref}>
+                    Start a project
+                    <ArrowRight size={18} aria-hidden="true" />
+                  </PrimaryButton>
+                  <Button
+                    asChild
+                    h="52px"
+                    px={6}
+                    variant="outline"
+                    borderColor="ink"
+                    color="ink"
+                    fontWeight="semibold"
+                    fontSize="md"
+                    _hover={{ bg: "fog" }}
+                  >
+                    <NextLink href={`#${SECTION_IDS.services}`}>View services</NextLink>
+                  </Button>
+                </Flex>
+                <Text fontSize="15px" color="brand.500">
+                  Or email directly:{" "}
+                  <Link href={`mailto:${CONTACT_EMAIL}`} color="accent.600">
+                    {CONTACT_EMAIL}
+                  </Link>
                 </Text>
               </Stack>
-            </Box>
+              <LayersPanel />
+            </Grid>
+          </PageContainer>
+        </Box>
 
-            {/* Slide indicators */}
-            <HStack gap={2} pt={2}>
-              {heroSlides.map((_, index) => (
-                <Box
-                  key={index}
-                  as="button"
-                  w={currentSlide === index ? "24px" : "8px"}
-                  h="8px"
-                  borderRadius="full"
-                  bg={currentSlide === index ? "accent.400" : "brand.700"}
-                  transition="all 0.3s ease"
-                  onClick={() => setCurrentSlide(index)}
-                  cursor="pointer"
-                  _hover={{ bg: currentSlide === index ? "accent.400" : "brand.600" }}
-                />
-              ))}
-            </HStack>
-
-            <HStack gap={4} pt={4} flexWrap="wrap" justify="center">
-              <Link href="#cta">
-                <Button
-                  size="lg"
-                  bg="accent.500"
-                  color="white"
-                  fontWeight="semibold"
-                  px={8}
-                  _hover={{ bg: "accent.600" }}
+        {/* Practice areas */}
+        <Box as="section" aria-label="Practice areas" bg="white" borderYWidth="1px" borderColor="line">
+          <PageContainer>
+            <SimpleGrid columns={{ base: 1, md: 3 }}>
+              {practices.map((p, i) => (
+                <Stack
+                  key={p.tag}
+                  gap={3}
+                  py={{ base: 9, md: 14 }}
+                  pl={{ base: 0, md: i === 0 ? 0 : 10 }}
+                  pr={{ base: 0, md: i === practices.length - 1 ? 0 : 10 }}
+                  borderLeftWidth={{ base: 0, md: i === 0 ? 0 : "1px" }}
+                  borderTopWidth={{ base: i === 0 ? 0 : "1px", md: 0 }}
+                  borderColor="line"
                 >
-                  Start a project
-                  <ArrowRight size={18} style={{ marginLeft: "8px" }} />
-                </Button>
-              </Link>
-              <Link href="#services">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  borderColor="brand.400"
-                  color="white"
-                  fontWeight="medium"
-                  px={8}
-                  _hover={{ bg: "brand.800" }}
-                >
-                  View services
-                </Button>
-              </Link>
-            </HStack>
-          </Stack>
-        </Container>
-      </Box>
-
-      {/* Stats - Full Bleed Dark Section */}
-      <Box id="results" bg="#1f2937" py={{ base: 16, md: 20 }}>
-        <Container maxW="6xl" mx="auto" px={{ base: 4, md: 6 }}>
-          <SimpleGrid columns={{ base: 1, md: 3 }} gap={{ base: 10, md: 6 }} textAlign="center">
-            {stats.map((stat) => (
-              <GridItem key={stat.label}>
-                <Text color="#9ca3af" fontSize="sm" fontWeight="medium" mb={2}>
-                  {stat.label}
-                </Text>
-                <Heading size="3xl" color="accent.400" fontWeight="bold">
-                  {stat.value}
-                </Heading>
-                <Text color="#d1d5db" mt={2}>
-                  {stat.detail}
-                </Text>
-              </GridItem>
-            ))}
-          </SimpleGrid>
-        </Container>
-      </Box>
-
-      {/* Services - 6-Item Grid */}
-      <Box id="services" bg="white" py={{ base: 20, md: 24 }}>
-        <Container maxW="6xl" mx="auto" px={{ base: 4, md: 6 }}>
-          <Stack gap={12}>
-            <Stack gap={4} align="center" textAlign="center" maxW="2xl" mx="auto">
-              <Text
-                color="brand.400"
-                fontSize="sm"
-                fontWeight="semibold"
-                letterSpacing="0.08em"
-                textTransform="uppercase"
-              >
-                What We Build
-              </Text>
-              <Heading size="xl" color="#111827" fontWeight="bold">
-                Blockchain expertise. Full-stack capability.
-              </Heading>
-              <Text color="brand.600" fontSize="lg">
-                Deep specialization in custom blockchains and Cosmos SDK, backed by solid
-                engineering across the entire stack.
-              </Text>
-            </Stack>
-
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={6}>
-              {services.map((service) => {
-                const IconComponent = service.icon;
-
-                // Featured offering (e.g. MailBox) — full-width highlighted card
-                // with a documentation call-to-action.
-                if (service.featured) {
-                  return (
-                    <Box
-                      key={service.title}
-                      gridColumn={{ base: "auto", md: "1 / -1" }}
-                      bg="brand.900"
-                      borderWidth="1px"
-                      borderColor="brand.700"
-                      borderRadius="lg"
-                      p={{ base: 7, md: 8 }}
-                    >
-                      <Flex
-                        direction={{ base: "column", md: "row" }}
-                        align={{ base: "start", md: "center" }}
-                        justify="space-between"
-                        gap={6}
-                      >
-                        <Stack gap={4} maxW={{ md: "2xl" }}>
-                          <HStack gap={3}>
-                            <Box
-                              w="11"
-                              h="11"
-                              bg="brand.800"
-                              borderRadius="lg"
-                              display="flex"
-                              alignItems="center"
-                              justifyContent="center"
-                              flexShrink={0}
-                            >
-                              <IconComponent size={22} color={brand.onDark.teal} strokeWidth={1.5} />
-                            </Box>
-                            <Heading size="md" color="white" fontWeight="semibold">
-                              {service.title}
-                            </Heading>
-                          </HStack>
-                          <Text color="brand.300" fontSize="sm" lineHeight="tall">
-                            {service.description}
-                          </Text>
-                        </Stack>
-                        <Stack gap={3} w={{ base: "full", md: "auto" }} flexShrink={0}>
-                          {service.docsHref && (
-                            <Link href={service.docsHref}>
-                              <Button
-                                w={{ base: "full", md: "auto" }}
-                                bg="accent.500"
-                                color="white"
-                                fontWeight="semibold"
-                                px={6}
-                                _hover={{ bg: "accent.600" }}
-                              >
-                                <BookOpen size={18} style={{ marginRight: "8px" }} />
-                                View documentation
-                              </Button>
-                            </Link>
-                          )}
-                          <Link href="#cta">
-                            <Button
-                              w={{ base: "full", md: "auto" }}
-                              variant="outline"
-                              borderColor="brand.400"
-                              color="white"
-                              fontWeight="medium"
-                              px={6}
-                              _hover={{ bg: "brand.800" }}
-                            >
-                              Get in touch
-                            </Button>
-                          </Link>
-                        </Stack>
-                      </Flex>
-                    </Box>
-                  );
-                }
-
-                return (
-                  <Box
-                    key={service.title}
-                    bg="white"
-                    borderWidth="1px"
-                    borderColor="#e5e7eb"
-                    borderRadius="lg"
-                    p={7}
-                    _hover={{ borderColor: "accent.500", shadow: "sm" }}
-                    transition="all 0.2s"
+                  <Text
+                    fontSize="13px"
+                    fontWeight="semibold"
+                    letterSpacing="0.12em"
+                    textTransform="uppercase"
+                    color="accent.600"
                   >
-                    <Stack gap={4}>
-                      <Box
-                        w="11"
-                        h="11"
-                        bg="brand.50"
-                        borderRadius="lg"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <IconComponent size={22} color={brand.inkLine} strokeWidth={1.5} />
-                      </Box>
-                      <Heading size="md" color="#111827" fontWeight="semibold">
+                    {String(i + 1).padStart(2, "0")} · {p.tag}
+                  </Text>
+                  <Heading as="h3" fontSize={{ base: "20px", md: "22px" }} lineHeight="1.3" fontWeight="bold" color="ink">
+                    {p.headline}
+                  </Heading>
+                  <Text fontSize="md" lineHeight="1.6" color="brand.500">
+                    {p.description}
+                  </Text>
+                </Stack>
+              ))}
+            </SimpleGrid>
+          </PageContainer>
+        </Box>
+
+        {/* Stats */}
+        <Box as="section" aria-label="In numbers" py={{ base: 14, md: "72px" }}>
+          <PageContainer>
+            <SimpleGrid columns={{ base: 1, md: 3 }} gap={{ base: 8, md: 10 }}>
+              {stats.map((s) => (
+                <Stack key={s.label} gap={1.5} borderTopWidth="2px" borderColor="ink" pt={5}>
+                  <Text
+                    fontFamily="heading"
+                    fontSize={{ base: "40px", md: "48px" }}
+                    fontWeight="bold"
+                    letterSpacing="-0.02em"
+                    lineHeight="1.1"
+                  >
+                    {s.value}
+                  </Text>
+                  <Text fontWeight="semibold">{s.label}</Text>
+                  <Text fontSize="15px" color="brand.500">
+                    {s.detail}
+                  </Text>
+                </Stack>
+              ))}
+            </SimpleGrid>
+          </PageContainer>
+        </Box>
+
+        {/* Services */}
+        <Box as="section" id={SECTION_IDS.services} bg="white" borderTopWidth="1px" borderColor="line" py={sectionPy}>
+          <PageContainer>
+            <Stack gap={{ base: 8, md: 14 }}>
+              <SectionIntro
+                eyebrow="What we build"
+                title="Blockchain expertise. Full-stack capability."
+                lead="Deep specialization in custom blockchains and Cosmos SDK, backed by solid engineering across the entire stack."
+              />
+
+              {/* Hairline grid: 1px gaps over the line colour. */}
+              <SimpleGrid
+                columns={{ base: 1, md: 2, lg: 3 }}
+                gap="1px"
+                bg="line"
+                borderWidth="1px"
+                borderColor="line"
+                borderRadius="16px"
+                overflow="hidden"
+              >
+                {services.map((service) => {
+                  const Icon = service.icon;
+                  return (
+                    <Stack key={service.title} bg="white" p={{ base: 6, md: 8 }} gap={3.5}>
+                      <Flex w="11" h="11" borderRadius="10px" bg="fog" align="center" justify="center">
+                        <Icon size={22} color={brand.teal} strokeWidth={1.75} aria-hidden="true" />
+                      </Flex>
+                      <Heading as="h3" fontSize={{ base: "18px", md: "19px" }} fontWeight="bold" color="ink">
                         {service.title}
                       </Heading>
-                      <Text color="brand.600" fontSize="sm" lineHeight="tall">
+                      <Text fontSize="15px" lineHeight="1.65" color="brand.500">
                         {service.description}
                       </Text>
                     </Stack>
-                  </Box>
-                );
-              })}
-            </SimpleGrid>
-          </Stack>
-        </Container>
-      </Box>
+                  );
+                })}
+              </SimpleGrid>
 
-      {/* How We Work - Outcome-Based */}
-      <Box id="how-we-work" bg="brand.900" py={{ base: 20, md: 24 }}>
-        <Container maxW="6xl" mx="auto" px={{ base: 4, md: 6 }}>
-          <SimpleGrid columns={{ base: 1, lg: 2 }} gap={{ base: 12, lg: 16 }} alignItems="center">
-            <Stack gap={6}>
-              <Text
-                color="accent.400"
-                fontSize="sm"
-                fontWeight="semibold"
-                letterSpacing="0.08em"
-                textTransform="uppercase"
+              {/* MailBox: our own product, with links to its documentation. */}
+              <Flex
+                bg="ink"
+                borderRadius={{ base: "16px", md: "20px" }}
+                px={{ base: 6, md: 12 }}
+                py={{ base: 7, md: 11 }}
+                direction={{ base: "column", lg: "row" }}
+                align={{ base: "stretch", lg: "center" }}
+                justify="space-between"
+                gap={{ base: 6, lg: 10 }}
               >
-                How we work
-              </Text>
-              <Heading size="xl" color="white" fontWeight="bold" lineHeight="1.2">
-                Delivery, end-to-end
-              </Heading>
-              <Text color="brand.300" fontSize="lg" lineHeight="tall">
-                We own the outcome from scoping to launch. When additional specialization is
-                required, we coordinate the right expertise to meet the same quality and
-                reliability standard.
-              </Text>
-              <Stack gap={4} pt={2}>
-                <HStack gap={3} align="start">
-                  <Box
-                    w="6"
-                    h="6"
-                    bg="brand.800"
-                    borderRadius="full"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    flexShrink={0}
-                    mt="2px"
-                  >
-                    <Check size={14} color={brand.onDark.teal} strokeWidth={3} />
-                  </Box>
-                  <Text color="brand.200">Single point of accountability for your project</Text>
-                </HStack>
-                <HStack gap={3} align="start">
-                  <Box
-                    w="6"
-                    h="6"
-                    bg="brand.800"
-                    borderRadius="full"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    flexShrink={0}
-                    mt="2px"
-                  >
-                    <Check size={14} color={brand.onDark.teal} strokeWidth={3} />
-                  </Box>
-                  <Text color="brand.200">Transparent progress with weekly updates</Text>
-                </HStack>
-                <HStack gap={3} align="start">
-                  <Box
-                    w="6"
-                    h="6"
-                    bg="brand.800"
-                    borderRadius="full"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    flexShrink={0}
-                    mt="2px"
-                  >
-                    <Check size={14} color={brand.onDark.teal} strokeWidth={3} />
-                  </Box>
-                  <Text color="brand.200">Clean handoff with documentation you can build on</Text>
-                </HStack>
-              </Stack>
-            </Stack>
-
-            {/* Process Timeline */}
-            <Stack gap={0}>
-              {timeline.map((item, index) => (
-                <Flex key={item.title} gap={5}>
-                  {/* Timeline indicator */}
-                  <Flex direction="column" align="center" flexShrink={0}>
-                    <Box
-                      w="12"
-                      h="12"
-                      bg="brand.800"
-                      borderRadius="full"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      borderWidth="2px"
-                      borderColor="brand.700"
-                    >
-                      <Text color="accent.200" fontSize="lg" fontWeight="bold">
-                        {index + 1}
-                      </Text>
-                    </Box>
-                    {index < timeline.length - 1 && (
-                      <Box w="2px" bg="brand.700" flex={1} minH="8" />
-                    )}
+                <Stack gap={4} maxW="680px">
+                  <Flex align="center" gap={3.5}>
+                    <Flex w="11" h="11" borderRadius="10px" bg="brand.800" align="center" justify="center" flexShrink={0}>
+                      <mailbox.icon size={22} color={brand.onDark.teal} strokeWidth={1.75} aria-hidden="true" />
+                    </Flex>
+                    <Eyebrow onDark>Our product</Eyebrow>
                   </Flex>
-                  {/* Content */}
-                  <Stack gap={2} pb={index < timeline.length - 1 ? 8 : 0}>
-                    <Heading size="md" color="white" fontWeight="semibold">
-                      {item.title}
-                    </Heading>
-                    <Text color="brand.300" lineHeight="tall">
-                      {item.body}
+                  <Heading as="h3" fontSize={{ base: "23px", md: "28px" }} fontWeight="bold" color={brand.onDark.paper}>
+                    {mailbox.title}
+                  </Heading>
+                  <Text fontSize={{ base: "15px", md: "md" }} lineHeight="1.65" color="brand.300">
+                    {mailbox.description}
+                  </Text>
+                </Stack>
+                <Stack gap={3} flexShrink={0} minW={{ lg: "240px" }}>
+                  <PrimaryButton href={mailbox.docsHref}>
+                    <BookOpen size={18} aria-hidden="true" />
+                    View documentation
+                  </PrimaryButton>
+                  <Button
+                    asChild
+                    h="52px"
+                    px={6}
+                    variant="outline"
+                    borderColor={brand.outlineOnDark}
+                    color={brand.onDark.paper}
+                    fontWeight="semibold"
+                    fontSize="md"
+                    _hover={{ bg: "brand.800" }}
+                  >
+                    <NextLink href={contactHref}>Get in touch</NextLink>
+                  </Button>
+                </Stack>
+              </Flex>
+            </Stack>
+          </PageContainer>
+        </Box>
+
+        {/* How we work */}
+        <Box as="section" id={SECTION_IDS.howWeWork} bg="ink" py={sectionPy}>
+          <PageContainer>
+            <Grid
+              templateColumns={{ base: "minmax(0,1fr)", lg: "minmax(0,5fr) minmax(0,7fr)" }}
+              gap={{ base: 10, lg: 20 }}
+            >
+              <Stack gap={{ base: 5, md: 6 }}>
+                <Eyebrow onDark>How we work</Eyebrow>
+                <Heading as="h2" fontSize={h2Size} lineHeight="1.12" fontWeight="bold" letterSpacing="-0.02em" color={brand.onDark.paper}>
+                  {howWeWork.title}
+                </Heading>
+                <Text fontSize={{ base: "17px", md: "18px" }} lineHeight="1.65" color="brand.300">
+                  {howWeWork.body}
+                </Text>
+                <Stack gap={3.5} pt={2} color={brand.textOnDark}>
+                  {howWeWork.points.map((point) => (
+                    <CheckItem key={point} onDark>
+                      {point}
+                    </CheckItem>
+                  ))}
+                </Stack>
+              </Stack>
+              <Box as="ol" listStyleType="none">
+                {howWeWork.steps.map((step, i) => (
+                  <Grid
+                    as="li"
+                    key={step.title}
+                    templateColumns={{ base: "minmax(0,1fr)", md: "64px minmax(0,1fr)" }}
+                    gap={{ base: 1.5, md: 4 }}
+                    py={{ base: 6, md: 8 }}
+                    borderTopWidth="1px"
+                    borderBottomWidth={i === howWeWork.steps.length - 1 ? "1px" : 0}
+                    borderColor="brand.700"
+                  >
+                    <Text fontFamily="heading" fontWeight="bold" fontSize="15px" color="accent.400" pt={{ md: "5px" }}>
+                      {String(i + 1).padStart(2, "0")}
                     </Text>
-                  </Stack>
-                </Flex>
-              ))}
-            </Stack>
-          </SimpleGrid>
-        </Container>
-      </Box>
+                    <Stack gap={2}>
+                      <Heading as="h3" fontSize={{ base: "21px", md: "24px" }} fontWeight="bold" color={brand.onDark.paper}>
+                        {step.title}
+                      </Heading>
+                      <Text fontSize="md" lineHeight="1.65" color="brand.300">
+                        {step.body}
+                      </Text>
+                    </Stack>
+                  </Grid>
+                ))}
+              </Box>
+            </Grid>
+          </PageContainer>
+        </Box>
 
-      {/* Capabilities - Simple White Background with Checkmarks */}
-      <Box bg="#f3f4f6" py={{ base: 20, md: 24 }}>
-        <Container maxW="6xl" mx="auto" px={{ base: 4, md: 6 }}>
-          <Stack gap={12}>
-            <Stack gap={4} align="center" textAlign="center" maxW="2xl" mx="auto">
-              <Text
-                color="brand.500"
-                fontSize="sm"
-                fontWeight="semibold"
-                letterSpacing="0.08em"
-                textTransform="uppercase"
-              >
-                Why VIBAST Labs
-              </Text>
-              <Heading size="xl" color="#111827" fontWeight="bold">
-                Specialists who ship
-              </Heading>
-              <Text color="brand.600" fontSize="lg">
-                Deep blockchain expertise combined with battle-tested engineering practices.
-                We build systems that work—and keep working.
-              </Text>
-            </Stack>
-
-            <SimpleGrid columns={{ base: 1, md: 3 }} gap={8}>
-              {capabilities.map((capability) => (
-                <Box
-                  key={capability.title}
-                  bg="white"
-                  borderRadius="lg"
-                  p={8}
-                  borderWidth="1px"
-                  borderColor="#e5e7eb"
-                >
-                  <Stack gap={5}>
-                    <Heading size="md" color="#111827" fontWeight="semibold">
+        {/* Why VIBAST Labs */}
+        <Box as="section" py={sectionPy}>
+          <PageContainer>
+            <Stack gap={{ base: 8, md: 14 }}>
+              <SectionIntro
+                eyebrow="Why VIBAST Labs"
+                title="Specialists who ship"
+                lead="Deep blockchain expertise combined with battle-tested engineering practices. We build systems that work—and keep working."
+              />
+              <SimpleGrid columns={{ base: 1, md: 3 }} gap={{ base: 8, md: 10 }}>
+                {capabilities.map((capability) => (
+                  <Stack key={capability.title} gap={5} borderTopWidth="2px" borderColor="ink" pt={6}>
+                    <Heading as="h3" fontSize={{ base: "19px", md: "20px" }} fontWeight="bold" color="ink">
                       {capability.title}
                     </Heading>
-                    <Stack gap={3}>
+                    <Stack gap={3} color="inkSoft">
                       {capability.items.map((item) => (
-                        <HStack key={item} align="start" gap={3}>
-                          <Box
-                            w="5"
-                            h="5"
-                            bg="accent.50"
-                            borderRadius="full"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            flexShrink={0}
-                            mt="1px"
-                          >
-                            <Check size={12} color={brand.tealText} strokeWidth={3} />
-                          </Box>
-                          <Text color="brand.600">{item}</Text>
-                        </HStack>
+                        <CheckItem key={item}>{item}</CheckItem>
                       ))}
                     </Stack>
                   </Stack>
-                </Box>
-              ))}
-            </SimpleGrid>
-          </Stack>
-        </Container>
-      </Box>
-
-      {/* CTA - Contact Form Section */}
-      <Box id="cta" bg="brand.900" py={{ base: 20, md: 24 }}>
-        <Container maxW="6xl" mx="auto" px={{ base: 4, md: 6 }}>
-          <SimpleGrid columns={{ base: 1, lg: 2 }} gap={{ base: 12, lg: 16 }} alignItems="start">
-            {/* Left side - Text */}
-            <Stack gap={6}>
-              <Text
-                color="accent.400"
-                fontSize="sm"
-                fontWeight="semibold"
-                letterSpacing="0.08em"
-                textTransform="uppercase"
-              >
-                Get in touch
-              </Text>
-              <Heading size={{ base: "xl", md: "2xl" }} lineHeight="1.2" color="white" fontWeight="bold">
-                Let&apos;s build something that lasts
-              </Heading>
-              <Text color="brand.300" fontSize="lg" lineHeight="tall">
-                Custom blockchain, backend infrastructure, or complex migration—tell us what you need.
-                We&apos;ll give you an honest assessment and a clear path forward.
-              </Text>
-              <Stack gap={4} pt={2}>
-                <HStack gap={3}>
-                  <Box color="accent.400">
-                    <Check size={20} strokeWidth={2.5} />
-                  </Box>
-                  <Text color="brand.200">Free initial consultation</Text>
-                </HStack>
-                <HStack gap={3}>
-                  <Box color="accent.400">
-                    <Check size={20} strokeWidth={2.5} />
-                  </Box>
-                  <Text color="brand.200">Fast response</Text>
-                </HStack>
-                <HStack gap={3}>
-                  <Box color="accent.400">
-                    <Check size={20} strokeWidth={2.5} />
-                  </Box>
-                  <Text color="brand.200">No obligation estimate</Text>
-                </HStack>
-              </Stack>
-              <Box pt={4}>
-                <Text color="brand.400" fontSize="sm">
-                  Or email directly:{" "}
-                  <a href="mailto:stefan@vibast.ro" style={{ color: brand.softOnDark, textDecoration: "underline" }}>
-                    stefan@vibast.ro
-                  </a>
-                </Text>
-              </Box>
-            </Stack>
-
-            {/* Right side - Form */}
-            <Box
-              bg="brand.950"
-              borderRadius="xl"
-              p={{ base: 6, md: 8 }}
-              borderWidth="1px"
-              borderColor="#1f2937"
-            >
-              {formStatus === "success" ? (
-                <Stack gap={6} align="center" py={8} textAlign="center">
-                  <Box
-                    w="16"
-                    h="16"
-                    bg="brand.800"
-                    borderRadius="full"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <CheckCircle size={32} color="#22c55e" />
-                  </Box>
-                  <Heading size="lg" color="white" fontWeight="semibold">
-                    Message sent
-                  </Heading>
-                  <Text color="brand.300">
-                    Thanks for reaching out. We&apos;ll get back to you as soon as possible.
-                  </Text>
-                  <Text
-                    as="button"
-                    color="brand.400"
-                    fontSize="sm"
-                    cursor="pointer"
-                    _hover={{ color: "brand.300", textDecoration: "underline" }}
-                    onClick={() => setFormStatus("idle")}
-                  >
-                    Send another message
-                  </Text>
-                </Stack>
-              ) : (
-                <form onSubmit={handleSubmit}>
-                  <Stack gap={5}>
-                    <Stack gap={2}>
-                      <Text color="brand.300" fontSize="sm" fontWeight="medium">
-                        Name
-                      </Text>
-                      <Input
-                        type="text"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="Your name"
-                        bg="brand.900"
-                        borderColor="brand.700"
-                        color="white"
-                        _placeholder={{ color: "brand.400" }}
-                        _hover={{ borderColor: "brand.600" }}
-                        _focus={{ borderColor: "accent.400", boxShadow: `0 0 0 1px ${brand.onDark.teal}` }}
-                        required
-                      />
-                    </Stack>
-                    <Stack gap={2}>
-                      <Text color="brand.300" fontSize="sm" fontWeight="medium">
-                        Email
-                      </Text>
-                      <Input
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="you@company.com"
-                        bg="brand.900"
-                        borderColor="brand.700"
-                        color="white"
-                        _placeholder={{ color: "brand.400" }}
-                        _hover={{ borderColor: "brand.600" }}
-                        _focus={{ borderColor: "accent.400", boxShadow: `0 0 0 1px ${brand.onDark.teal}` }}
-                        required
-                      />
-                    </Stack>
-                    <Stack gap={2}>
-                      <Text color="brand.300" fontSize="sm" fontWeight="medium">
-                        Message
-                      </Text>
-                      <Textarea
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        placeholder="Tell us about your project..."
-                        bg="brand.900"
-                        borderColor="brand.700"
-                        color="white"
-                        _placeholder={{ color: "brand.400" }}
-                        _hover={{ borderColor: "brand.600" }}
-                        _focus={{ borderColor: "accent.400", boxShadow: `0 0 0 1px ${brand.onDark.teal}` }}
-                        rows={5}
-                        required
-                      />
-                    </Stack>
-
-                    {/* Honeypot: hidden from humans, bots tend to fill it */}
-                    <Box
-                      position="absolute"
-                      left="-10000px"
-                      top="auto"
-                      width="1px"
-                      height="1px"
-                      overflow="hidden"
-                      aria-hidden="true"
-                    >
-                      <label htmlFor="website">Website</label>
-                      <input
-                        id="website"
-                        name="website"
-                        type="text"
-                        tabIndex={-1}
-                        autoComplete="off"
-                        value={honeypot}
-                        onChange={(e) => setHoneypot(e.target.value)}
-                      />
-                    </Box>
-
-                    {turnstileSiteKey ? (
-                      <Turnstile
-                        ref={turnstileRef}
-                        siteKey={turnstileSiteKey}
-                        options={{ theme: "dark" }}
-                        onSuccess={(token) => setTurnstileToken(token)}
-                        onExpire={() => setTurnstileToken(null)}
-                        onError={() => setTurnstileToken(null)}
-                      />
-                    ) : (
-                      <Text color="#fca5a5" fontSize="sm">
-                        Captcha is not configured; the form is temporarily unavailable.
-                      </Text>
-                    )}
-
-                    {formStatus === "error" && (
-                      <HStack bg="#7f1d1d" p={3} borderRadius="md" gap={3}>
-                        <AlertCircle size={18} color="#fca5a5" />
-                        <Text color="#fca5a5" fontSize="sm">
-                          {errorMessage}
-                        </Text>
-                      </HStack>
-                    )}
-
-                    <Button
-                      type="submit"
-                      size="lg"
-                      bg="accent.500"
-                      color="white"
-                      fontWeight="semibold"
-                      _hover={{ bg: "accent.600" }}
-                      _disabled={{ opacity: 0.7, cursor: "not-allowed" }}
-                      disabled={formStatus === "loading" || !turnstileToken}
-                    >
-                      {formStatus === "loading" ? (
-                        "Sending..."
-                      ) : (
-                        <>
-                          Send message
-                          <Send size={18} style={{ marginLeft: "8px" }} />
-                        </>
-                      )}
-                    </Button>
-                  </Stack>
-                </form>
-              )}
-            </Box>
-          </SimpleGrid>
-        </Container>
-      </Box>
-
-      {/* Footer */}
-      <Box bg="brand.950" py={10} borderTopWidth="1px" borderColor="#1f2937">
-        <Container maxW="6xl" mx="auto" px={{ base: 4, md: 6 }}>
-          <Stack gap={8}>
-            <Flex
-              direction={{ base: "column", md: "row" }}
-              justify="space-between"
-              align="center"
-              gap={4}
-            >
-              <Link href="/">
-                <Box w="140px">
-                  <VibastLabsLogo variant="dark" width="100%" />
-                </Box>
-              </Link>
-              <Text color="brand.400" fontSize="sm">
-                Blockchain & software engineering. Built to last.
-              </Text>
-            </Flex>
-
-            {/* Company Details */}
-            <Box borderTopWidth="1px" borderColor="#1f2937" pt={6}>
-              <SimpleGrid columns={{ base: 1, md: 2 }} gap={{ base: 4, md: 8 }}>
-                <Stack gap={1}>
-                  <Text color="brand.300" fontSize="sm" fontWeight="semibold">
-                    VIBAST SOLUTIONS SRL
-                  </Text>
-                  <Text color="brand.400" fontSize="xs">
-                    B. P. Hasdeu 23, Campina, Prahova, Romania
-                  </Text>
-                </Stack>
-                <SimpleGrid columns={{ base: 2, sm: 5 }} gap={{ base: 3, md: 4 }}>
-                  <Stack gap={0}>
-                    <Text color="brand.400" fontSize="xs">
-                      VAT No.
-                    </Text>
-                    <Text color="brand.300" fontSize="xs">
-                      RO51459106
-                    </Text>
-                  </Stack>
-                  <Stack gap={0}>
-                    <Text color="brand.400" fontSize="xs">
-                      Reg. No.
-                    </Text>
-                    <Text color="brand.300" fontSize="xs">
-                      J2025012011008
-                    </Text>
-                  </Stack>
-                  <Stack gap={0}>
-                    <Text color="brand.400" fontSize="xs">
-                      EUID
-                    </Text>
-                    <Text color="brand.300" fontSize="xs">
-                      ROONRC.J2025012011008
-                    </Text>
-                  </Stack>
-                  <Stack gap={0}>
-                    <Text color="brand.400" fontSize="xs">
-                      CUI
-                    </Text>
-                    <Text color="brand.300" fontSize="xs">
-                      51317810
-                    </Text>
-                  </Stack>
-                  <Stack gap={0}>
-                    <Text color="brand.400" fontSize="xs">
-                      D-U-N-S
-                    </Text>
-                    <Text color="brand.300" fontSize="xs">
-                      52-396-3698
-                    </Text>
-                  </Stack>
-                </SimpleGrid>
+                ))}
               </SimpleGrid>
-            </Box>
-          </Stack>
-        </Container>
-      </Box>
+            </Stack>
+          </PageContainer>
+        </Box>
+
+        {/* Contact */}
+        <Box as="section" id={SECTION_IDS.contact} bg="white" borderTopWidth="1px" borderColor="line" py={sectionPy}>
+          <PageContainer>
+            <Grid
+              templateColumns={{ base: "minmax(0,1fr)", lg: "minmax(0,5fr) minmax(0,7fr)" }}
+              gap={{ base: 10, lg: 20 }}
+            >
+              <Stack gap={{ base: 5, md: 6 }}>
+                <Eyebrow>Get in touch</Eyebrow>
+                <Heading as="h2" fontSize={h2Size} lineHeight="1.12" fontWeight="bold" letterSpacing="-0.02em" color="ink">
+                  {contact.title}
+                </Heading>
+                <Text fontSize={{ base: "17px", md: "18px" }} lineHeight="1.6" color="inkSoft">
+                  {contact.body}
+                </Text>
+                <Stack gap={3}>
+                  {contact.points.map((point) => (
+                    <CheckItem key={point}>{point}</CheckItem>
+                  ))}
+                </Stack>
+                <Stack gap={1} borderTopWidth="1px" borderColor="line" mt={3} pt={6}>
+                  <Text fontSize="sm" color="brand.500">
+                    Or email directly
+                  </Text>
+                  <Link
+                    href={`mailto:${CONTACT_EMAIL}`}
+                    fontFamily="heading"
+                    fontSize={{ base: "19px", md: "20px" }}
+                    fontWeight="bold"
+                    color="accent.600"
+                    w="fit-content"
+                  >
+                    {CONTACT_EMAIL}
+                  </Link>
+                </Stack>
+              </Stack>
+              <ContactForm />
+            </Grid>
+          </PageContainer>
+        </Box>
+      </main>
+
+      <SiteFooter />
     </Box>
   );
 }

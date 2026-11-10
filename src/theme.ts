@@ -49,6 +49,8 @@ const config = defineConfig({
         lagoon: { value: brand.lagoon },
         fog: { value: brand.fog },
         paper: { value: brand.paper },
+        line: { value: brand.line },
+        inkSoft: { value: brand.body },
         // Warm neutral grays
         neutral: {
           50: { value: brand.paper },
