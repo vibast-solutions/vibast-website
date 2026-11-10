@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { brand } from "@/brand";
 
-// Inline copy of vibast-brand `vibast-labs/svg/logo-horizontal(-on-dark).svg`.
+// Inline copy of the official VIBAST Labs horizontal logo (light and on-dark).
 // Rendered inline (not via <img>) so the wordmark picks up the page's Manrope
 // web font; SVG presentation attributes can't resolve CSS variables, hence the
 // font family is set through `style`.

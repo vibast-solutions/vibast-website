@@ -25,7 +25,7 @@ export default async function Image() {
           fontFamily: "Inter, system-ui, sans-serif",
         }}
       >
-        {/* VIBAST Labs mark (vibast-brand svg/mark-on-dark.svg) */}
+        {/* VIBAST Labs mark, on-dark colours */}
         <svg
           width="140"
           height="140"
