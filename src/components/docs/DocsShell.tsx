@@ -88,10 +88,10 @@ export function DocsShell({ locale, page }: DocsShellProps) {
         align="center"
         justify="space-between"
         px={4}
-        h="64px"
+        h="68px"
       >
         <NextLink href="/" aria-label="VIBAST Labs">
-          <Box w="140px" ml="-4px">
+          <Box w="200px" ml="-5px">
             <VibastLabsLogo width="100%" />
           </Box>
         </NextLink>
@@ -130,7 +130,7 @@ export function DocsShell({ locale, page }: DocsShellProps) {
             <Flex
               align="center"
               justify="space-between"
-              h="64px"
+              h="68px"
               pl={5}
               pr={3}
               mb={5}
@@ -142,7 +142,7 @@ export function DocsShell({ locale, page }: DocsShellProps) {
               borderColor="line"
             >
               <NextLink href="/" aria-label="VIBAST Labs">
-                <Box w="140px" ml="-4px">
+                <Box w="200px" ml="-5px">
                   <VibastLabsLogo width="100%" />
                 </Box>
               </NextLink>
@@ -180,9 +180,10 @@ export function DocsShell({ locale, page }: DocsShellProps) {
           bg="white"
         >
           {/* Logo row: same height and logo size as the site header. */}
-          <Flex align="center" h="72px" px={6} borderBottomWidth="1px" borderColor="line">
+          <Flex align="center" h="84px" px={6} borderBottomWidth="1px" borderColor="line">
             <NextLink href="/" aria-label="VIBAST Labs">
-              <Box w="160px" ml="-4px">
+              {/* 232px fills the 280px sidebar's content width; 260px would overflow it. */}
+              <Box w="232px" ml="-6px">
                 <VibastLabsLogo width="100%" />
               </Box>
             </NextLink>

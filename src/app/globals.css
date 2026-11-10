@@ -29,7 +29,7 @@ body {
   }
 }
 
-/* In-page anchors land below the sticky site header (64px phone, 72px desktop). */
+/* In-page anchors land below the sticky site header (68px phone, 84px desktop). */
 section[id] {
-  scroll-margin-top: 72px;
+  scroll-margin-top: 84px;
 }
