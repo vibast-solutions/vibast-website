@@ -42,10 +42,10 @@ export function SiteHeader() {
       borderColor="line"
     >
       <PageContainer>
-        <Flex align="center" justify="space-between" h={{ base: "64px", md: "72px" }}>
-          {/* The mark has internal padding; shift it so the bars align with the text edge. */}
+        <Flex align="center" justify="space-between" h={{ base: "68px", md: "84px" }}>
+          {/* The mark has internal padding (10/386 of its width); shift it so the bars align with the text edge. */}
           <NextLink href="/" aria-label="VIBAST Labs home" onClick={close}>
-            <Box w={{ base: "140px", md: "168px" }} ml="-4px">
+            <Box w={{ base: "200px", md: "220px", lg: "260px" }} ml={{ base: "-5px", md: "-6px", lg: "-7px" }}>
               <VibastLabsLogo width="100%" />
             </Box>
           </NextLink>
@@ -106,7 +106,7 @@ export function SiteHeader() {
           id="mobile-menu"
           display={{ base: "block", md: "none" }}
           position="fixed"
-          top="64px"
+          top="68px"
           left={0}
           right={0}
           bottom={0}

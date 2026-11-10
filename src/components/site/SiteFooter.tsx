@@ -61,7 +61,7 @@ export function SiteFooter() {
           >
             <Stack gap={4} gridColumn={{ base: "1 / -1", md: "span 2" }}>
               <NextLink href="/" aria-label="VIBAST Labs home">
-                <Box w={{ base: "150px", md: "168px" }} ml="-4px">
+                <Box w={{ base: "200px", md: "220px", lg: "260px" }} ml={{ base: "-5px", md: "-6px", lg: "-7px" }}>
                   <VibastLabsLogo variant="dark" width="100%" />
                 </Box>
               </NextLink>
