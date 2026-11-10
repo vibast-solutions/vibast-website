@@ -60,21 +60,14 @@ export const metadata: Metadata = {
     title: "Custom Blockchain Development | Any Architecture | VIBAST Labs",
     description:
       "Build custom blockchains with any architecture. Cosmos SDK, UTXO-based, account-based—we design and build the chain that fits your use case.",
-    images: [
-      {
-        url: "/opengraph-image.png",
-        width: 1200,
-        height: 630,
-        alt: "VIBAST Labs - Custom Blockchain & Web Development",
-      },
-    ],
+    // og:image comes from the generated src/app/opengraph-image.tsx route.
   },
   twitter: {
     card: "summary_large_image",
     title: "Custom Blockchain Development | Any Architecture | VIBAST Labs",
     description:
       "Build custom blockchains with any architecture. Full-stack web development and reliable backend infrastructure.",
-    images: ["/opengraph-image.png"],
+    // twitter:image comes from the generated src/app/twitter-image.tsx route.
     creator: "@vibastlabs",
   },
   robots: {
@@ -107,7 +100,7 @@ const jsonLd = {
     width: "512",
     height: "512",
   },
-  image: "https://vibast.ro/opengraph-image.png",
+  image: "https://vibast.ro/opengraph-image",
   description:
     "Custom blockchain development with any architecture—Cosmos SDK, UTXO-based, or account-based. Full-stack web development and reliable backend infrastructure.",
   address: {
