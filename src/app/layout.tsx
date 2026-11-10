@@ -1,6 +1,20 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { Manrope } from "next/font/google";
+import { brand } from "@/brand";
 import "./globals.css";
 import { Providers } from "./providers";
+
+// Brand font for the logo wordmark and headings; body text stays Inter.
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+export const viewport: Viewport = {
+  themeColor: brand.ink,
+};
 
 export const metadata: Metadata = {
   title: "VIBAST Labs | Custom Blockchain & Web Development Services",
@@ -89,7 +103,7 @@ const jsonLd = {
   url: "https://vibast.ro",
   logo: {
     "@type": "ImageObject",
-    url: "https://vibast.ro/vibast-labs-logo.svg",
+    url: "https://vibast.ro/vibast-labs-mark-512.png",
     width: "512",
     height: "512",
   },
@@ -175,7 +189,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={manrope.variable}>
       <body>
         <script
           type="application/ld+json"

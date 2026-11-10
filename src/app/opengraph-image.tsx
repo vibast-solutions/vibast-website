@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { brand } from "@/brand";
 
 export const runtime = "edge";
 
@@ -20,26 +21,21 @@ export default async function Image() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#102a43",
+          backgroundColor: brand.ink,
           fontFamily: "Inter, system-ui, sans-serif",
         }}
       >
-        {/* V Logo */}
+        {/* VIBAST Labs mark (vibast-brand svg/mark-on-dark.svg) */}
         <svg
-          width="120"
-          height="120"
-          viewBox="0 0 32 32"
+          width="140"
+          height="140"
+          viewBox="0 0 64 64"
           fill="none"
-          style={{ marginBottom: 40 }}
+          style={{ marginBottom: 32 }}
         >
-          <path
-            d="M4 6L16 26L28 6"
-            stroke="#ffffff"
-            strokeWidth="4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <circle cx="16" cy="26" r="3" fill="#c9a227" />
+          <rect x="10" y="12" width="44" height="10" rx="5" fill={brand.onDark.lagoon} />
+          <rect x="17" y="27" width="30" height="10" rx="5" fill={brand.onDark.teal} />
+          <rect x="24" y="42" width="16" height="10" rx="5" fill={brand.onDark.paper} />
         </svg>
 
         {/* Company Name */}
@@ -48,7 +44,7 @@ export default async function Image() {
             display: "flex",
             fontSize: 64,
             fontWeight: 700,
-            color: "#ffffff",
+            color: brand.onDark.paper,
             marginBottom: 24,
             letterSpacing: "-0.02em",
           }}
@@ -61,7 +57,7 @@ export default async function Image() {
           style={{
             display: "flex",
             fontSize: 28,
-            color: "#9fb3c8",
+            color: brand.softOnDark,
             textAlign: "center",
             maxWidth: 800,
             lineHeight: 1.4,
@@ -84,10 +80,10 @@ export default async function Image() {
               style={{
                 display: "flex",
                 padding: "12px 24px",
-                backgroundColor: "rgba(201, 162, 39, 0.15)",
-                border: "1px solid #c9a227",
+                backgroundColor: "rgba(79, 163, 168, 0.15)",
+                border: `1px solid ${brand.onDark.teal}`,
                 borderRadius: 8,
-                color: "#c9a227",
+                color: brand.onDark.teal,
                 fontSize: 20,
                 fontWeight: 500,
               }}
@@ -104,7 +100,7 @@ export default async function Image() {
             position: "absolute",
             bottom: 40,
             fontSize: 20,
-            color: "#627d98",
+            color: brand.mutedOnDark,
           }}
         >
           vibast.ro

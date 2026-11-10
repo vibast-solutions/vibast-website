@@ -1,3 +1,4 @@
+import { brand } from "@/brand";
 import {
   Box,
   Heading,
@@ -13,9 +14,9 @@ import type { Block, DocPage, Locale } from "@/content/docs";
 import { TIERS, UNLIMITED, formatPrice, CONTACT_ANCHOR } from "@/content/docs";
 
 const NOTE_STYLES = {
-  info: { bg: "#f0f4f8", border: "#bcccdc", icon: Info, iconColor: "#486581" },
+  info: { bg: "brand.50", border: "brand.200", icon: Info, iconColor: "brand.600" },
   warn: { bg: "#fef9e7", border: "#f5d67a", icon: AlertTriangle, iconColor: "#a68219" },
-  accent: { bg: "#102a43", border: "#334e68", icon: Sparkles, iconColor: "#c9a227" },
+  accent: { bg: "brand.900", border: "brand.700", icon: Sparkles, iconColor: "accent.400" },
 } as const;
 
 function localizedLimit(value: string, locale: Locale): string {
@@ -43,20 +44,20 @@ function TierTable({ locale }: { locale: Locale }) {
       <Box overflowX="auto">
         <Table.Root size="sm" variant="outline" borderColor="#e5e7eb">
           <Table.Header>
-            <Table.Row bg="#f0f4f8">
-              <Table.ColumnHeader color="#334e68" fontWeight="semibold">
+            <Table.Row bg="brand.50">
+              <Table.ColumnHeader color="brand.700" fontWeight="semibold">
                 {t("Caracteristică", "Feature")}
               </Table.ColumnHeader>
               {named.map((tier) => (
                 <Table.ColumnHeader
                   key={tier.id}
-                  color={tier.featured ? "#102a43" : "#334e68"}
+                  color={tier.featured ? "brand.900" : "brand.700"}
                   fontWeight="bold"
                   textAlign="center"
                 >
                   <Stack gap={0} align="center">
                     <Text textTransform="capitalize">{tier.id}</Text>
-                    <Text fontSize="xs" color="#627d98" fontWeight="medium">
+                    <Text fontSize="xs" color="brand.500" fontWeight="medium">
                       {formatPrice(tier, locale)}
                     </Text>
                   </Stack>
@@ -67,7 +68,7 @@ function TierTable({ locale }: { locale: Locale }) {
           <Table.Body>
             {rows.map((row) => (
               <Table.Row key={row.key}>
-                <Table.Cell color="#4b5563" fontWeight="medium">
+                <Table.Cell color="brand.600" fontWeight="medium">
                   {row.label}
                 </Table.Cell>
                 {named.map((tier) => (
@@ -77,8 +78,8 @@ function TierTable({ locale }: { locale: Locale }) {
                 ))}
               </Table.Row>
             ))}
-            <Table.Row bg="#fafbfc">
-              <Table.Cell color="#4b5563" fontWeight="medium">
+            <Table.Row bg="paper">
+              <Table.Cell color="brand.600" fontWeight="medium">
                 {t("Facturare", "Billing")}
               </Table.Cell>
               {named.map((tier) => (
@@ -92,15 +93,15 @@ function TierTable({ locale }: { locale: Locale }) {
       </Box>
 
       {/* Custom tier — presented as a call to action, no fixed limits. */}
-      <Box borderWidth="1px" borderColor="#334e68" bg="#102a43" borderRadius="lg" p={5}>
+      <Box borderWidth="1px" borderColor="brand.700" bg="brand.900" borderRadius="lg" p={5}>
         <Stack gap={2}>
           <HStack gap={2}>
-            <Sparkles size={18} color="#c9a227" />
+            <Sparkles size={18} color={brand.onDark.teal} />
             <Heading size="sm" color="white" textTransform="capitalize">
               {custom.id} — {t("ofertă personalizată", "tailored offer")}
             </Heading>
           </HStack>
-          <Text color="#9fb3c8" fontSize="sm">
+          <Text color="brand.300" fontSize="sm">
             {t(
               "Fără limite fixe. Spune-ne de ce ai nevoie — spațiu, domenii, căsuțe, redirecționări, pointeri — și îți facem o ofertă pe măsură.",
               "No fixed limits. Tell us what you need — storage, domains, mailboxes, forwarders, pointers — and we'll build you a tailored offer.",
@@ -108,10 +109,10 @@ function TierTable({ locale }: { locale: Locale }) {
           </Text>
           <NextLink href={CONTACT_ANCHOR}>
             <Text
-              color="#c9a227"
+              color="accent.400"
               fontWeight="semibold"
               fontSize="sm"
-              _hover={{ color: "#e8c547" }}
+              _hover={{ color: "accent.200" }}
             >
               {t("Cere o ofertă →", "Request an offer →")}
             </Text>
@@ -138,7 +139,7 @@ function NoteBlock({ block }: { block: Extract<Block, { k: "note" }> }) {
               {block.title}
             </Text>
           )}
-          <Text color={isAccent ? "#9fb3c8" : "#4b5563"} fontSize="sm" lineHeight="tall">
+          <Text color={isAccent ? "brand.300" : "brand.600"} fontSize="sm" lineHeight="tall">
             {block.text}
           </Text>
         </Stack>
@@ -151,7 +152,7 @@ function BlockView({ block, locale }: { block: Block; locale: Locale }) {
   switch (block.k) {
     case "p":
       return (
-        <Text color="#4b5563" fontSize="md" lineHeight="tall">
+        <Text color="brand.600" fontSize="md" lineHeight="tall">
           {block.text}
         </Text>
       );
@@ -165,7 +166,7 @@ function BlockView({ block, locale }: { block: Block; locale: Locale }) {
       return (
         <List.Root gap={2} pl={1}>
           {block.items.map((item, i) => (
-            <List.Item key={i} color="#4b5563" lineHeight="tall" ml={4}>
+            <List.Item key={i} color="brand.600" lineHeight="tall" ml={4}>
               {item}
             </List.Item>
           ))}
@@ -175,7 +176,7 @@ function BlockView({ block, locale }: { block: Block; locale: Locale }) {
       return (
         <List.Root as="ol" gap={2} pl={1}>
           {block.items.map((item, i) => (
-            <List.Item key={i} color="#4b5563" lineHeight="tall" ml={5}>
+            <List.Item key={i} color="brand.600" lineHeight="tall" ml={5}>
               {item}
             </List.Item>
           ))}
@@ -187,21 +188,21 @@ function BlockView({ block, locale }: { block: Block; locale: Locale }) {
       return (
         <Box
           borderLeftWidth="3px"
-          borderColor="#c9a227"
-          bg="#fafbfc"
+          borderColor="accent.500"
+          bg="paper"
           borderRadius="md"
           px={4}
           py={3}
         >
           <Stack gap={1}>
-            <Text fontWeight="semibold" color="#102a43">
+            <Text fontWeight="semibold" color="brand.900">
               {block.term}
             </Text>
-            <Text color="#4b5563" fontSize="sm" lineHeight="tall">
+            <Text color="brand.600" fontSize="sm" lineHeight="tall">
               {block.text}
             </Text>
             {block.example && (
-              <Text color="#627d98" fontSize="sm" fontStyle="italic">
+              <Text color="brand.500" fontSize="sm" fontStyle="italic">
                 {locale === "ro" ? "Exemplu: " : "Example: "}
                 {block.example}
               </Text>
@@ -223,7 +224,7 @@ export function DocContent({ page, locale }: { page: DocPage; locale: Locale }) 
         <Heading as="h1" size="2xl" color="#111827" fontWeight="bold">
           {page.navLabel}
         </Heading>
-        <Text color="#4b5563" fontSize="lg" lineHeight="tall">
+        <Text color="brand.600" fontSize="lg" lineHeight="tall">
           {page.intro}
         </Text>
       </Stack>
@@ -236,7 +237,7 @@ export function DocContent({ page, locale }: { page: DocPage; locale: Locale }) 
           gap={4}
           scrollMarginTop="80px"
         >
-          <Heading as="h2" size="xl" color="#102a43" fontWeight="bold">
+          <Heading as="h2" size="xl" color="brand.900" fontWeight="bold">
             {section.title}
           </Heading>
           {section.blocks.map((block, i) => (
