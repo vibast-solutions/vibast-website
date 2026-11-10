@@ -84,19 +84,21 @@ export function DocsShell({ locale, page }: DocsShellProps) {
         zIndex={30}
         bg="white"
         borderBottomWidth="1px"
-        borderColor="#e5e7eb"
+        borderColor="line"
         align="center"
         justify="space-between"
         px={4}
-        h="14"
+        h="64px"
       >
-        <NextLink href="/">
-          <Box w="130px">
+        <NextLink href="/" aria-label="VIBAST Labs">
+          <Box w="140px" ml="-4px">
             <VibastLabsLogo width="100%" />
           </Box>
         </NextLink>
         <IconButton
           aria-label={ui.openMenu}
+          w="44px"
+          h="44px"
           variant="ghost"
           color="brand.700"
           onClick={() => setMenuOpen(true)}
@@ -125,9 +127,29 @@ export function DocsShell({ locale, page }: DocsShellProps) {
             boxShadow="xl"
             overflowY="auto"
           >
-            <Flex justify="flex-end" p={2} position="sticky" top={0} bg="white">
+            <Flex
+              align="center"
+              justify="space-between"
+              h="64px"
+              pl={5}
+              pr={3}
+              mb={5}
+              position="sticky"
+              top={0}
+              zIndex={1}
+              bg="white"
+              borderBottomWidth="1px"
+              borderColor="line"
+            >
+              <NextLink href="/" aria-label="VIBAST Labs">
+                <Box w="140px" ml="-4px">
+                  <VibastLabsLogo width="100%" />
+                </Box>
+              </NextLink>
               <IconButton
                 aria-label={ui.closeMenu}
+                w="44px"
+                h="44px"
                 variant="ghost"
                 color="brand.700"
                 onClick={() => setMenuOpen(false)}
@@ -156,10 +178,18 @@ export function DocsShell({ locale, page }: DocsShellProps) {
           borderRightWidth="1px"
           borderColor="#e5e7eb"
           bg="white"
-          px={6}
-          py={7}
         >
-          {sidebar}
+          {/* Logo row: same height and logo size as the site header. */}
+          <Flex align="center" h="72px" px={6} borderBottomWidth="1px" borderColor="line">
+            <NextLink href="/" aria-label="VIBAST Labs">
+              <Box w="160px" ml="-4px">
+                <VibastLabsLogo width="100%" />
+              </Box>
+            </NextLink>
+          </Flex>
+          <Box px={6} py={6}>
+            {sidebar}
+          </Box>
         </Box>
 
         {/* Main content */}
@@ -185,13 +215,6 @@ function SidebarInner({
   const ui = docsUi[locale];
   return (
     <Stack gap={6}>
-      {/* Logo — links back to the marketing site */}
-      <NextLink href="/">
-        <Box w="150px" display={{ base: "none", lg: "block" }}>
-          <VibastLabsLogo width="100%" />
-        </Box>
-      </NextLink>
-
       <NextLink href="/">
         <HStack gap={1.5} color="brand.500" _hover={{ color: "brand.700" }}>
           <ArrowLeft size={14} />

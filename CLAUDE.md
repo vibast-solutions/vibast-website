@@ -19,7 +19,8 @@ This is a Next.js 16 single-page marketing website using the App Router with Cha
 
 - `src/app/layout.tsx` - Root layout wrapping children with `<Providers>`
 - `src/app/providers.tsx` - Client component that sets up Chakra UI with `CacheProvider` and `ChakraProvider`
-- `src/app/page.tsx` - Single-page landing with all content (client component)
+- `src/app/page.tsx` - Single-page landing (client component); its copy lives in `src/content/home.ts` (section ids there: `cta` is also linked from the docs, keep it)
+- `src/components/site/` - Shared site chrome and pieces: `SiteHeader` (sticky, phone menu sheet), `SiteFooter`, `ContactForm` (posts to `/api/contact` with Turnstile + honeypot), `primitives` (`PageContainer`, `Eyebrow`, `CheckItem`)
 - `src/theme.ts` - Chakra UI system configuration with custom `brand` color palette (blue tones)
 
 ### Styling Approach
