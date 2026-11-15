@@ -1,188 +1,174 @@
-import {
-  Blocks,
-  Code,
-  Database,
-  Mail,
-  Server,
-  Smartphone,
-  Wrench,
-  type LucideIcon,
-} from "lucide-react";
+import { SIMPLE_SITE_FROM } from "./pricing";
+import type { HomePageContent } from "./types";
 
-import type { PageMeta } from "@/content/types";
+const simpleSite = SIMPLE_SITE_FROM.en;
 
-export { CONTACT_EMAIL } from "@/content/company";
-
-// English home page copy (kept from the single-page site until S2 rewrites it
-// per plan §5). Section ids double as in-page anchors: keep `cta`, old links
-// to /#cta still land on the contact form.
-export const meta: PageMeta = {
-  title: "Software Development Company in Romania",
-  description:
-    "We build, host and look after software of any size, from a simple website to systems used by thousands. 80+ projects delivered. Get a project estimate.",
-};
-
-export const SECTION_IDS = {
-  services: "services",
-  howWeWork: "how-we-work",
-  contact: "cta",
-} as const;
-
-export const hero = {
-  eyebrow: "Software development company",
-  headline: ["Custom software,", "built to last."],
-  description:
-    "Web platforms, mobile apps, backends and cloud infrastructure for businesses that need software they can rely on, from first release to years in production.",
-  primaryCta: "Start a project",
-  secondaryCta: "View services",
-  emailPrompt: "Or email directly:",
-};
-
-/** Hero illustration bars, widest first (the logo's three bars). */
-export const layers = ["Web & mobile apps", "Backend & cloud", "Blockchain"];
-
-// The three practice areas shown under the hero.
-export const practicesLabel = "Practice areas";
-export const practices = [
-  {
-    tag: "Web & Mobile",
-    headline: "Products your users enjoy. Built to scale.",
+export const homeEn: HomePageContent = {
+  meta: {
+    title: "Software Development Company in Romania",
     description:
-      "Web platforms, customer portals and mobile apps, from the first prototype to a product in daily use. React, Next.js and Flutter, with fast, accessible interfaces.",
+      "We build, host and look after software of any size, from a simple website to systems used by thousands. 80+ projects delivered. Get a project estimate.",
   },
-  {
-    tag: "Backend & Infrastructure",
-    headline: "Systems that work. And keep working.",
-    description:
-      "APIs, integrations, data migrations and cloud infrastructure. Built with security, monitoring and long-term maintainability in mind.",
+  hero: {
+    eyebrow: "Software development company",
+    h1: "Software that fits your business, from a simple website to systems built for scale.",
+    sub: "Websites, mobile and desktop apps, internal tools and the infrastructure behind them. We build it, host it and look after it.",
+    primaryCta: "Get a project estimate",
+    secondaryCta: "See how we work",
+    emailPrompt: "Or email us:",
+    layers: ["We build it", "We host it", "We look after it"],
   },
-  {
-    tag: "Blockchain",
-    headline: "Blockchain, when your product needs it.",
-    description:
-      "In-house expertise for the projects that call for it: custom chains, smart contracts, wallets and dApps, built with the same engineering discipline as everything else.",
+  proof: {
+    label: "In numbers",
+    stats: [
+      { value: "80+", label: "projects delivered" },
+      { value: "52%", label: "still maintained by us" },
+      { value: "2–6 weeks", label: "to the first release" },
+    ],
+    reach: { value: "EU", label: "clients across the EU" },
   },
-];
-
-export const statsLabel = "In numbers";
-export const stats = [
-  { value: "80+", label: "Projects delivered", detail: "End-to-end product launches" },
-  { value: "52%", label: "Still maintained by us", detail: "Of the projects we’ve delivered" },
-  { value: "2–6 weeks", label: "Time to first release", detail: "From kickoff to production" },
-];
-
-export type Service = {
-  title: string;
-  description: string;
-  icon: LucideIcon;
-};
-
-export const servicesIntro = {
-  eyebrow: "What we build",
-  title: "Full-stack engineering. Blockchain when you need it.",
-  lead: "Web, mobile, backend and cloud under one roof, with in-house blockchain specialists for the projects that call for it.",
-};
-
-export const services: Service[] = [
-  {
-    title: "Web Applications",
-    description:
-      "Custom web platforms, customer portals, dashboards and SaaS products built with React, Next.js and Node.js. Fast, accessible and ready to grow with your business.",
-    icon: Code,
-  },
-  {
-    title: "Mobile Apps",
-    description:
-      "Cross-platform iOS and Android apps from a single Flutter codebase, from design to publishing on the App Store and Google Play.",
-    icon: Smartphone,
-  },
-  {
-    title: "Backend, APIs & Cloud",
-    description:
-      "Robust APIs and services in Go and Node.js, automated deployments, containerised hosting, monitoring and backups. Infrastructure that ships every change safely.",
-    icon: Server,
-  },
-  {
-    title: "Integrations & Data Migrations",
-    description:
-      "Connect payment providers, ERPs, e-commerce platforms and third-party APIs, or move legacy systems and data to a modern stack without disrupting your business.",
-    icon: Database,
-  },
-  {
-    title: "Blockchain & Web3",
-    description:
-      "Custom blockchains, smart contracts, wallets and dApps for products that need them. Cosmos SDK, EVM and CosmWasm, built with disciplined security practices.",
-    icon: Blocks,
-  },
-  {
-    title: "Maintenance, Security & Support",
-    description:
-      "Upgrades, code and security reviews, monitoring and incident response. We keep your software secure and performant long after launch.",
-    icon: Wrench,
-  },
-];
-
-export const mailbox = {
-  title: "MailBox — Professional Email",
-  description:
-    "Business email on your own domain: webmail, IMAP/POP3/SMTP, spam filtering, forwarders and domain pointers. Yearly plans, set up and handed over by us. Full end-user documentation is available online.",
-  icon: Mail,
-  docsHref: "/docs/mailbox",
-  eyebrow: "Our product",
-  docsCta: "View documentation",
-  contactCta: "Get in touch",
-};
-
-export const howWeWork = {
-  eyebrow: "How we work",
-  title: "Delivery, end-to-end",
-  body: "We own the outcome from scoping to launch. When additional specialization is required, we coordinate the right expertise to meet the same quality and reliability standard.",
-  points: [
-    "Single point of accountability for your project",
-    "Transparent progress with weekly updates",
-    "Clean handoff with documentation you can build on",
-  ],
-  steps: [
-    {
-      title: "Scope",
-      body: "We define outcomes, success metrics, and constraints before writing code—so there are no surprises.",
+  startingPoints: {
+    eyebrow: "Where are you starting from?",
+    title: "Start from where you are.",
+    cards: {
+      new: {
+        title: "Something new",
+        body: "You have an idea, a process to simplify or a website to launch. We help you shape it and build the right size of it.",
+        cta: "See what we build",
+      },
+      stuck: {
+        title: "Stuck, or need a second opinion",
+        body: "An app nobody has touched in years? We review it, keep what works, fix what's risky and bring it up to date, usually without starting over.",
+        cta: "Get your app reviewed",
+      },
+      run: {
+        title: "Set it up and run it",
+        body: "Sometimes the best answer is an existing tool, set up properly. We'll tell you when you don't need custom software, and we host and look after it for you.",
+        cta: "Hosting & maintenance",
+      },
     },
-    {
-      title: "Build",
-      body: "Iterative development with regular check-ins. You see progress weekly, not at the end.",
+  },
+  services: {
+    eyebrow: "What we build",
+    title: "One team for the whole job.",
+    lead: "From a tool for a team of five to a platform for thousands of users.",
+    cards: {
+      webDevelopment: {
+        title: "Websites, web apps & online stores",
+        body: "Sites and web apps that load fast, work on every screen and are easy to update.",
+      },
+      mobileApps: {
+        title: "Mobile apps",
+        body: "Apps for iPhone and Android, from the first version to the app stores.",
+      },
+      customSoftware: {
+        title: "Custom software & integrations",
+        body: "Internal tools, desktop apps and connections between the systems you already use.",
+      },
+      appModernization: {
+        title: "App takeover & modernization",
+        body: "We take over apps other teams left behind and make them safe to change again.",
+      },
+      hostingMaintenance: {
+        title: "Hosting & maintenance",
+        body: "We keep your software online, backed up and up to date, so you don't have to.",
+      },
+      blockchain: {
+        title: "Blockchain",
+        body: "When your product needs a blockchain, we build that part too.",
+      },
     },
-    {
-      title: "Ship",
-      body: "Launch with monitoring, documentation, and a clean handoff. We stay available for what comes next.",
-    },
-  ],
-};
-
-export const whyUs = {
-  eyebrow: "Why VIBAST Labs",
-  title: "Engineers who ship",
-  lead: "Senior engineering and battle-tested practices across the whole stack. We build systems that work—and keep working.",
-};
-
-export const capabilities = [
-  {
-    title: "Product engineering",
-    items: ["Web & mobile applications", "Clean, accessible interfaces", "APIs designed for integration"],
+    more: "Learn more",
   },
-  {
-    title: "Engineering depth",
-    items: ["Backend systems & cloud", "Data migrations & integrations", "Blockchain when it fits"],
+  range: {
+    eyebrow: "The range",
+    title: "Built to the size you need.",
+    items: [
+      {
+        title: "From five people to thousands of users",
+        body: "A simple tool for a small team or a platform that carries heavy load. We build for where you are and leave room to grow.",
+      },
+      {
+        title: "From a lean server to enterprise cloud",
+        body: "We host where it makes sense: a lean server for a small app, enterprise cloud when you need it. You don't pay for scale you don't use.",
+      },
+    ],
+    note: "Built on current, well-supported technology: easy to maintain, easy to grow.",
   },
-  {
-    title: "Production ready",
-    items: ["High-availability systems", "Security-first approach", "Long-term support"],
+  howWeWork: {
+    eyebrow: "How we work",
+    title: "Four steps, no surprises.",
+    steps: [
+      { title: "Talk", body: "You tell us what you need. We ask questions until we understand the problem." },
+      { title: "Plan and first release", body: "We agree on the first useful version and ship it, usually in 2–6 weeks." },
+      { title: "Build in short cycles", body: "You see progress often and can change direction as you learn." },
+      { title: "Host and look after it", body: "We keep it running, safe and up to date for as long as you need." },
+    ],
+    payment:
+      "Pay the way that suits you: fixed price, monthly, hourly or per deliverable. Even a small website can be paid monthly.",
   },
-];
-
-export const contact = {
-  eyebrow: "Get in touch",
-  title: "Let’s build something that lasts",
-  body: "A new product, a legacy system that needs a rewrite, or a complex migration—tell us what you need. We’ll give you an honest assessment and a clear path forward.",
-  points: ["Free initial consultation", "Fast response", "No obligation estimate"],
-  emailPrompt: "Or email directly",
+  cost: {
+    eyebrow: "What does it cost?",
+    title: "Your scope, your budget, your pace.",
+    paragraphs: [
+      "We already have a lot built, and you don't pay for that part again.",
+      `A simple website can start from ${simpleSite}. A complex platform can cost many thousands. Hosting starts at a few euros a month and grows only with usage.`,
+      "There's no fixed price list. Tell us what you need, and we'll find the solution that fits both the need and the budget.",
+    ],
+    cta: "Get a project estimate",
+  },
+  whyUs: {
+    eyebrow: "Why VIBAST Labs",
+    title: "Why teams choose us.",
+    items: [
+      { title: "Right-sized solutions", body: "We build what you need, not more. If an existing tool does the job, we say so." },
+      { title: "Current technology", body: "Well-supported tools that are easy to maintain and easy to grow." },
+      { title: "Hosting that fits the budget", body: "A lean server or enterprise cloud, depending on what your software really needs." },
+      { title: "We stick around", body: "52% of the projects we delivered are still looked after by us." },
+      { title: "Experienced specialists", body: "Our team brings experience from one of the biggest companies in Europe." },
+    ],
+  },
+  mailbox: {
+    eyebrow: "Our product",
+    title: "MailBox: business email on your own domain",
+    body: "Professional email on your company's domain. We set it up and hand it over ready to use.",
+    cta: "About MailBox",
+  },
+  faq: {
+    eyebrow: "FAQ",
+    title: "Common questions",
+    items: [
+      {
+        q: "How much does it cost?",
+        a: `It depends on what you need. A simple website can start from ${simpleSite}; a complex platform can cost many thousands. You don't pay again for what we already have built, and hosting starts at a few euros a month. Tell us about your project and we'll come back with a first estimate.`,
+      },
+      {
+        q: "How long does it take?",
+        a: "The first release usually comes 2–6 weeks after we start. After that we build in short cycles, so you see progress often.",
+      },
+      {
+        q: "Who owns the code?",
+        a: "It depends on what suits you. Full ownership is available, or a lower-cost option built on our existing components and hosting. We find the best solution for your needs and budget.",
+      },
+      {
+        q: "Can you take over our existing app?",
+        a: "Yes. We review it, keep what works, fix what's risky and bring it up to date, usually without starting over. The review is free for software we built; for software built elsewhere it's a paid review, and you get solutions, not just a list of problems.",
+      },
+      {
+        q: "Where is it hosted?",
+        a: "Where it makes sense: a lean server for a small app, enterprise cloud when you need it. You don't pay for scale you don't use.",
+      },
+      {
+        q: "Can we pay monthly?",
+        a: "Yes. We work fixed price, monthly, hourly, per deliverable or alongside your own team. Even small websites can be paid monthly.",
+      },
+    ],
+  },
+  contact: {
+    eyebrow: "Get a project estimate",
+    title: "Tell us where you're starting from.",
+    body: "A few lines are enough. We'll come back with questions or a first estimate.",
+    emailPrompt: "Or email us directly",
+    phonePrompt: "Or call us",
+  },
 };

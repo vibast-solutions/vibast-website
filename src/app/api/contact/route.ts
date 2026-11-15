@@ -30,6 +30,21 @@ function getSesClient(region: string): SESv2Client {
   return sesClient;
 }
 
+// "Where are you starting from?" picker: the form sends a key, the email shows
+// an English label. Unknown or missing keys are not an error.
+const STARTING_POINT_LABELS: Record<string, string> = {
+  new: "New project",
+  existing: "Existing app",
+  hosting: "Hosting or setup",
+  unsure: "Not sure",
+};
+
+function startingPointLabel(value: unknown): string {
+  return typeof value === "string" && Object.hasOwn(STARTING_POINT_LABELS, value)
+    ? STARTING_POINT_LABELS[value]
+    : "Not specified";
+}
+
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, "&amp;")
@@ -43,7 +58,7 @@ export async function POST(request: Request) {
   console.log("Contact form API called");
 
   try {
-    const { name, email, message, turnstileToken, website } = await request.json();
+    const { name, email, message, startingPoint, turnstileToken, website } = await request.json();
     console.log("Received contact form submission from:", email);
 
     // Honeypot: real users never fill this hidden field. Pretend success so bots don't adapt.
@@ -129,6 +144,7 @@ export async function POST(request: Request) {
       );
     }
 
+    const startingFrom = startingPointLabel(startingPoint);
     const safeName = escapeHtml(String(name));
     const safeEmail = escapeHtml(String(email));
     const safeMessage = escapeHtml(String(message)).replace(/\n/g, "<br>");
@@ -146,7 +162,7 @@ export async function POST(request: Request) {
             Subject: { Data: `New contact from ${name} via vibast.ro`, Charset: "UTF-8" },
             Body: {
               Text: {
-                Data: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+                Data: `Name: ${name}\nEmail: ${email}\nStarting from: ${startingFrom}\n\nMessage:\n${message}`,
                 Charset: "UTF-8",
               },
               Html: {
@@ -154,6 +170,7 @@ export async function POST(request: Request) {
         <h2>New Contact Form Submission</h2>
         <p><strong>Name:</strong> ${safeName}</p>
         <p><strong>Email:</strong> ${safeEmail}</p>
+        <p><strong>Starting from:</strong> ${startingFrom}</p>
         <h3>Message:</h3>
         <p>${safeMessage}</p>`,
                 Charset: "UTF-8",
