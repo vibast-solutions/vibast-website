@@ -71,7 +71,7 @@ export const webDevelopmentRo: ServicePageContent = {
   cost: {
     title: "Cât costă?",
     paragraphs: [
-      "Nu avem o listă fixă de prețuri, pentru că nu există două proiecte la fel. Un site simplu poate costa de la câteva sute de euro, iar o aplicație web sau un magazin complex, multe mii. Avem deja multe lucruri construite, iar partea aceea nu o mai plătești încă o dată.",
+      "Nu avem o listă fixă de prețuri, pentru că nu există două proiecte la fel. Un site simplu pornește de la 100 de euro, iar o aplicație web sau un magazin complex, multe mii. Avem deja multe lucruri construite, iar partea aceea nu o mai plătești încă o dată.",
       "Tu alegi cum plătești: preț fix, lunar, pe oră sau pe livrabil. Chiar și un site mic se poate plăti lunar, așa că nu ai nevoie de o sumă mare de la început. Hostingul pornește de la câțiva euro pe lună și crește doar odată cu utilizarea.",
       "Cui îi aparțin codul și conturile depinde de nevoile și de bugetul tău. Poți avea proprietatea completă sau o variantă mai ieftină, construită pe componentele și pe hostingul nostru. Găsim soluția potrivită pentru amândouă.",
     ],

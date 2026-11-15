@@ -71,7 +71,7 @@ export const webDevelopmentEn: ServicePageContent = {
   cost: {
     title: "What does it cost?",
     paragraphs: [
-      "There's no fixed price list, because no two projects are the same. A simple website can cost from a few hundred euros; a complex web app or store can cost many thousands. We already have a lot built, and you don't pay for that part again.",
+      "There's no fixed price list, because no two projects are the same. A simple website starts from 100 euros; a complex web app or store can cost many thousands. We already have a lot built, and you don't pay for that part again.",
       "You choose how to pay: a fixed price, monthly, hourly or per deliverable. Even a small website can be paid monthly, so you don't need a large sum upfront. Hosting starts at a few euros a month and grows only with usage.",
       "Who owns the code and the accounts depends on your needs and budget. You can have full ownership, or a lower-cost option built on our existing components and hosting. We'll find the solution that fits both.",
     ],
