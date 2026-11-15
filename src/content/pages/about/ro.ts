@@ -5,13 +5,13 @@ export const aboutRo: AboutContent = {
     title: "Despre noi: firmă de software din Prahova",
     description: "VIBAST Labs este o firmă de software din Câmpina, Prahova, cu clienți în toată Uniunea Europeană. Specialiști cu experiență într-una dintre cele mai mari companii din Europa.",
   },
-  h1: "O echipă mică de software, cu experiență dintr-o companie mare",
+  h1: "O echipă de software cu experiență dintr-o companie mare",
   intro: "VIBAST Labs este o firmă de software din Câmpina, Prahova, cu clienți în toată Uniunea Europeană. Specialiștii noștri au experiență într-una dintre cele mai mari companii din Europa.",
   whoWeAre: {
     title: "Cine suntem",
     paragraphs: [
       "Construim, găzduim și întreținem software pentru firme: site-uri și magazine online, aplicații mobile și desktop, unelte interne și sistemele din spatele lor. De la o unealtă pentru o echipă de cinci oameni la o platformă pentru mii de utilizatori.",
-      "Suntem mici intenționat. Vorbești direct cu oamenii care fac treaba, iar ei au construit software la scara uneia dintre cele mai mari companii din Europa. Primești experiența asta fără costurile unei structuri mari.",
+      "Vorbești direct cu oamenii care fac treaba. Au experiență într-una dintre cele mai mari companii din Europa și o folosesc ca să construiască exact ce se potrivește afacerii tale, nu mai mult.",
     ],
   },
   stats: [

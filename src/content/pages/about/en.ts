@@ -5,13 +5,13 @@ export const aboutEn: AboutContent = {
     title: "About Us: a Software Company from Romania",
     description: "VIBAST Labs is a software company from Câmpina, Romania, with clients across the EU. Specialists with experience at one of Europe's biggest companies.",
   },
-  h1: "A small software team with big-company experience",
+  h1: "A software team with big-company experience",
   intro: "VIBAST Labs is a software company from Câmpina, Romania, with clients across the EU. Our specialists bring experience from one of the biggest companies in Europe.",
   whoWeAre: {
     title: "Who we are",
     paragraphs: [
       "We build, host and look after software for businesses: websites and online stores, mobile and desktop apps, internal tools and the systems behind them. From a tool for a team of five to a platform for thousands of users.",
-      "We're small on purpose. You talk to the people who do the work, and they've built software at the scale of one of Europe's biggest companies. You get that experience without the overhead.",
+      "You talk directly to the people who do the work. They bring experience from one of the biggest companies in Europe, and they use it to build what fits your business, not more.",
     ],
   },
   stats: [
