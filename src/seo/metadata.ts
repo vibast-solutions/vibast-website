@@ -61,6 +61,7 @@ export function pageMetadata(
       title: fullTitle,
       description: meta.description,
       images: [TWITTER_IMAGE],
+      creator: "@vibastlabs",
     },
   };
 }
@@ -73,6 +74,7 @@ export const baseMetadata: Metadata = {
   authors: [{ name: SITE_NAME }],
   creator: SITE_NAME,
   publisher: SITE_NAME,
+  category: "Technology",
   robots: {
     index: true,
     follow: true,

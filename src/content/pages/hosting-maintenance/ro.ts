@@ -5,7 +5,7 @@ import type { ServicePageContent } from "@/content/types";
 export const hostingMaintenanceRo: ServicePageContent = {
   meta: {
     title: "Hosting și mentenanță aplicații",
-    description: "Un server simplu pentru o aplicație mică, cloud de nivel enterprise când ai nevoie. Actualizări, backup și monitorizare incluse. Plătești doar ce folosești.",
+    description: "Un server simplu pentru o aplicație mică, cloud de nivel enterprise când ai nevoie. O ținem la zi și îi facem backup. Plătești doar ce folosești.",
   },
   h1: "Hosting și mentenanță care îți țin aplicația în funcțiune",
   intro: "Găzduim acolo unde are sens: un server simplu pentru o aplicație mică, cloud de nivel enterprise când ai nevoie. Nu plătești pentru capacitate pe care n-o folosești.",

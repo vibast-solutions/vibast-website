@@ -5,7 +5,7 @@ import type { ShellContent } from "@/content/types";
 export const workEn: ShellContent = {
   meta: {
     title: "Our Work: Projects and Products",
-    description: "Software we've built for clients and the products we run ourselves, like MailBox business email and our free JSON tool.",
+    description: "Software we've built for clients and the products we run ourselves, like MailBox business email and our JSON tool.",
   },
   h1: "Projects and products we've built",
   intro: "Software we've built for clients and the products we run ourselves.",

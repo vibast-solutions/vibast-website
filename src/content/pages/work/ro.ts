@@ -5,7 +5,7 @@ import type { ShellContent } from "@/content/types";
 export const workRo: ShellContent = {
   meta: {
     title: "Proiecte și produse",
-    description: "Software construit pentru clienți și produsele pe care le administrăm noi înșine, ca MailBox, email pentru firme, și instrumentul nostru gratuit pentru JSON.",
+    description: "Software construit pentru clienți și produsele pe care le administrăm noi înșine, ca MailBox, email pentru firme, și instrumentul nostru pentru JSON.",
   },
   h1: "Proiecte și produse construite de noi",
   intro: "Software construit pentru clienți și produsele pe care le administrăm noi înșine.",

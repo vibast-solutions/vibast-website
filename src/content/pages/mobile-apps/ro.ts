@@ -4,7 +4,7 @@ import type { ServicePageContent } from "@/content/types";
 
 export const mobileAppsRo: ServicePageContent = {
   meta: {
-    title: "Dezvoltare aplicații mobile pentru iOS și Android",
+    title: "Dezvoltare aplicații mobile iOS și Android",
     description: "O aplicație pe care clienții sau echipa ta chiar o folosesc, pe iPhone și Android. O planificăm, o construim, o publicăm și o ținem în funcțiune.",
   },
   h1: "Aplicații mobile pentru iPhone și Android, construite o singură dată pentru ambele",

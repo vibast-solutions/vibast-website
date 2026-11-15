@@ -4,7 +4,7 @@ import type { ServicePageContent } from "@/content/types";
 
 export const webDevelopmentRo: ServicePageContent = {
   meta: {
-    title: "Dezvoltare aplicații web și site-uri pentru firme",
+    title: "Dezvoltare aplicații web și site-uri",
     description: "De la un site de prezentare simplu la un magazin online sau o aplicație web folosită de mii de oameni. Construit să crească, găzduit pe măsura bugetului.",
   },
   h1: "Site-uri, aplicații web și magazine online care lucrează pentru afacerea ta",

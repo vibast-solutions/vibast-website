@@ -4,7 +4,7 @@ import type { ServicePageContent } from "@/content/types";
 
 export const customSoftwareRo: ServicePageContent = {
   meta: {
-    title: "Software la comandă, aplicații desktop și integrări",
+    title: "Software la comandă și integrări",
     description: "Programe interne, aplicații desktop și integrări care preiau munca manuală a echipei tale. Iar când un instrument existent e mai potrivit, îți spunem.",
   },
   h1: "Software la comandă, construit după felul în care lucrează firma ta",
