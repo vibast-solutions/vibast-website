@@ -15,7 +15,7 @@
 # uses the dev template for a local build. The runtime variables named in
 # .env.dist (SES credentials, TURNSTILE_SECRET_KEY, …) are not read at build
 # time — the container gets them from the server's env file.
-FROM node:22-alpine AS build
+FROM node:26-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
@@ -25,7 +25,7 @@ COPY . .
 RUN --mount=type=secret,id=build_env,target=/app/.env,required=true \
     npm run build && rm -f .next/standalone/.env
 
-FROM node:22-alpine
+FROM node:26-alpine
 WORKDIR /app
 ENV NODE_ENV=production HOSTNAME=0.0.0.0 PORT=3000
 COPY --from=build /app/.next/standalone ./
