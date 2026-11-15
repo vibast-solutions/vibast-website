@@ -1,10 +1,10 @@
 import {
   Blocks,
   Code,
+  Database,
   Mail,
-  Network,
-  Search,
-  ShieldCheck,
+  Server,
+  Smartphone,
   Wrench,
   type LucideIcon,
 } from "lucide-react";
@@ -26,34 +26,42 @@ export const navLinks = [
 ];
 
 export const hero = {
-  eyebrow: "Blockchain & software engineering",
-  headline: ["Custom blockchains.", "Any architecture."],
+  eyebrow: "Software development company",
+  headline: ["Custom software,", "built to last."],
   description:
-    "From Cosmos SDK appchains to UTXO-based networks and beyond. We design and build the blockchain that fits your specific use case.",
+    "Web platforms, mobile apps, backends and cloud infrastructure for businesses that need software they can rely on, from first release to years in production.",
+  primaryCta: "Start a project",
+  secondaryCta: "View services",
+  emailPrompt: "Or email directly:",
 };
 
-// The three practice areas (formerly the rotating hero slides).
+/** Hero illustration bars, widest first (the logo's three bars). */
+export const layers = ["Web & mobile apps", "Backend & cloud", "Blockchain"];
+
+// The three practice areas shown under the hero.
+export const practicesLabel = "Practice areas";
 export const practices = [
   {
-    tag: "Blockchain Development",
-    headline: "Custom blockchains. Any architecture.",
+    tag: "Web & Mobile",
+    headline: "Products your users enjoy. Built to scale.",
     description:
-      "From Cosmos SDK appchains to UTXO-based networks and beyond. We design and build the blockchain that fits your specific use case.",
+      "Web platforms, customer portals and mobile apps, from the first prototype to a product in daily use. React, Next.js and Flutter, with fast, accessible interfaces.",
   },
   {
-    tag: "Web Development",
-    headline: "Modern web applications. Designed to scale.",
-    description:
-      "Full-stack web development with React, Next.js, and Node.js. APIs, databases, and cloud infrastructure built for performance.",
-  },
-  {
-    tag: "Reliable Infrastructure",
+    tag: "Backend & Infrastructure",
     headline: "Systems that work. And keep working.",
     description:
-      "High-availability backends, data migrations, and production-grade infrastructure. Built with security and maintainability in mind.",
+      "APIs, integrations, data migrations and cloud infrastructure. Built with security, monitoring and long-term maintainability in mind.",
+  },
+  {
+    tag: "Blockchain",
+    headline: "Blockchain, when your product needs it.",
+    description:
+      "In-house expertise for the projects that call for it: custom chains, smart contracts, wallets and dApps, built with the same engineering discipline as everything else.",
   },
 ];
 
+export const statsLabel = "In numbers";
 export const stats = [
   { value: "80+", label: "Projects delivered", detail: "End-to-end product launches" },
   { value: "52%", label: "Still maintained by us", detail: "Of the projects we’ve delivered" },
@@ -66,41 +74,47 @@ export type Service = {
   icon: LucideIcon;
 };
 
+export const servicesIntro = {
+  eyebrow: "What we build",
+  title: "Full-stack engineering. Blockchain when you need it.",
+  lead: "Web, mobile, backend and cloud under one roof, with in-house blockchain specialists for the projects that call for it.",
+};
+
 export const services: Service[] = [
   {
-    title: "Custom Blockchain Development",
+    title: "Web Applications",
     description:
-      "Purpose-built blockchains tailored to your requirements. UTXO or account-based, custom consensus, any architecture. We build the chain that fits your use case.",
-    icon: Blocks,
-  },
-  {
-    title: "Cosmos SDK & Appchains",
-    description:
-      "Production-ready Cosmos SDK appchains with custom modules, IBC connectivity, and seamless integration with the interchain ecosystem.",
-    icon: Network,
-  },
-  {
-    title: "Smart Contracts",
-    description:
-      "Secure, audited smart contracts for EVM chains and CosmWasm. From DeFi protocols to NFT platforms with disciplined security practices.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Backend & Infrastructure",
-    description:
-      "Reliable APIs, databases, and cloud infrastructure. Data migrations, system integrations, and backend services built for scale and maintainability.",
+      "Custom web platforms, customer portals, dashboards and SaaS products built with React, Next.js and Node.js. Fast, accessible and ready to grow with your business.",
     icon: Code,
   },
   {
-    title: "Security & Auditing",
+    title: "Mobile Apps",
     description:
-      "Smart contract audits, code reviews, and security assessments. Independent analysis with actionable recommendations for blockchain and traditional systems.",
-    icon: Search,
+      "Cross-platform iOS and Android apps from a single Flutter codebase, from design to publishing on the App Store and Google Play.",
+    icon: Smartphone,
   },
   {
-    title: "Ongoing Support",
+    title: "Backend, APIs & Cloud",
     description:
-      "Maintenance, upgrades, monitoring, and incident response. Keep your systems—blockchain or otherwise—secure and performant post-launch.",
+      "Robust APIs and services in Go and Node.js, automated deployments, containerised hosting, monitoring and backups. Infrastructure that ships every change safely.",
+    icon: Server,
+  },
+  {
+    title: "Integrations & Data Migrations",
+    description:
+      "Connect payment providers, ERPs, e-commerce platforms and third-party APIs, or move legacy systems and data to a modern stack without disrupting your business.",
+    icon: Database,
+  },
+  {
+    title: "Blockchain & Web3",
+    description:
+      "Custom blockchains, smart contracts, wallets and dApps for products that need them. Cosmos SDK, EVM and CosmWasm, built with disciplined security practices.",
+    icon: Blocks,
+  },
+  {
+    title: "Maintenance, Security & Support",
+    description:
+      "Upgrades, code and security reviews, monitoring and incident response. We keep your software secure and performant long after launch.",
     icon: Wrench,
   },
 ];
@@ -111,9 +125,13 @@ export const mailbox = {
     "Business email on your own domain: webmail, IMAP/POP3/SMTP, spam filtering, forwarders and domain pointers. Yearly plans, set up and handed over by us. Full end-user documentation is available online.",
   icon: Mail,
   docsHref: "/docs/mailbox",
+  eyebrow: "Our product",
+  docsCta: "View documentation",
+  contactCta: "Get in touch",
 };
 
 export const howWeWork = {
+  eyebrow: "How we work",
   title: "Delivery, end-to-end",
   body: "We own the outcome from scoping to launch. When additional specialization is required, we coordinate the right expertise to meet the same quality and reliability standard.",
   points: [
@@ -137,14 +155,20 @@ export const howWeWork = {
   ],
 };
 
+export const whyUs = {
+  eyebrow: "Why VIBAST Labs",
+  title: "Engineers who ship",
+  lead: "Senior engineering and battle-tested practices across the whole stack. We build systems that work—and keep working.",
+};
+
 export const capabilities = [
   {
-    title: "Blockchain expertise",
-    items: ["Custom chains, any architecture", "Cosmos SDK & IBC integration", "Smart contract development"],
+    title: "Product engineering",
+    items: ["Web & mobile applications", "Clean, accessible interfaces", "APIs designed for integration"],
   },
   {
     title: "Engineering depth",
-    items: ["Backend systems & APIs", "Data migrations & ETL", "Cloud infrastructure"],
+    items: ["Backend systems & cloud", "Data migrations & integrations", "Blockchain when it fits"],
   },
   {
     title: "Production ready",
@@ -153,13 +177,15 @@ export const capabilities = [
 ];
 
 export const contact = {
+  eyebrow: "Get in touch",
   title: "Let’s build something that lasts",
-  body: "Custom blockchain, backend infrastructure, or complex migration—tell us what you need. We’ll give you an honest assessment and a clear path forward.",
+  body: "A new product, a legacy system that needs a rewrite, or a complex migration—tell us what you need. We’ll give you an honest assessment and a clear path forward.",
   points: ["Free initial consultation", "Fast response", "No obligation estimate"],
+  emailPrompt: "Or email directly",
 };
 
 export const company = {
-  tagline: "Blockchain & software engineering. Built to last.",
+  tagline: "Software engineering. Built to last.",
   legalName: "VIBAST SOLUTIONS SRL",
   address: "B. P. Hasdeu 23, Campina, Prahova, Romania",
   ids: [

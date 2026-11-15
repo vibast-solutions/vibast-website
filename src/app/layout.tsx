@@ -17,31 +17,30 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "VIBAST Labs | Custom Blockchain & Web Development Services",
+  title: "VIBAST Labs | Custom Software, Web & Mobile Development",
   description:
-    "Build custom blockchains with any architecture—Cosmos SDK, UTXO-based, or account-based. Full-stack web development and reliable backend infrastructure. Get in touch today.",
+    "VIBAST Labs builds custom web and mobile applications, backends and cloud infrastructure, with in-house blockchain expertise when your product needs it. Get in touch today.",
   keywords: [
-    "custom blockchain development",
-    "blockchain development company",
-    "Cosmos SDK development",
-    "UTXO blockchain",
-    "appchain development",
-    "blockchain consulting",
-    "smart contract development",
-    "Web3 development",
-    "blockchain infrastructure",
-    "custom blockchain solutions",
-    "Cosmos ecosystem",
-    "IBC integration",
-    "web development services",
+    "software development company",
+    "custom software development",
+    "web application development",
+    "mobile app development",
+    "Flutter app development",
     "React development",
     "Next.js development",
+    "Node.js development",
+    "Go development",
     "backend development",
     "API development",
+    "cloud infrastructure",
+    "DevOps services",
+    "system integration",
     "data migration services",
-    "software engineering",
+    "software maintenance and support",
     "software consulting",
-    "blockchain architecture",
+    "software engineering",
+    "blockchain development",
+    "smart contract development",
   ],
   authors: [{ name: "VIBAST Labs" }],
   creator: "VIBAST Labs",
@@ -57,16 +56,16 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://vibast.ro",
     siteName: "VIBAST Labs",
-    title: "Custom Blockchain Development | Any Architecture | VIBAST Labs",
+    title: "Custom Software Development | Web, Mobile & Cloud | VIBAST Labs",
     description:
-      "Build custom blockchains with any architecture. Cosmos SDK, UTXO-based, account-based—we design and build the chain that fits your use case.",
+      "VIBAST Labs builds custom web and mobile applications, backends and cloud infrastructure, with in-house blockchain expertise when your product needs it.",
     // og:image comes from the generated src/app/opengraph-image.tsx route.
   },
   twitter: {
     card: "summary_large_image",
-    title: "Custom Blockchain Development | Any Architecture | VIBAST Labs",
+    title: "Custom Software Development | Web, Mobile & Cloud | VIBAST Labs",
     description:
-      "Build custom blockchains with any architecture. Full-stack web development and reliable backend infrastructure.",
+      "Custom web and mobile applications, backends and cloud infrastructure. Blockchain expertise when your product needs it.",
     // twitter:image comes from the generated src/app/twitter-image.tsx route.
     creator: "@vibastlabs",
   },
@@ -102,7 +101,7 @@ const jsonLd = {
   },
   image: "https://vibast.ro/opengraph-image",
   description:
-    "Custom blockchain development with any architecture—Cosmos SDK, UTXO-based, or account-based. Full-stack web development and reliable backend infrastructure.",
+    "VIBAST Labs builds custom web and mobile applications, backends and cloud infrastructure, with in-house blockchain expertise when your product needs it.",
   address: {
     "@type": "PostalAddress",
     streetAddress: "B. P. Hasdeu 23",
@@ -125,51 +124,80 @@ const jsonLd = {
     geoRadius: "10000 km",
   },
   knowsAbout: [
-    "Custom Blockchain Development",
-    "Cosmos SDK",
-    "UTXO Blockchain",
-    "Account-based Blockchain",
-    "Appchain Development",
-    "Smart Contract Development",
-    "IBC Integration",
+    "Custom Software Development",
+    "Web Application Development",
+    "Mobile App Development",
+    "Flutter",
     "React Development",
     "Next.js Development",
     "Node.js Development",
+    "Go Development",
     "Backend Development",
     "API Development",
-    "Data Migration",
     "Cloud Infrastructure",
-    "Software Engineering",
+    "DevOps",
+    "System Integration",
+    "Data Migration",
+    "Software Maintenance",
+    "Blockchain Development",
+    "Smart Contract Development",
   ],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: "Blockchain & Web Development Services",
+    name: "Software Development Services",
     itemListElement: [
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Custom Blockchain Development",
-          description:
-            "Purpose-built blockchains with any architecture. UTXO or account-based, custom consensus, Cosmos SDK, and more.",
-        },
-      },
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
           name: "Web Application Development",
           description:
-            "Full-stack web development with React, Next.js, and Node.js. Modern, scalable applications built for performance.",
+            "Custom web platforms, customer portals, dashboards and SaaS products built with React, Next.js and Node.js.",
         },
       },
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Backend Infrastructure",
+          name: "Mobile App Development",
           description:
-            "High-availability backends, data migrations, and production-grade infrastructure built with security in mind.",
+            "Cross-platform iOS and Android apps from a single Flutter codebase, from design to app store publishing.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Backend, API & Cloud Development",
+          description:
+            "Robust APIs and services in Go and Node.js, automated deployments, monitoring and production-grade cloud infrastructure.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "System Integration & Data Migration",
+          description:
+            "Integrations with payment providers, ERPs, e-commerce platforms and third-party APIs, and migrations of legacy systems and data.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Blockchain Development",
+          description:
+            "Custom blockchains, smart contracts, wallets and dApps for products that need them.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Software Maintenance & Support",
+          description:
+            "Upgrades, code and security reviews, monitoring and incident response after launch.",
         },
       },
     ],

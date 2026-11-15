@@ -3,7 +3,7 @@ import { brand } from "@/brand";
 
 export const runtime = "edge";
 
-export const alt = "VIBAST Labs - Custom Blockchain & Web Development";
+export const alt = "VIBAST Labs - Custom Software Development";
 export const size = {
   width: 1200,
   height: 630,
@@ -63,7 +63,7 @@ export default async function Image() {
             lineHeight: 1.4,
           }}
         >
-          Custom Blockchain & Web Development
+          Custom Software Development
         </div>
 
         {/* Services Pills */}
@@ -74,7 +74,7 @@ export default async function Image() {
             marginTop: 48,
           }}
         >
-          {["Blockchain", "Web Apps", "Infrastructure"].map((service) => (
+          {["Web & Mobile", "Backend & Cloud", "Blockchain"].map((service) => (
             <div
               key={service}
               style={{

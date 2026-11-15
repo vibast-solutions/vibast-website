@@ -16,10 +16,15 @@ import {
   contact,
   hero,
   howWeWork,
+  layers,
   mailbox,
   practices,
+  practicesLabel,
   services,
+  servicesIntro,
   stats,
+  statsLabel,
+  whyUs,
 } from "@/content/home";
 
 const contactHref = `#${SECTION_IDS.contact}`;
@@ -67,9 +72,9 @@ function PrimaryButton({ href, children }: { href: string; children: ReactNode }
 /** Hero illustration: the logo's three bars, labelled with the practice areas. */
 function LayersPanel() {
   const bars = [
-    { label: "Web applications", w: "100%", bg: "lagoon", color: "ink" },
-    { label: "Backend & infrastructure", w: "76%", bg: "teal", color: "white" },
-    { label: "Blockchain", w: "50%", bg: "ink", color: brand.onDark.paper },
+    { label: layers[0], w: "100%", bg: "lagoon", color: "ink" },
+    { label: layers[1], w: "76%", bg: "teal", color: "white" },
+    { label: layers[2], w: "50%", bg: "ink", color: brand.onDark.paper },
   ];
   return (
     <Stack
@@ -153,7 +158,7 @@ export default function Home() {
                 </Text>
                 <Flex gap={3} wrap="wrap" direction={{ base: "column", sm: "row" }} pt={2}>
                   <PrimaryButton href={contactHref}>
-                    Start a project
+                    {hero.primaryCta}
                     <ArrowRight size={18} aria-hidden="true" />
                   </PrimaryButton>
                   <Button
@@ -167,11 +172,11 @@ export default function Home() {
                     fontSize="md"
                     _hover={{ bg: "fog" }}
                   >
-                    <NextLink href={`#${SECTION_IDS.services}`}>View services</NextLink>
+                    <NextLink href={`#${SECTION_IDS.services}`}>{hero.secondaryCta}</NextLink>
                   </Button>
                 </Flex>
                 <Text fontSize="15px" color="brand.500">
-                  Or email directly:{" "}
+                  {hero.emailPrompt}{" "}
                   <Link href={`mailto:${CONTACT_EMAIL}`} color="accent.600">
                     {CONTACT_EMAIL}
                   </Link>
@@ -183,7 +188,7 @@ export default function Home() {
         </Box>
 
         {/* Practice areas */}
-        <Box as="section" aria-label="Practice areas" bg="white" borderYWidth="1px" borderColor="line">
+        <Box as="section" aria-label={practicesLabel} bg="white" borderYWidth="1px" borderColor="line">
           <PageContainer>
             <SimpleGrid columns={{ base: 1, md: 3 }}>
               {practices.map((p, i) => (
@@ -219,7 +224,7 @@ export default function Home() {
         </Box>
 
         {/* Stats */}
-        <Box as="section" aria-label="In numbers" py={{ base: 14, md: "72px" }}>
+        <Box as="section" aria-label={statsLabel} py={{ base: 14, md: "72px" }}>
           <PageContainer>
             <SimpleGrid columns={{ base: 1, md: 3 }} gap={{ base: 8, md: 10 }}>
               {stats.map((s) => (
@@ -247,11 +252,7 @@ export default function Home() {
         <Box as="section" id={SECTION_IDS.services} bg="white" borderTopWidth="1px" borderColor="line" py={sectionPy}>
           <PageContainer>
             <Stack gap={{ base: 8, md: 14 }}>
-              <SectionIntro
-                eyebrow="What we build"
-                title="Blockchain expertise. Full-stack capability."
-                lead="Deep specialization in custom blockchains and Cosmos SDK, backed by solid engineering across the entire stack."
-              />
+              <SectionIntro {...servicesIntro} />
 
               {/* Hairline grid: 1px gaps over the line colour. */}
               <SimpleGrid
@@ -297,7 +298,7 @@ export default function Home() {
                     <Flex w="11" h="11" borderRadius="10px" bg="brand.800" align="center" justify="center" flexShrink={0}>
                       <mailbox.icon size={22} color={brand.onDark.teal} strokeWidth={1.75} aria-hidden="true" />
                     </Flex>
-                    <Eyebrow onDark>Our product</Eyebrow>
+                    <Eyebrow onDark>{mailbox.eyebrow}</Eyebrow>
                   </Flex>
                   <Heading as="h3" fontSize={{ base: "23px", md: "28px" }} fontWeight="bold" color={brand.onDark.paper}>
                     {mailbox.title}
@@ -309,7 +310,7 @@ export default function Home() {
                 <Stack gap={3} flexShrink={0} minW={{ lg: "240px" }}>
                   <PrimaryButton href={mailbox.docsHref}>
                     <BookOpen size={18} aria-hidden="true" />
-                    View documentation
+                    {mailbox.docsCta}
                   </PrimaryButton>
                   <Button
                     asChild
@@ -322,7 +323,7 @@ export default function Home() {
                     fontSize="md"
                     _hover={{ bg: "brand.800" }}
                   >
-                    <NextLink href={contactHref}>Get in touch</NextLink>
+                    <NextLink href={contactHref}>{mailbox.contactCta}</NextLink>
                   </Button>
                 </Stack>
               </Flex>
@@ -338,7 +339,7 @@ export default function Home() {
               gap={{ base: 10, lg: 20 }}
             >
               <Stack gap={{ base: 5, md: 6 }}>
-                <Eyebrow onDark>How we work</Eyebrow>
+                <Eyebrow onDark>{howWeWork.eyebrow}</Eyebrow>
                 <Heading as="h2" fontSize={h2Size} lineHeight="1.12" fontWeight="bold" letterSpacing="-0.02em" color={brand.onDark.paper}>
                   {howWeWork.title}
                 </Heading>
@@ -387,11 +388,7 @@ export default function Home() {
         <Box as="section" py={sectionPy}>
           <PageContainer>
             <Stack gap={{ base: 8, md: 14 }}>
-              <SectionIntro
-                eyebrow="Why VIBAST Labs"
-                title="Specialists who ship"
-                lead="Deep blockchain expertise combined with battle-tested engineering practices. We build systems that work—and keep working."
-              />
+              <SectionIntro {...whyUs} />
               <SimpleGrid columns={{ base: 1, md: 3 }} gap={{ base: 8, md: 10 }}>
                 {capabilities.map((capability) => (
                   <Stack key={capability.title} gap={5} borderTopWidth="2px" borderColor="ink" pt={6}>
@@ -418,7 +415,7 @@ export default function Home() {
               gap={{ base: 10, lg: 20 }}
             >
               <Stack gap={{ base: 5, md: 6 }}>
-                <Eyebrow>Get in touch</Eyebrow>
+                <Eyebrow>{contact.eyebrow}</Eyebrow>
                 <Heading as="h2" fontSize={h2Size} lineHeight="1.12" fontWeight="bold" letterSpacing="-0.02em" color="ink">
                   {contact.title}
                 </Heading>
@@ -432,7 +429,7 @@ export default function Home() {
                 </Stack>
                 <Stack gap={1} borderTopWidth="1px" borderColor="line" mt={3} pt={6}>
                   <Text fontSize="sm" color="brand.500">
-                    Or email directly
+                    {contact.emailPrompt}
                   </Text>
                   <Link
                     href={`mailto:${CONTACT_EMAIL}`}
