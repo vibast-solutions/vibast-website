@@ -6,7 +6,7 @@ import { Box, Button, Flex, Heading, Input, SimpleGrid, Stack, Text, Textarea } 
 import { AlertCircle, CheckCircle, Send } from "lucide-react";
 import { brand } from "@/brand";
 import type { Locale } from "@/i18n/locales";
-import type { ContactFormStrings } from "@/content/pages/contact";
+import { STARTING_POINTS, type ContactFormStrings, type StartingPoint } from "@/content/pages/contact";
 
 const fieldProps = {
   bg: "white",
@@ -17,6 +17,63 @@ const fieldProps = {
   _hover: { borderColor: "brand.400" },
   _focus: { borderColor: "accent.500", boxShadow: `0 0 0 1px ${brand.teal}` },
 } as const;
+
+/** "Where are you starting from?": radio pills that wrap on narrow screens. */
+function StartingPointPicker({
+  legend,
+  labels,
+  value,
+  onChange,
+}: {
+  legend: string;
+  labels: Record<StartingPoint, string>;
+  value: StartingPoint | "";
+  onChange: (v: StartingPoint) => void;
+}) {
+  return (
+    <Box as="fieldset" border={0} p={0} m={0} minW={0}>
+      <Text as="legend" fontSize="sm" fontWeight="semibold" color="ink" mb={2} p={0}>
+        {legend}
+      </Text>
+      <Flex wrap="wrap" gap={2}>
+        {STARTING_POINTS.map((key) => {
+          const checked = value === key;
+          return (
+            <Box
+              as="label"
+              key={key}
+              position="relative"
+              display="inline-flex"
+              alignItems="center"
+              h="40px"
+              px={4}
+              borderRadius="full"
+              borderWidth="1px"
+              borderColor={checked ? "accent.500" : brand.inputBorder}
+              bg={checked ? "accent.50" : "white"}
+              color={checked ? "accent.700" : "ink"}
+              fontSize="sm"
+              fontWeight={checked ? "semibold" : "medium"}
+              cursor="pointer"
+              _hover={{ borderColor: checked ? "accent.500" : "brand.400" }}
+              _focusWithin={{ boxShadow: `0 0 0 2px ${brand.teal}` }}
+            >
+              <input
+                type="radio"
+                name="startingPoint"
+                value={key}
+                checked={checked}
+                onChange={() => onChange(key)}
+                style={{ position: "absolute", opacity: 0, width: 1, height: 1, margin: 0 }}
+              />
+              {labels[key]}
+            </Box>
+          );
+        })}
+      </Flex>
+    </Box>
+  );
+}
 
 function FieldLabel({ htmlFor, children }: { htmlFor: string; children: string }) {
   return (
@@ -33,6 +90,7 @@ function FieldLabel({ htmlFor, children }: { htmlFor: string; children: string }
  */
 export function ContactForm({ locale, strings: t }: { locale: Locale; strings: ContactFormStrings }) {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [startingPoint, setStartingPoint] = useState<StartingPoint | "">("");
   const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
@@ -54,7 +112,7 @@ export function ContactForm({ locale, strings: t }: { locale: Locale; strings: C
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, turnstileToken, website: honeypot }),
+        body: JSON.stringify({ ...formData, startingPoint, turnstileToken, website: honeypot }),
       });
 
       const data = await response.json();
@@ -65,6 +123,7 @@ export function ContactForm({ locale, strings: t }: { locale: Locale; strings: C
 
       setFormStatus("success");
       setFormData({ name: "", email: "", message: "" });
+      setStartingPoint("");
     } catch (error) {
       setFormStatus("error");
       setErrorMessage(error instanceof Error && error.message ? error.message : t.sendFailed);
@@ -138,6 +197,12 @@ export function ContactForm({ locale, strings: t }: { locale: Locale; strings: C
                 />
               </Stack>
             </SimpleGrid>
+            <StartingPointPicker
+              legend={t.startingPointLabel}
+              labels={t.startingPoints}
+              value={startingPoint}
+              onChange={setStartingPoint}
+            />
             <Stack gap={2}>
               <FieldLabel htmlFor="contact-message">{t.messageLabel}</FieldLabel>
               <Textarea

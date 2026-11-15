@@ -1,6 +1,8 @@
-import * as homeEn from "./en";
+import type { Locale } from "@/i18n/locales";
+import { homeEn } from "./en";
 import { homeRo } from "./ro";
+import type { HomePageContent } from "./types";
 
-// EN keeps the single-page copy (a module of named sections); RO is a shell
-// until S2 writes both languages to the same shape (plan §5).
-export { homeEn, homeRo };
+export type { CardCopy, HomePageContent } from "./types";
+
+export const homeContent: Record<Locale, HomePageContent> = { en: homeEn, ro: homeRo };

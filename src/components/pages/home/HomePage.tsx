@@ -3,56 +3,70 @@
 import type { ReactNode } from "react";
 import NextLink from "next/link";
 import { Box, Button, Flex, Grid, Heading, Link, SimpleGrid, Stack, Text } from "@chakra-ui/react";
-import { ArrowRight, BookOpen } from "lucide-react";
+import {
+  ArrowRight,
+  Blocks,
+  ChevronDown,
+  Code,
+  Layers,
+  Mail,
+  Puzzle,
+  Server,
+  Smartphone,
+  Sparkles,
+  Wrench,
+  type LucideIcon,
+} from "lucide-react";
 import { brand } from "@/brand";
 import type { Locale } from "@/i18n/locales";
+import { SERVICE_KEYS, routePath, type RouteKey } from "@/i18n/routes";
+import { CONTACT_EMAIL, CONTACT_PHONE } from "@/content/company";
+import { contactContent } from "@/content/pages/contact";
+import { homeContent, type CardCopy, type HomePageContent } from "@/content/pages/home";
 import { ContactForm } from "@/components/site/ContactForm";
 import { CheckItem, Eyebrow, PageContainer } from "@/components/site/primitives";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationJsonLd, websiteJsonLd } from "@/seo/jsonld";
-import { contactContent } from "@/content/pages/contact";
-import { homeRo } from "@/content/pages/home";
-import { PageShell } from "../PageShell";
-import {
-  CONTACT_EMAIL,
-  SECTION_IDS,
-  capabilities,
-  contact,
-  hero,
-  howWeWork,
-  layers,
-  mailbox,
-  practices,
-  practicesLabel,
-  services,
-  servicesIntro,
-  stats,
-  statsLabel,
-  whyUs,
-} from "@/content/pages/home/en";
 
+// In-page anchors. Keep `cta`: old links to /#cta land on the contact form.
+const SECTION_IDS = { services: "services", howWeWork: "how-we-work", contact: "cta" } as const;
 const contactHref = `#${SECTION_IDS.contact}`;
-const sectionPy = { base: 16, md: 28 };
-const h2Size = { base: "30px", md: "42px" };
 
-/** Two-column section intro: eyebrow + heading on the left, lead text on the right. */
-function SectionIntro({ eyebrow, title, lead }: { eyebrow: string; title: string; lead: string }) {
+const sectionPy = { base: 16, md: 24 };
+const h2Size = { base: "30px", md: "42px" };
+const leadSize = { base: "17px", md: "19px" };
+
+const SERVICE_ICONS: Record<(typeof SERVICE_KEYS)[number], LucideIcon> = {
+  webDevelopment: Code,
+  mobileApps: Smartphone,
+  customSoftware: Puzzle,
+  appModernization: Wrench,
+  hostingMaintenance: Server,
+  blockchain: Blocks,
+};
+
+/** "Where are you starting from?" card → the page it links to. */
+const STARTING_POINT_LINKS = [
+  { key: "new", href: "services", icon: Sparkles },
+  { key: "stuck", href: "appModernization", icon: Wrench },
+  { key: "run", href: "hostingMaintenance", icon: Layers },
+] as const satisfies readonly { key: keyof HomePageContent["startingPoints"]["cards"]; href: RouteKey; icon: LucideIcon }[];
+
+function SectionHeading({ eyebrow, title, onDark = false }: { eyebrow: string; title: string; onDark?: boolean }) {
   return (
-    <Grid
-      templateColumns={{ base: "minmax(0,1fr)", lg: "minmax(0,5fr) minmax(0,7fr)" }}
-      gap={{ base: 4, lg: 20 }}
-      alignItems="end"
-    >
-      <Stack gap={4}>
-        <Eyebrow>{eyebrow}</Eyebrow>
-        <Heading as="h2" fontSize={h2Size} lineHeight="1.12" fontWeight="bold" letterSpacing="-0.02em" color="ink">
-          {title}
-        </Heading>
-      </Stack>
-      <Text fontSize={{ base: "17px", md: "19px" }} lineHeight="1.6" color="inkSoft">
-        {lead}
-      </Text>
-    </Grid>
+    <Stack gap={4}>
+      <Eyebrow onDark={onDark}>{eyebrow}</Eyebrow>
+      <Heading
+        as="h2"
+        fontSize={h2Size}
+        lineHeight="1.12"
+        fontWeight="bold"
+        letterSpacing="-0.02em"
+        color={onDark ? brand.onDark.paper : "ink"}
+      >
+        {title}
+      </Heading>
+    </Stack>
   );
 }
 
@@ -68,20 +82,44 @@ function PrimaryButton({ href, children }: { href: string; children: ReactNode }
       fontSize="md"
       _hover={{ bg: "accent.600" }}
     >
-      <NextLink href={href}>{children}</NextLink>
+      <NextLink href={href}>
+        {children}
+        <ArrowRight size={18} aria-hidden="true" />
+      </NextLink>
     </Button>
   );
 }
 
-/** Hero illustration: the logo's three bars, labelled with the practice areas. */
-function LayersPanel() {
+function IconTile({ icon: Icon, onDark = false }: { icon: LucideIcon; onDark?: boolean }) {
+  return (
+    <Flex w="11" h="11" borderRadius="10px" bg={onDark ? "brand.800" : "fog"} align="center" justify="center" flexShrink={0}>
+      <Icon size={22} color={onDark ? brand.onDark.teal : brand.teal} strokeWidth={1.75} aria-hidden="true" />
+    </Flex>
+  );
+}
+
+/** Text link with an arrow, used at the bottom of linked cards. */
+function CardLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <Link asChild color="accent.600" fontWeight="semibold" fontSize="15px" mt="auto" w="fit-content">
+      <NextLink href={href}>
+        {children}
+        <ArrowRight size={16} aria-hidden="true" />
+      </NextLink>
+    </Link>
+  );
+}
+
+/** Hero illustration: the logo's three bars, labelled with what we do. */
+function LayersPanel({ labels }: { labels: [string, string, string] }) {
   const bars = [
-    { label: layers[0], w: "100%", bg: "lagoon", color: "ink" },
-    { label: layers[1], w: "76%", bg: "teal", color: "white" },
-    { label: layers[2], w: "50%", bg: "ink", color: brand.onDark.paper },
+    { label: labels[0], w: "100%", bg: "lagoon", color: "ink" },
+    { label: labels[1], w: "76%", bg: "teal", color: "white" },
+    { label: labels[2], w: "54%", bg: "ink", color: brand.onDark.paper },
   ];
   return (
     <Stack
+      aria-hidden="true"
       bg="white"
       borderWidth="1px"
       borderColor="line"
@@ -111,39 +149,21 @@ function LayersPanel() {
           {bar.label}
         </Flex>
       ))}
-      <Flex
-        display={{ base: "none", md: "flex" }}
-        w="full"
-        justify="space-between"
-        borderTopWidth="1px"
-        borderColor="fog"
-        mt={5}
-        pt={4}
-        fontSize="sm"
-        color="brand.500"
-      >
-        <Text>{howWeWork.title}</Text>
-        <Text>{howWeWork.steps.map((s) => s.title).join(" · ")}</Text>
-      </Flex>
     </Stack>
   );
 }
 
-/** Home page. EN keeps the single-page copy; RO is a shell until S2 (plan §5). */
+/** Home page (plan §5), same layout in both languages. */
 export function HomePage({ locale }: { locale: Locale }) {
+  const c = homeContent[locale];
+  const contact = contactContent[locale];
+
   return (
     <>
       <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
-      {locale === "ro" ? <PageShell routeKey="home" locale="ro" content={homeRo} /> : <HomeEn />}
-    </>
-  );
-}
 
-function HomeEn() {
-  return (
-    <>
-      {/* Hero */}
-      <Box as="section" pt={{ base: 14, md: "104px" }} pb={{ base: 16, md: 28 }}>
+      {/* 1. Hero */}
+      <Box as="section" pt={{ base: 14, md: "96px" }} pb={{ base: 14, md: 20 }}>
         <PageContainer>
           <Grid
             templateColumns={{ base: "minmax(0,1fr)", lg: "minmax(0,7fr) minmax(0,5fr)" }}
@@ -151,27 +171,22 @@ function HomeEn() {
             alignItems="center"
           >
             <Stack gap={{ base: 5, md: 7 }}>
-              <Eyebrow>{hero.eyebrow}</Eyebrow>
+              <Eyebrow>{c.hero.eyebrow}</Eyebrow>
               <Heading
                 as="h1"
-                fontSize={{ base: "40px", md: "56px", xl: "64px" }}
-                lineHeight="1.04"
+                fontSize={{ base: "36px", md: "50px", xl: "56px" }}
+                lineHeight="1.08"
                 fontWeight="bold"
                 letterSpacing="-0.02em"
                 color="ink"
               >
-                {hero.headline[0]}
-                <br />
-                {hero.headline[1]}
+                {c.hero.h1}
               </Heading>
-              <Text fontSize={{ base: "17px", md: "19px" }} lineHeight="1.6" color="inkSoft" maxW="560px">
-                {hero.description}
+              <Text fontSize={leadSize} lineHeight="1.6" color="inkSoft" maxW="600px">
+                {c.hero.sub}
               </Text>
               <Flex gap={3} wrap="wrap" direction={{ base: "column", sm: "row" }} pt={2}>
-                <PrimaryButton href={contactHref}>
-                  {hero.primaryCta}
-                  <ArrowRight size={18} aria-hidden="true" />
-                </PrimaryButton>
+                <PrimaryButton href={contactHref}>{c.hero.primaryCta}</PrimaryButton>
                 <Button
                   asChild
                   h="52px"
@@ -183,75 +198,39 @@ function HomeEn() {
                   fontSize="md"
                   _hover={{ bg: "fog" }}
                 >
-                  <NextLink href={`#${SECTION_IDS.services}`}>{hero.secondaryCta}</NextLink>
+                  <NextLink href={`#${SECTION_IDS.howWeWork}`}>{c.hero.secondaryCta}</NextLink>
                 </Button>
               </Flex>
               <Text fontSize="15px" color="brand.500">
-                {hero.emailPrompt}{" "}
+                {c.hero.emailPrompt}{" "}
                 <Link href={`mailto:${CONTACT_EMAIL}`} color="accent.600">
                   {CONTACT_EMAIL}
                 </Link>
               </Text>
             </Stack>
-            <LayersPanel />
+            <LayersPanel labels={c.hero.layers} />
           </Grid>
         </PageContainer>
       </Box>
 
-      {/* Practice areas */}
-      <Box as="section" aria-label={practicesLabel} bg="white" borderYWidth="1px" borderColor="line">
+      {/* 2. Proof row */}
+      <Box as="section" aria-label={c.proof.label} bg="white" borderYWidth="1px" borderColor="line" py={{ base: 10, md: 14 }}>
         <PageContainer>
-          <SimpleGrid columns={{ base: 1, md: 3 }}>
-            {practices.map((p, i) => (
-              <Stack
-                key={p.tag}
-                gap={3}
-                py={{ base: 9, md: 14 }}
-                pl={{ base: 0, md: i === 0 ? 0 : 10 }}
-                pr={{ base: 0, md: i === practices.length - 1 ? 0 : 10 }}
-                borderLeftWidth={{ base: 0, md: i === 0 ? 0 : "1px" }}
-                borderTopWidth={{ base: i === 0 ? 0 : "1px", md: 0 }}
-                borderColor="line"
-              >
-                <Text
-                  fontSize="13px"
-                  fontWeight="semibold"
-                  letterSpacing="0.12em"
-                  textTransform="uppercase"
-                  color="accent.600"
-                >
-                  {String(i + 1).padStart(2, "0")} · {p.tag}
-                </Text>
-                <Heading as="h3" fontSize={{ base: "20px", md: "22px" }} lineHeight="1.3" fontWeight="bold" color="ink">
-                  {p.headline}
-                </Heading>
-                <Text fontSize="md" lineHeight="1.6" color="brand.500">
-                  {p.description}
-                </Text>
-              </Stack>
-            ))}
-          </SimpleGrid>
-        </PageContainer>
-      </Box>
-
-      {/* Stats */}
-      <Box as="section" aria-label={statsLabel} py={{ base: 14, md: "72px" }}>
-        <PageContainer>
-          <SimpleGrid columns={{ base: 1, md: 3 }} gap={{ base: 8, md: 10 }}>
-            {stats.map((s) => (
-              <Stack key={s.label} gap={1.5} borderTopWidth="2px" borderColor="ink" pt={5}>
+          <SimpleGrid columns={{ base: 2, lg: 4 }} gap={{ base: 6, md: 10 }}>
+            {[...c.proof.stats, c.proof.reach].map((s) => (
+              <Stack key={s.label} gap={1} borderTopWidth="2px" borderColor="ink" pt={4}>
                 <Text
                   fontFamily="heading"
-                  fontSize={{ base: "40px", md: "48px" }}
+                  fontSize={{ base: "30px", md: "42px" }}
                   fontWeight="bold"
                   letterSpacing="-0.02em"
                   lineHeight="1.1"
+                  color="ink"
                 >
                   {s.value}
                 </Text>
-                <Text fontWeight="semibold">{s.label}</Text>
-                <Text fontSize="15px" color="brand.500">
-                  {s.detail}
+                <Text fontSize={{ base: "15px", md: "md" }} color="inkSoft">
+                  {s.label}
                 </Text>
               </Stack>
             ))}
@@ -259,12 +238,54 @@ function HomeEn() {
         </PageContainer>
       </Box>
 
-      {/* Services */}
+      {/* 3. Where are you starting from? */}
+      <Box as="section" py={sectionPy}>
+        <PageContainer>
+          <Stack gap={{ base: 8, md: 12 }}>
+            <SectionHeading eyebrow={c.startingPoints.eyebrow} title={c.startingPoints.title} />
+            <SimpleGrid columns={{ base: 1, md: 3 }} gap={{ base: 4, md: 6 }}>
+              {STARTING_POINT_LINKS.map(({ key, href, icon }) => {
+                const card = c.startingPoints.cards[key];
+                return (
+                  <Stack
+                    key={key}
+                    bg="white"
+                    borderWidth="1px"
+                    borderColor="line"
+                    borderRadius="16px"
+                    p={{ base: 6, md: 8 }}
+                    gap={4}
+                  >
+                    <IconTile icon={icon} />
+                    <Heading as="h3" fontSize={{ base: "19px", md: "21px" }} lineHeight="1.3" fontWeight="bold" color="ink">
+                      {card.title}
+                    </Heading>
+                    <Text fontSize="md" lineHeight="1.6" color="brand.500">
+                      {card.body}
+                    </Text>
+                    <CardLink href={routePath(href, locale)}>{card.cta}</CardLink>
+                  </Stack>
+                );
+              })}
+            </SimpleGrid>
+          </Stack>
+        </PageContainer>
+      </Box>
+
+      {/* 4. What we build */}
       <Box as="section" id={SECTION_IDS.services} bg="white" borderTopWidth="1px" borderColor="line" py={sectionPy}>
         <PageContainer>
-          <Stack gap={{ base: 8, md: 14 }}>
-            <SectionIntro {...servicesIntro} />
-
+          <Stack gap={{ base: 8, md: 12 }}>
+            <Grid
+              templateColumns={{ base: "minmax(0,1fr)", lg: "minmax(0,5fr) minmax(0,7fr)" }}
+              gap={{ base: 4, lg: 20 }}
+              alignItems="end"
+            >
+              <SectionHeading eyebrow={c.services.eyebrow} title={c.services.title} />
+              <Text fontSize={leadSize} lineHeight="1.6" color="inkSoft">
+                {c.services.lead}
+              </Text>
+            </Grid>
             {/* Hairline grid: 1px gaps over the line colour. */}
             <SimpleGrid
               columns={{ base: 1, md: 2, lg: 3 }}
@@ -275,74 +296,56 @@ function HomeEn() {
               borderRadius="16px"
               overflow="hidden"
             >
-              {services.map((service) => {
-                const Icon = service.icon;
+              {SERVICE_KEYS.map((key) => {
+                const card: CardCopy = c.services.cards[key];
                 return (
-                  <Stack key={service.title} bg="white" p={{ base: 6, md: 8 }} gap={3.5}>
-                    <Flex w="11" h="11" borderRadius="10px" bg="fog" align="center" justify="center">
-                      <Icon size={22} color={brand.teal} strokeWidth={1.75} aria-hidden="true" />
-                    </Flex>
+                  <Stack key={key} bg="white" p={{ base: 6, md: 8 }} gap={3.5}>
+                    <IconTile icon={SERVICE_ICONS[key]} />
                     <Heading as="h3" fontSize={{ base: "18px", md: "19px" }} fontWeight="bold" color="ink">
-                      {service.title}
+                      {card.title}
                     </Heading>
                     <Text fontSize="15px" lineHeight="1.65" color="brand.500">
-                      {service.description}
+                      {card.body}
                     </Text>
+                    <CardLink href={routePath(key, locale)}>
+                      {c.services.more}
+                      <Box as="span" srOnly>
+                        : {card.title}
+                      </Box>
+                    </CardLink>
                   </Stack>
                 );
               })}
             </SimpleGrid>
-
-            {/* MailBox: our own product, with links to its documentation. */}
-            <Flex
-              bg="ink"
-              borderRadius={{ base: "16px", md: "20px" }}
-              px={{ base: 6, md: 12 }}
-              py={{ base: 7, md: 11 }}
-              direction={{ base: "column", lg: "row" }}
-              align={{ base: "stretch", lg: "center" }}
-              justify="space-between"
-              gap={{ base: 6, lg: 10 }}
-            >
-              <Stack gap={4} maxW="680px">
-                <Flex align="center" gap={3.5}>
-                  <Flex w="11" h="11" borderRadius="10px" bg="brand.800" align="center" justify="center" flexShrink={0}>
-                    <mailbox.icon size={22} color={brand.onDark.teal} strokeWidth={1.75} aria-hidden="true" />
-                  </Flex>
-                  <Eyebrow onDark>{mailbox.eyebrow}</Eyebrow>
-                </Flex>
-                <Heading as="h3" fontSize={{ base: "23px", md: "28px" }} fontWeight="bold" color={brand.onDark.paper}>
-                  {mailbox.title}
-                </Heading>
-                <Text fontSize={{ base: "15px", md: "md" }} lineHeight="1.65" color="brand.300">
-                  {mailbox.description}
-                </Text>
-              </Stack>
-              <Stack gap={3} flexShrink={0} minW={{ lg: "240px" }}>
-                <PrimaryButton href={mailbox.docsHref}>
-                  <BookOpen size={18} aria-hidden="true" />
-                  {mailbox.docsCta}
-                </PrimaryButton>
-                <Button
-                  asChild
-                  h="52px"
-                  px={6}
-                  variant="outline"
-                  borderColor={brand.outlineOnDark}
-                  color={brand.onDark.paper}
-                  fontWeight="semibold"
-                  fontSize="md"
-                  _hover={{ bg: "brand.800" }}
-                >
-                  <NextLink href={contactHref}>{mailbox.contactCta}</NextLink>
-                </Button>
-              </Stack>
-            </Flex>
           </Stack>
         </PageContainer>
       </Box>
 
-      {/* How we work */}
+      {/* 5. The range */}
+      <Box as="section" py={sectionPy}>
+        <PageContainer>
+          <Stack gap={{ base: 8, md: 12 }}>
+            <SectionHeading eyebrow={c.range.eyebrow} title={c.range.title} />
+            <SimpleGrid columns={{ base: 1, md: 2 }} gap={{ base: 8, md: 12 }}>
+              {c.range.items.map((item) => (
+                <Stack key={item.title} gap={3} borderTopWidth="2px" borderColor="ink" pt={6}>
+                  <Heading as="h3" fontSize={{ base: "20px", md: "24px" }} lineHeight="1.25" fontWeight="bold" color="ink">
+                    {item.title}
+                  </Heading>
+                  <Text fontSize={{ base: "16px", md: "17px" }} lineHeight="1.65" color="inkSoft">
+                    {item.body}
+                  </Text>
+                </Stack>
+              ))}
+            </SimpleGrid>
+            <Text fontSize="md" color="brand.500">
+              {c.range.note}
+            </Text>
+          </Stack>
+        </PageContainer>
+      </Box>
+
+      {/* 6. How we work */}
       <Box as="section" id={SECTION_IDS.howWeWork} bg="ink" py={sectionPy}>
         <PageContainer>
           <Grid
@@ -350,31 +353,21 @@ function HomeEn() {
             gap={{ base: 10, lg: 20 }}
           >
             <Stack gap={{ base: 5, md: 6 }}>
-              <Eyebrow onDark>{howWeWork.eyebrow}</Eyebrow>
-              <Heading as="h2" fontSize={h2Size} lineHeight="1.12" fontWeight="bold" letterSpacing="-0.02em" color={brand.onDark.paper}>
-                {howWeWork.title}
-              </Heading>
+              <SectionHeading eyebrow={c.howWeWork.eyebrow} title={c.howWeWork.title} onDark />
               <Text fontSize={{ base: "17px", md: "18px" }} lineHeight="1.65" color="brand.300">
-                {howWeWork.body}
+                {c.howWeWork.payment}
               </Text>
-              <Stack gap={3.5} pt={2} color={brand.textOnDark}>
-                {howWeWork.points.map((point) => (
-                  <CheckItem key={point} onDark>
-                    {point}
-                  </CheckItem>
-                ))}
-              </Stack>
             </Stack>
             <Box as="ol" listStyleType="none">
-              {howWeWork.steps.map((step, i) => (
+              {c.howWeWork.steps.map((step, i) => (
                 <Grid
                   as="li"
                   key={step.title}
                   templateColumns={{ base: "minmax(0,1fr)", md: "64px minmax(0,1fr)" }}
                   gap={{ base: 1.5, md: 4 }}
-                  py={{ base: 6, md: 8 }}
+                  py={{ base: 6, md: 7 }}
                   borderTopWidth="1px"
-                  borderBottomWidth={i === howWeWork.steps.length - 1 ? "1px" : 0}
+                  borderBottomWidth={i === c.howWeWork.steps.length - 1 ? "1px" : 0}
                   borderColor="brand.700"
                 >
                   <Text fontFamily="heading" fontWeight="bold" fontSize="15px" color="accent.400" pt={{ md: "5px" }}>
@@ -395,22 +388,42 @@ function HomeEn() {
         </PageContainer>
       </Box>
 
-      {/* Why VIBAST Labs */}
+      {/* 7. What does it cost? */}
       <Box as="section" py={sectionPy}>
         <PageContainer>
-          <Stack gap={{ base: 8, md: 14 }}>
-            <SectionIntro {...whyUs} />
-            <SimpleGrid columns={{ base: 1, md: 3 }} gap={{ base: 8, md: 10 }}>
-              {capabilities.map((capability) => (
-                <Stack key={capability.title} gap={5} borderTopWidth="2px" borderColor="ink" pt={6}>
-                  <Heading as="h3" fontSize={{ base: "19px", md: "20px" }} fontWeight="bold" color="ink">
-                    {capability.title}
+          <Grid
+            templateColumns={{ base: "minmax(0,1fr)", lg: "minmax(0,5fr) minmax(0,7fr)" }}
+            gap={{ base: 6, lg: 20 }}
+          >
+            <SectionHeading eyebrow={c.cost.eyebrow} title={c.cost.title} />
+            <Stack gap={4}>
+              {c.cost.paragraphs.map((p) => (
+                <Text key={p} fontSize={{ base: "17px", md: "18px" }} lineHeight="1.65" color="inkSoft">
+                  {p}
+                </Text>
+              ))}
+              <Box pt={3}>
+                <PrimaryButton href={contactHref}>{c.cost.cta}</PrimaryButton>
+              </Box>
+            </Stack>
+          </Grid>
+        </PageContainer>
+      </Box>
+
+      {/* 8. Why VIBAST Labs */}
+      <Box as="section" bg="white" borderTopWidth="1px" borderColor="line" py={sectionPy}>
+        <PageContainer>
+          <Stack gap={{ base: 8, md: 12 }}>
+            <SectionHeading eyebrow={c.whyUs.eyebrow} title={c.whyUs.title} />
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={{ base: 6, md: 8 }}>
+              {c.whyUs.items.map((item) => (
+                <Stack key={item.title} gap={2} borderTopWidth="2px" borderColor="ink" pt={5}>
+                  <Heading as="h3" fontSize={{ base: "18px", md: "19px" }} fontWeight="bold" color="ink">
+                    {item.title}
                   </Heading>
-                  <Stack gap={3} color="inkSoft">
-                    {capability.items.map((item) => (
-                      <CheckItem key={item}>{item}</CheckItem>
-                    ))}
-                  </Stack>
+                  <Text fontSize="15px" lineHeight="1.65" color="brand.500">
+                    {item.body}
+                  </Text>
                 </Stack>
               ))}
             </SimpleGrid>
@@ -418,43 +431,139 @@ function HomeEn() {
         </PageContainer>
       </Box>
 
-      {/* Contact */}
-      <Box as="section" id={SECTION_IDS.contact} bg="white" borderTopWidth="1px" borderColor="line" py={sectionPy}>
+      {/* 9. MailBox band */}
+      <Box as="section" pt={sectionPy} bg="white">
+        <PageContainer>
+          <Flex
+            bg="ink"
+            borderRadius={{ base: "16px", md: "20px" }}
+            px={{ base: 6, md: 12 }}
+            py={{ base: 7, md: 10 }}
+            direction={{ base: "column", lg: "row" }}
+            align={{ base: "stretch", lg: "center" }}
+            justify="space-between"
+            gap={{ base: 6, lg: 10 }}
+          >
+            <Stack gap={4} maxW="680px">
+              <Flex align="center" gap={3.5}>
+                <IconTile icon={Mail} onDark />
+                <Eyebrow onDark>{c.mailbox.eyebrow}</Eyebrow>
+              </Flex>
+              <Heading as="h2" fontSize={{ base: "23px", md: "28px" }} fontWeight="bold" color={brand.onDark.paper}>
+                {c.mailbox.title}
+              </Heading>
+              <Text fontSize={{ base: "15px", md: "md" }} lineHeight="1.65" color="brand.300">
+                {c.mailbox.body}
+              </Text>
+            </Stack>
+            <Box flexShrink={0}>
+              <PrimaryButton href={routePath("mailbox", locale)}>{c.mailbox.cta}</PrimaryButton>
+            </Box>
+          </Flex>
+        </PageContainer>
+      </Box>
+
+      {/* 10. FAQ */}
+      <Box as="section" bg="white" py={sectionPy}>
+        <PageContainer>
+          <Grid
+            templateColumns={{ base: "minmax(0,1fr)", lg: "minmax(0,5fr) minmax(0,7fr)" }}
+            gap={{ base: 8, lg: 20 }}
+          >
+            <SectionHeading eyebrow={c.faq.eyebrow} title={c.faq.title} />
+            <Box>
+              {c.faq.items.map((item, i) => (
+                <Box
+                  as="details"
+                  key={item.q}
+                  borderTopWidth="1px"
+                  borderBottomWidth={i === c.faq.items.length - 1 ? "1px" : 0}
+                  borderColor="line"
+                  css={{
+                    "& > summary::-webkit-details-marker": { display: "none" },
+                    "&[open] .faq-chevron": { transform: "rotate(180deg)" },
+                  }}
+                >
+                  <Flex
+                    as="summary"
+                    listStyleType="none"
+                    cursor="pointer"
+                    align="center"
+                    justify="space-between"
+                    gap={4}
+                    py={5}
+                  >
+                    <Heading as="h3" fontSize={{ base: "17px", md: "19px" }} fontWeight="bold" color="ink">
+                      {item.q}
+                    </Heading>
+                    <Box className="faq-chevron" flexShrink={0} transition="transform 0.2s" color="brand.500">
+                      <ChevronDown size={20} aria-hidden="true" />
+                    </Box>
+                  </Flex>
+                  <Text pb={5} fontSize="md" lineHeight="1.65" color="inkSoft" maxW="720px">
+                    {item.a}
+                  </Text>
+                </Box>
+              ))}
+            </Box>
+          </Grid>
+        </PageContainer>
+      </Box>
+
+      {/* 11. Final CTA + contact form */}
+      <Box as="section" id={SECTION_IDS.contact} borderTopWidth="1px" borderColor="line" py={sectionPy}>
         <PageContainer>
           <Grid
             templateColumns={{ base: "minmax(0,1fr)", lg: "minmax(0,5fr) minmax(0,7fr)" }}
             gap={{ base: 10, lg: 20 }}
           >
             <Stack gap={{ base: 5, md: 6 }}>
-              <Eyebrow>{contact.eyebrow}</Eyebrow>
-              <Heading as="h2" fontSize={h2Size} lineHeight="1.12" fontWeight="bold" letterSpacing="-0.02em" color="ink">
-                {contact.title}
-              </Heading>
+              <SectionHeading eyebrow={c.contact.eyebrow} title={c.contact.title} />
               <Text fontSize={{ base: "17px", md: "18px" }} lineHeight="1.6" color="inkSoft">
-                {contact.body}
+                {c.contact.body}
               </Text>
               <Stack gap={3}>
-                {contact.points.map((point) => (
-                  <CheckItem key={point}>{point}</CheckItem>
+                {contact.nextSteps.items.map((item) => (
+                  <CheckItem key={item}>{item}</CheckItem>
                 ))}
               </Stack>
-              <Stack gap={1} borderTopWidth="1px" borderColor="line" mt={3} pt={6}>
-                <Text fontSize="sm" color="brand.500">
-                  {contact.emailPrompt}
-                </Text>
-                <Link
-                  href={`mailto:${CONTACT_EMAIL}`}
-                  fontFamily="heading"
-                  fontSize={{ base: "19px", md: "20px" }}
-                  fontWeight="bold"
-                  color="accent.600"
-                  w="fit-content"
-                >
-                  {CONTACT_EMAIL}
-                </Link>
+              <Stack gap={4} borderTopWidth="1px" borderColor="line" mt={3} pt={6}>
+                <Stack gap={1}>
+                  <Text fontSize="sm" color="brand.500">
+                    {c.contact.emailPrompt}
+                  </Text>
+                  <Link
+                    href={`mailto:${CONTACT_EMAIL}`}
+                    fontFamily="heading"
+                    fontSize={{ base: "19px", md: "20px" }}
+                    fontWeight="bold"
+                    color="accent.600"
+                    w="fit-content"
+                  >
+                    {CONTACT_EMAIL}
+                  </Link>
+                </Stack>
+                {/* Rendered only once a phone number is set in src/content/company.ts. */}
+                {CONTACT_PHONE && (
+                  <Stack gap={1}>
+                    <Text fontSize="sm" color="brand.500">
+                      {c.contact.phonePrompt}
+                    </Text>
+                    <Link
+                      href={`tel:${CONTACT_PHONE.replace(/[^+\d]/g, "")}`}
+                      fontFamily="heading"
+                      fontSize={{ base: "19px", md: "20px" }}
+                      fontWeight="bold"
+                      color="accent.600"
+                      w="fit-content"
+                    >
+                      {CONTACT_PHONE}
+                    </Link>
+                  </Stack>
+                )}
               </Stack>
             </Stack>
-            <ContactForm locale="en" strings={contactContent.en.form} />
+            <ContactForm locale={locale} strings={contact.form} />
           </Grid>
         </PageContainer>
       </Box>
