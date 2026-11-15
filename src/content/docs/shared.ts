@@ -5,9 +5,7 @@ import type { Locale } from "./types";
 
 export const PANEL_URL = "https://mailbox.vibast.ro";
 export const PANEL_HOST = "mailbox.vibast.ro";
-export const CONTACT_EMAIL = "stefan@vibast.ro";
-/** Contact form anchor on the marketing home page. */
-export const CONTACT_ANCHOR = "/#cta";
+export { CONTACT_EMAIL } from "@/content/company";
 
 /** Sentinel used by tier limits that are unlimited (localized at render time). */
 export const UNLIMITED = "∞_UNLIMITED";

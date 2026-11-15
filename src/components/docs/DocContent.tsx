@@ -11,7 +11,8 @@ import {
 import NextLink from "next/link";
 import { Info, AlertTriangle, Sparkles } from "lucide-react";
 import type { Block, DocPage, Locale } from "@/content/docs";
-import { TIERS, UNLIMITED, formatPrice, CONTACT_ANCHOR } from "@/content/docs";
+import { TIERS, UNLIMITED, formatPrice } from "@/content/docs";
+import { routePath } from "@/i18n/routes";
 
 const NOTE_STYLES = {
   info: { bg: "brand.50", border: "brand.200", icon: Info, iconColor: "brand.600" },
@@ -107,7 +108,7 @@ function TierTable({ locale }: { locale: Locale }) {
               "No fixed limits. Tell us what you need — storage, domains, mailboxes, forwarders, pointers — and we'll build you a tailored offer.",
             )}
           </Text>
-          <NextLink href={CONTACT_ANCHOR}>
+          <NextLink href={routePath("contact", locale)}>
             <Text
               color="accent.400"
               fontWeight="semibold"
