@@ -27,6 +27,11 @@ export const siteEn: SiteContent = {
     label: "Română",
     aria: "Citește această pagină în română",
   },
+  languageBanner: {
+    text: "This site is also available in English.",
+    cta: "Read this page in English",
+    dismiss: "Close",
+  },
   footer: {
     tagline: "Software that fits your business. Built, hosted and looked after by us.",
     columns: { company: "Company", services: "Services", docs: "Docs", contact: "Contact" },

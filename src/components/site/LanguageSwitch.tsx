@@ -7,6 +7,7 @@ import { brand } from "@/brand";
 import { otherLocale, type Locale } from "@/i18n/locales";
 import { matchRoute, routePath } from "@/i18n/routes";
 import { siteContent } from "@/content/site";
+import { saveLocaleChoice } from "@/i18n/preference";
 
 /**
  * Link to the same page in the other language (falls back to the other home
@@ -21,7 +22,16 @@ export function LanguageSwitch({ locale, onNavigate }: { locale: Locale; onNavig
   const { label, aria } = siteContent[locale].languageSwitch;
 
   return (
-    <a href={href} hrefLang={target} lang={target} aria-label={aria} onClick={onNavigate}>
+    <a
+      href={href}
+      hrefLang={target}
+      lang={target}
+      aria-label={aria}
+      onClick={() => {
+        saveLocaleChoice(target);
+        onNavigate?.();
+      }}
+    >
       <Flex
         as="span"
         align="center"

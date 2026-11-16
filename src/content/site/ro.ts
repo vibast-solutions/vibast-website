@@ -27,6 +27,11 @@ export const siteRo: SiteContent = {
     label: "English",
     aria: "Read this page in English",
   },
+  languageBanner: {
+    text: "Site-ul nostru e disponibil și în română.",
+    cta: "Vezi pagina în română",
+    dismiss: "Închide",
+  },
   footer: {
     tagline: "Software potrivit afacerii tale. Îl construim, îl găzduim și avem grijă de el.",
     columns: { company: "Companie", services: "Servicii", docs: "Documentație", contact: "Contact" },

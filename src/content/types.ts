@@ -65,6 +65,16 @@ export interface SiteContent {
     /** Accessible name, e.g. "Citește pagina în română". */
     aria: string;
   };
+  /**
+   * Banner offering this language to visitors browsing the other one (shown on
+   * English pages to visitors from Romania or with a Romanian browser), written
+   * in this language.
+   */
+  languageBanner: {
+    text: string;
+    cta: string;
+    dismiss: string;
+  };
   footer: {
     tagline: string;
     columns: { company: string; services: string; docs: string; contact: string };
