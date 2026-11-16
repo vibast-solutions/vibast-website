@@ -2,14 +2,17 @@ import type { Metadata } from "next";
 import { OG_LOCALE, otherLocale, type Locale } from "@/i18n/locales";
 import { ROUTES, SITE_URL, absoluteUrl, type RouteKey } from "@/i18n/routes";
 import type { PageMeta } from "@/content/types";
+import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_PATH, SOCIAL_IMAGE_SIZE } from "@/seo/socialImageMeta";
 
 export const SITE_NAME = "VIBAST Labs";
 
-// The generated social images (src/app/opengraph-image.tsx, twitter-image.tsx).
+// The generated social card of each language (SOCIAL_IMAGE_PATH), used for both
+// Open Graph and Twitter.
 // A page that sets `openGraph`/`twitter` replaces the inherited objects, file
 // images included, so the helper lists them explicitly.
-const OG_IMAGE = { url: "/opengraph-image", width: 1200, height: 630, alt: "VIBAST Labs" };
-const TWITTER_IMAGE = { url: "/twitter-image", width: 1200, height: 630, alt: "VIBAST Labs" };
+function socialImage(locale: Locale) {
+  return { url: SOCIAL_IMAGE_PATH[locale], ...SOCIAL_IMAGE_SIZE, alt: SOCIAL_IMAGE_ALT[locale] };
+}
 export const TITLE_TEMPLATE = `%s | ${SITE_NAME}`;
 
 /**
@@ -54,14 +57,13 @@ export function pageMetadata(
       alternateLocale: [OG_LOCALE[otherLocale(locale)]],
       title: fullTitle,
       description: meta.description,
-      images: [OG_IMAGE],
+      images: [socialImage(locale)],
     },
     twitter: {
       card: "summary_large_image",
       title: fullTitle,
       description: meta.description,
-      images: [TWITTER_IMAGE],
-      creator: "@vibastlabs",
+      images: [socialImage(locale)],
     },
   };
 }
