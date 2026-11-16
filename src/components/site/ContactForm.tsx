@@ -5,6 +5,8 @@ import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import { Box, Button, Flex, Heading, Input, SimpleGrid, Stack, Text, Textarea } from "@chakra-ui/react";
 import { AlertCircle, CheckCircle, Send } from "lucide-react";
 import { brand } from "@/brand";
+import type { Locale } from "@/i18n/locales";
+import { STARTING_POINTS, type ContactFormStrings, type StartingPoint } from "@/content/pages/contact";
 
 const fieldProps = {
   bg: "white",
@@ -16,6 +18,63 @@ const fieldProps = {
   _focus: { borderColor: "accent.500", boxShadow: `0 0 0 1px ${brand.teal}` },
 } as const;
 
+/** "Where are you starting from?": radio pills that wrap on narrow screens. */
+function StartingPointPicker({
+  legend,
+  labels,
+  value,
+  onChange,
+}: {
+  legend: string;
+  labels: Record<StartingPoint, string>;
+  value: StartingPoint | "";
+  onChange: (v: StartingPoint) => void;
+}) {
+  return (
+    <Box as="fieldset" border={0} p={0} m={0} minW={0}>
+      <Text as="legend" fontSize="sm" fontWeight="semibold" color="ink" mb={2} p={0}>
+        {legend}
+      </Text>
+      <Flex wrap="wrap" gap={2}>
+        {STARTING_POINTS.map((key) => {
+          const checked = value === key;
+          return (
+            <Box
+              as="label"
+              key={key}
+              position="relative"
+              display="inline-flex"
+              alignItems="center"
+              h="40px"
+              px={4}
+              borderRadius="full"
+              borderWidth="1px"
+              borderColor={checked ? "accent.500" : brand.inputBorder}
+              bg={checked ? "accent.50" : "white"}
+              color={checked ? "accent.700" : "ink"}
+              fontSize="sm"
+              fontWeight={checked ? "semibold" : "medium"}
+              cursor="pointer"
+              _hover={{ borderColor: checked ? "accent.500" : "brand.400" }}
+              _focusWithin={{ boxShadow: `0 0 0 2px ${brand.teal}` }}
+            >
+              <input
+                type="radio"
+                name="startingPoint"
+                value={key}
+                checked={checked}
+                onChange={() => onChange(key)}
+                style={{ position: "absolute", opacity: 0, width: 1, height: 1, margin: 0 }}
+              />
+              {labels[key]}
+            </Box>
+          );
+        })}
+      </Flex>
+    </Box>
+  );
+}
+
 function FieldLabel({ htmlFor, children }: { htmlFor: string; children: string }) {
   return (
     <Text asChild fontSize="sm" fontWeight="semibold" color="ink">
@@ -26,11 +85,12 @@ function FieldLabel({ htmlFor, children }: { htmlFor: string; children: string }
 
 /**
  * Contact form posting to /api/contact (Turnstile + honeypot, SES on the server).
- * Behaviour is unchanged from the previous page; only the styling moved to the
- * light surface.
+ * All visible strings come from the contact page content (`strings`). Server
+ * error messages are English, so other languages show their own generic one.
  */
-export function ContactForm() {
+export function ContactForm({ locale, strings: t }: { locale: Locale; strings: ContactFormStrings }) {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [startingPoint, setStartingPoint] = useState<StartingPoint | "">("");
   const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
@@ -42,7 +102,7 @@ export function ContactForm() {
     e.preventDefault();
     if (!turnstileToken) {
       setFormStatus("error");
-      setErrorMessage("Please complete the captcha");
+      setErrorMessage(t.captchaRequired);
       return;
     }
     setFormStatus("loading");
@@ -52,20 +112,21 @@ export function ContactForm() {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, turnstileToken, website: honeypot }),
+        body: JSON.stringify({ ...formData, startingPoint, turnstileToken, website: honeypot }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to send message");
+        throw new Error((locale === "en" && data.error) || t.sendFailed);
       }
 
       setFormStatus("success");
       setFormData({ name: "", email: "", message: "" });
+      setStartingPoint("");
     } catch (error) {
       setFormStatus("error");
-      setErrorMessage(error instanceof Error ? error.message : "Failed to send message");
+      setErrorMessage(error instanceof Error && error.message ? error.message : t.sendFailed);
     } finally {
       // Turnstile tokens are single-use: get a fresh one for the next attempt.
       setTurnstileToken(null);
@@ -89,10 +150,10 @@ export function ContactForm() {
             <CheckCircle size={32} color={brand.tealText} aria-hidden="true" />
           </Flex>
           <Heading as="h3" fontSize="2xl" fontWeight="bold" color="ink">
-            Message sent
+            {t.successTitle}
           </Heading>
           <Text color="inkSoft">
-            Thanks for reaching out. We&apos;ll get back to you as soon as possible.
+            {t.successBody}
           </Text>
           <Button
             variant="plain"
@@ -102,7 +163,7 @@ export function ContactForm() {
             _hover={{ textDecoration: "underline" }}
             onClick={() => setFormStatus("idle")}
           >
-            Send another message
+            {t.sendAnother}
           </Button>
         </Stack>
       ) : (
@@ -110,39 +171,45 @@ export function ContactForm() {
           <Stack gap={5}>
             <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4}>
               <Stack gap={2}>
-                <FieldLabel htmlFor="contact-name">Name</FieldLabel>
+                <FieldLabel htmlFor="contact-name">{t.nameLabel}</FieldLabel>
                 <Input
                   id="contact-name"
                   type="text"
                   h="48px"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Your name"
+                  placeholder={t.namePlaceholder}
                   required
                   {...fieldProps}
                 />
               </Stack>
               <Stack gap={2}>
-                <FieldLabel htmlFor="contact-email">Email</FieldLabel>
+                <FieldLabel htmlFor="contact-email">{t.emailLabel}</FieldLabel>
                 <Input
                   id="contact-email"
                   type="email"
                   h="48px"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="you@company.com"
+                  placeholder={t.emailPlaceholder}
                   required
                   {...fieldProps}
                 />
               </Stack>
             </SimpleGrid>
+            <StartingPointPicker
+              legend={t.startingPointLabel}
+              labels={t.startingPoints}
+              value={startingPoint}
+              onChange={setStartingPoint}
+            />
             <Stack gap={2}>
-              <FieldLabel htmlFor="contact-message">Message</FieldLabel>
+              <FieldLabel htmlFor="contact-message">{t.messageLabel}</FieldLabel>
               <Textarea
                 id="contact-message"
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                placeholder="Tell us about your project..."
+                placeholder={t.messagePlaceholder}
                 rows={6}
                 required
                 {...fieldProps}
@@ -175,14 +242,14 @@ export function ContactForm() {
               <Turnstile
                 ref={turnstileRef}
                 siteKey={turnstileSiteKey}
-                options={{ theme: "light" }}
+                options={{ theme: "light", language: locale }}
                 onSuccess={(token) => setTurnstileToken(token)}
                 onExpire={() => setTurnstileToken(null)}
                 onError={() => setTurnstileToken(null)}
               />
             ) : (
               <Text color="#9F1D1D" fontSize="sm">
-                Captcha is not configured; the form is temporarily unavailable.
+                {t.captchaMissing}
               </Text>
             )}
 
@@ -219,10 +286,10 @@ export function ContactForm() {
               disabled={formStatus === "loading" || !turnstileToken}
             >
               {formStatus === "loading" ? (
-                "Sending..."
+                t.sending
               ) : (
                 <>
-                  Send message
+                  {t.submit}
                   <Send size={18} aria-hidden="true" />
                 </>
               )}

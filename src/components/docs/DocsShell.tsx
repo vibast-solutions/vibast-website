@@ -12,6 +12,7 @@ import {
   alternateHref,
   LOCALES,
 } from "@/content/docs";
+import { routePath } from "@/i18n/routes";
 import { DocContent } from "./DocContent";
 
 interface DocsShellProps {
@@ -90,7 +91,7 @@ export function DocsShell({ locale, page }: DocsShellProps) {
         px={4}
         h="68px"
       >
-        <NextLink href="/" aria-label="VIBAST Labs">
+        <NextLink href={routePath("home", locale)} aria-label="VIBAST Labs">
           <Box w="200px" ml="-5px">
             <VibastLabsLogo width="100%" />
           </Box>
@@ -141,7 +142,7 @@ export function DocsShell({ locale, page }: DocsShellProps) {
               borderBottomWidth="1px"
               borderColor="line"
             >
-              <NextLink href="/" aria-label="VIBAST Labs">
+              <NextLink href={routePath("home", locale)} aria-label="VIBAST Labs">
                 <Box w="200px" ml="-5px">
                   <VibastLabsLogo width="100%" />
                 </Box>
@@ -181,7 +182,7 @@ export function DocsShell({ locale, page }: DocsShellProps) {
         >
           {/* Logo row: same height and logo size as the site header. */}
           <Flex align="center" h="84px" px={6} borderBottomWidth="1px" borderColor="line">
-            <NextLink href="/" aria-label="VIBAST Labs">
+            <NextLink href={routePath("home", locale)} aria-label="VIBAST Labs">
               {/* 232px fills the 280px sidebar's content width; 260px would overflow it. */}
               <Box w="232px" ml="-6px">
                 <VibastLabsLogo width="100%" />
@@ -216,7 +217,7 @@ function SidebarInner({
   const ui = docsUi[locale];
   return (
     <Stack gap={6}>
-      <NextLink href="/">
+      <NextLink href={routePath("home", locale)}>
         <HStack gap={1.5} color="brand.500" _hover={{ color: "brand.700" }}>
           <ArrowLeft size={14} />
           <Text fontSize="sm" fontWeight="medium">

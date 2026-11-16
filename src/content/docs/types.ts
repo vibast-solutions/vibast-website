@@ -3,11 +3,8 @@
 // sections render from a typed block list. Keeping both language variants behind
 // the same `DocPage` shape keeps them structurally parallel (content parity).
 
-export type Locale = "ro" | "en";
-
-export const LOCALES: Locale[] = ["en", "ro"];
-
-export const DEFAULT_LOCALE: Locale = "en";
+export type { Locale } from "@/i18n/locales";
+export { LOCALES, DEFAULT_LOCALE } from "@/i18n/locales";
 
 /**
  * A content block. Sections are built from ordered lists of these. The `tiers`
