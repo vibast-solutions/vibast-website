@@ -20,7 +20,8 @@ import {
 import { brand } from "@/brand";
 import type { Locale } from "@/i18n/locales";
 import { SERVICE_KEYS, routePath, type RouteKey } from "@/i18n/routes";
-import { CONTACT_EMAIL, CONTACT_PHONE } from "@/content/company";
+import { CONTACT_EMAIL } from "@/content/company";
+import { PhoneContact } from "@/components/site/PhoneContact";
 import { contactContent } from "@/content/pages/contact";
 import { homeContent, type CardCopy, type HomePageContent } from "@/content/pages/home";
 import { ContactForm } from "@/components/site/ContactForm";
@@ -543,24 +544,11 @@ export function HomePage({ locale }: { locale: Locale }) {
                     {CONTACT_EMAIL}
                   </Link>
                 </Stack>
-                {/* Rendered only once a phone number is set in src/content/company.ts. */}
-                {CONTACT_PHONE && (
-                  <Stack gap={1}>
-                    <Text fontSize="sm" color="brand.500">
-                      {c.contact.phonePrompt}
-                    </Text>
-                    <Link
-                      href={`tel:${CONTACT_PHONE.replace(/[^+\d]/g, "")}`}
-                      fontFamily="heading"
-                      fontSize={{ base: "19px", md: "20px" }}
-                      fontWeight="bold"
-                      color="accent.600"
-                      w="fit-content"
-                    >
-                      {CONTACT_PHONE}
-                    </Link>
-                  </Stack>
-                )}
+                <PhoneContact
+                  prompt={c.contact.phonePrompt}
+                  hours={c.contact.phoneHours}
+                  whatsappLabel={c.contact.whatsappLabel}
+                />
               </Stack>
             </Stack>
             <ContactForm locale={locale} strings={contact.form} />

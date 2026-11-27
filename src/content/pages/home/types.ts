@@ -90,5 +90,8 @@ export interface HomePageContent {
     body: string;
     emailPrompt: string;
     phonePrompt: string;
+    /** When the phone is answered, shown under the number. */
+    phoneHours: string;
+    whatsappLabel: string;
   };
 }
