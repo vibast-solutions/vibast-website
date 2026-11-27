@@ -5,7 +5,7 @@ import { Box, Grid, Heading, SimpleGrid, Stack, Text } from "@chakra-ui/react";
 import type { Locale } from "@/i18n/locales";
 import { aboutContent } from "@/content/pages/about";
 import { siteContent } from "@/content/site";
-import { COMPANY, CONTACT_EMAIL, CONTACT_PHONE } from "@/content/company";
+import { COMPANY, CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF } from "@/content/company";
 import { CheckItem } from "@/components/site/primitives";
 import { PageShell, h2Size } from "../PageShell";
 
@@ -116,7 +116,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
           </DetailRow>
           {CONTACT_PHONE && (
             <DetailRow label={companyDetails.phoneLabel}>
-              <a href={`tel:${CONTACT_PHONE.replace(/\s+/g, "")}`}>
+              <a href={CONTACT_PHONE_HREF}>
                 <Text as="span" color="accent.600" _hover={{ textDecoration: "underline" }}>
                   {CONTACT_PHONE}
                 </Text>

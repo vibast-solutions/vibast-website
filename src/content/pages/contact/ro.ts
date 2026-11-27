@@ -9,7 +9,9 @@ export const contactRo: ContactPageContent = {
   h1: "Cere o estimare pentru proiectul tău",
   intro: "Spune-ne de ce ai nevoie și de unde pornești. Revenim cu întrebări sau cu o primă estimare.",
   emailPrompt: "Sau scrie-ne direct",
-  phonePrompt: "Sau sună-ne",
+  phonePrompt: "Sau sună-ne ori scrie-ne pe WhatsApp",
+  phoneHours: "Luni – joi, 09:00–15:00 UTC",
+  whatsappLabel: "Scrie-ne pe WhatsApp",
   nextSteps: {
     title: "Ce urmează",
     items: [

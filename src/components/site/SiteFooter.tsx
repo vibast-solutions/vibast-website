@@ -6,7 +6,7 @@ import { VibastLabsLogo } from "@/components/brand/VibastLabsLogo";
 import type { Locale } from "@/i18n/locales";
 import { SERVICE_KEYS, routePath, type RouteKey } from "@/i18n/routes";
 import { siteContent } from "@/content/site";
-import { COMPANY, CONTACT_EMAIL, CONTACT_PHONE } from "@/content/company";
+import { COMPANY, CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF } from "@/content/company";
 import { PageContainer } from "./primitives";
 
 const COMPANY_KEYS: RouteKey[] = ["services", "work", "about", "contact", "mailbox"];
@@ -83,7 +83,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
               <FooterLink href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</FooterLink>
               {/* Rendered only once a phone number is set in src/content/company.ts. */}
               {CONTACT_PHONE && (
-                <FooterLink href={`tel:${CONTACT_PHONE.replace(/[^+\d]/g, "")}`}>{CONTACT_PHONE}</FooterLink>
+                <FooterLink href={CONTACT_PHONE_HREF}>{CONTACT_PHONE}</FooterLink>
               )}
             </Stack>
           </SimpleGrid>

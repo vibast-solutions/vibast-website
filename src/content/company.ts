@@ -5,10 +5,23 @@ import type { CompanyIdKey } from "./types";
 export const CONTACT_EMAIL = "stefan@vibast.ro";
 
 /**
- * Public phone number. Empty until Stefan supplies one; the footer and contact
- * page render it only when it is set. Format it for display, e.g. "+40 7xx xxx xxx".
+ * Public phone number (calls and WhatsApp), formatted for display. The footer,
+ * home, about and contact pages render it only when it is set.
  */
-export const CONTACT_PHONE: string = "";
+export const CONTACT_PHONE: string = "+40 747 026 026";
+
+/** `tel:` link target for CONTACT_PHONE. */
+export const CONTACT_PHONE_HREF = `tel:${CONTACT_PHONE.replace(/[^+\d]/g, "")}`;
+
+/** WhatsApp chat link for CONTACT_PHONE (wa.me wants digits only). */
+export const CONTACT_WHATSAPP_HREF = `https://wa.me/${CONTACT_PHONE.replace(/\D/g, "")}`;
+
+/** When the phone is answered, in UTC. Used for the visible hours and the JSON-LD. */
+export const CONTACT_PHONE_HOURS = {
+  days: ["Monday", "Tuesday", "Wednesday", "Thursday"],
+  opens: "09:00",
+  closes: "15:00",
+} as const;
 
 export const COMPANY = {
   name: "VIBAST Labs",

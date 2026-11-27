@@ -26,7 +26,7 @@ This is a Next.js 16 multi-page marketing website in English and Romanian, using
 
 ### Content
 
-- All UI strings live in typed content files per language: `src/content/site/{en,ro}.ts` (chrome: nav labels, footer, switcher), `src/content/pages/<page>/{en,ro}.ts` (one dir per page, `index.ts` maps locale → content), shared shapes in `src/content/types.ts`, language-independent company facts (email, phone, IDs) in `src/content/company.ts`. `CONTACT_PHONE` renders only when non-empty.
+- All UI strings live in typed content files per language: `src/content/site/{en,ro}.ts` (chrome: nav labels, footer, switcher), `src/content/pages/<page>/{en,ro}.ts` (one dir per page, `index.ts` maps locale → content), shared shapes in `src/content/types.ts`, language-independent company facts (email, phone, IDs) in `src/content/company.ts`. `CONTACT_PHONE` (calls + WhatsApp) renders only when non-empty; its `tel:`/`wa.me` links and UTC answering hours are derived there too, and `site/PhoneContact` shows number + hours + WhatsApp next to the contact forms.
 - Page components: `src/components/pages/<page>/`. `PageShell` (breadcrumbs, H1, intro, CTA band) and the service template `services/ServicePage.tsx` (renders only the plan §6 sections present in the content) are shared.
 - The EN home (`src/components/pages/home/HomePage.tsx`, copy in `src/content/pages/home/en.ts`) still has in-page section ids; keep `cta`, old links to `/#cta` land on its contact form.
 - Voice: plain language, outcome first, no technology names in heroes/cards/headings. Romanian is written natively with diacritics.

@@ -30,6 +30,9 @@ export interface ContactFormStrings {
 export interface ContactPageContent extends ShellContent {
   emailPrompt: string;
   phonePrompt: string;
+  /** When the phone is answered, shown under the number. */
+  phoneHours: string;
+  whatsappLabel: string;
   /** Short "what happens next" list shown beside the form. */
   nextSteps: { title: string; items: string[] };
   form: ContactFormStrings;

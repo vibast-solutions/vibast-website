@@ -9,7 +9,9 @@ export const contactEn: ContactPageContent = {
   h1: "Get a project estimate",
   intro: "Tell us what you need and where you're starting from. We'll come back with questions or a first estimate.",
   emailPrompt: "Or email us directly",
-  phonePrompt: "Or call us",
+  phonePrompt: "Or call us, or message us on WhatsApp",
+  phoneHours: "Monday to Thursday, 09:00–15:00 UTC",
+  whatsappLabel: "Message us on WhatsApp",
   nextSteps: {
     title: "What happens next",
     items: [

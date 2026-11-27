@@ -169,6 +169,8 @@ export const homeEn: HomePageContent = {
     title: "Tell us where you're starting from.",
     body: "A few lines are enough. We'll come back with questions or a first estimate.",
     emailPrompt: "Or email us directly",
-    phonePrompt: "Or call us",
+    phonePrompt: "Or call us, or message us on WhatsApp",
+    phoneHours: "Monday to Thursday, 09:00–15:00 UTC",
+    whatsappLabel: "Message us on WhatsApp",
   },
 };

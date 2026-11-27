@@ -3,8 +3,9 @@
 import { Box, Grid, Heading, Link, Stack, Text } from "@chakra-ui/react";
 import type { Locale } from "@/i18n/locales";
 import { contactContent } from "@/content/pages/contact";
-import { CONTACT_EMAIL, CONTACT_PHONE } from "@/content/company";
+import { CONTACT_EMAIL } from "@/content/company";
 import { ContactForm } from "@/components/site/ContactForm";
+import { PhoneContact } from "@/components/site/PhoneContact";
 import { PageShell } from "../PageShell";
 
 function Direct({ prompt, href, value }: { prompt: string; href: string; value: string }) {
@@ -54,10 +55,7 @@ export function ContactPage({ locale }: { locale: Locale }) {
           </Stack>
           <Stack gap={6} borderTopWidth="1px" borderColor="line" pt={6}>
             <Direct prompt={content.emailPrompt} href={`mailto:${CONTACT_EMAIL}`} value={CONTACT_EMAIL} />
-            {/* Rendered only once a phone number is set in src/content/company.ts. */}
-            {CONTACT_PHONE && (
-              <Direct prompt={content.phonePrompt} href={`tel:${CONTACT_PHONE.replace(/[^+\d]/g, "")}`} value={CONTACT_PHONE} />
-            )}
+            <PhoneContact prompt={content.phonePrompt} hours={content.phoneHours} whatsappLabel={content.whatsappLabel} />
           </Stack>
         </Stack>
         <ContactForm locale={locale} strings={content.form} />

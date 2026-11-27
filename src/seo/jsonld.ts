@@ -1,7 +1,7 @@
 import type { Locale } from "@/i18n/locales";
 import { ROUTES, SITE_URL, absoluteUrl, routeTrail, type RouteKey } from "@/i18n/routes";
 import { siteContent } from "@/content/site";
-import { COMPANY, CONTACT_EMAIL, CONTACT_PHONE } from "@/content/company";
+import { COMPANY, CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HOURS } from "@/content/company";
 import { SITE_NAME } from "./metadata";
 
 const ORG_ID = `${SITE_URL}/#organization`;
@@ -33,7 +33,18 @@ export function organizationJsonLd() {
       "@type": "ContactPoint",
       contactType: "sales",
       email: CONTACT_EMAIL,
-      ...(CONTACT_PHONE ? { telephone: CONTACT_PHONE } : {}),
+      ...(CONTACT_PHONE
+        ? {
+            telephone: CONTACT_PHONE,
+            // Times are UTC, as shown on the site.
+            hoursAvailable: {
+              "@type": "OpeningHoursSpecification",
+              dayOfWeek: CONTACT_PHONE_HOURS.days.map((d) => `https://schema.org/${d}`),
+              opens: `${CONTACT_PHONE_HOURS.opens}:00Z`,
+              closes: `${CONTACT_PHONE_HOURS.closes}:00Z`,
+            },
+          }
+        : {}),
       availableLanguage: ["en", "ro"],
     },
   };
